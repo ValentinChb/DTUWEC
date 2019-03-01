@@ -1,3 +1,5 @@
+[![pipeline status](https://gitlab.windenergy.dtu.dk/OpenLAC/BasicDTUController/badges/master/pipeline.svg)](https://gitlab.windenergy.dtu.dk/OpenLAC/BasicDTUController/commits/master)
+
 # Basic DTU Wind Energy controller
 ## Introduction
 The scope of this project is to provide a basic open-source open-access controller that can be used by the community as a reference.  
