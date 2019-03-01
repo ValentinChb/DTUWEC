@@ -1,41 +1,28 @@
-stages:
-  - pull
-  - build
-  - test
-  - deploy
-  
-pull_win32:
+test:
     stage:
-        pull
-    variables:
-        GIT_SUBMODULE_STRATEGY: normal
-    script:
-    - cd "C:\hawc2-win32"
-    - git pull
-    tags:
-    - CPAV_old_PC
-    only:
-    - test_compile_win32
-    - master
-    - tags
-
-
-compile_win32:
-    stage:
-        build
-    variables:
-        GIT_SUBMODULE_STRATEGY: normal
+        test
     script:
     - devenv src/dtu_controller.sln /build "Release|win32"
-    - xcopy /y/r "src\release\dtu_we_controller.dll" "C:\hawc2-win32"
-    - xcopy /y/r "src\release\dtu_we_controller_bladed.dll" "C:\hawc2-win32"
-    - cd "C:\hawc2-win32"
-    - git commit -a -m "DTUBasicController updated"
-    - git push
+    - git clone -b master --depth 1 https://gitlab.windenergy.dtu.dk/HAWC2/hawc2-binary/hawc2-win32.git
+    - c:/Anaconda3/envs/pyHawc2/python hawc2-win32/update_module.py src/release/dtu_we_controller.dll master-test
+    - c:/Anaconda3/envs/pyHawc2/python.exe -m pytest
+    tags:
+    - CPAV_old_PC
+    except:
+    - test_build
+    - tags
+
+build_test_deploy_win32:
+    stage:
+      build
+    script:
+    - devenv src/dtu_controller.sln /build "Release|win32"
+    - git clone -b master --depth 1 https://gitlab.windenergy.dtu.dk/HAWC2/hawc2-binary/hawc2-win32.git
+    - c:/Anaconda3/envs/pyHawc2/python hawc2-win32/update_module.py src/release/dtu_we_controller.dll
+    - c:/Anaconda3/envs/pyHawc2/python.exe -m pytest
+    - c:/Anaconda3/envs/pyHawc2/python hawc2-win32/update_module.py push
     tags:
     - CPAV_old_PC
     only:
-    - test_compile_win32
-    - master
+    - test_build
     - tags
-
