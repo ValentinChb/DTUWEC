@@ -55,7 +55,7 @@ module dtu_we_controller_fcns
    end type
    type TDeratevar
       integer  :: strat          
-      real(mk) :: dr 
+      real(mk) :: dr = 1.0_mk
    end type
    ! Custom Types
    type(Twpdata), save   :: OPdatavar

@@ -252,7 +252,7 @@ subroutine derate_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
    select case (Deratevar%strat)
 
    case(1)  ! constant rotation
-   
+       ! FIXME: the linear region between optimal Cp and rated torque (2 1/2) region is missing 
 	   GenSpeedDerate = ((Deratevar%dr*PeRated)/Kopt)**(1.0/3)		    ! Derated Rotor Speed    
 	   GenSpeedRefMax =   min(GenSpeedRefMax,GenSpeedDerate)		    
 	   GenTorqueRated  =  (Deratevar%dr*PeRated)/GenSpeedRefMax
@@ -664,6 +664,11 @@ subroutine torquecontroller(GenSpeed, GenSpeedFilt, dGenSpeed_dtFilt, PitchMean,
    endif
    outmin = (1.0_mk - switch)*GenTorqueMin_partial + switch*GenTorqueMin_full
    outmax = (1.0_mk - switch)*GenTorqueMax_partial + switch*GenTorqueMax_full
+   ! Check derating limits
+   if (deratevar%strat > 0) then
+     outmin = min(outmin, GenTorqueRated)
+     outmax = min(outmax, GenTorqueRated)
+   endif
    !***********************************************************************************************
    ! Rotor speed exclusion zone
    !***********************************************************************************************
@@ -738,10 +743,10 @@ subroutine pitchcontroller(GenSpeedFilt, dGenSpeed_dtFilt, PitchMeanFilt, PeFilt
    !-----------------------------------------------------------------------------------------------
    if (DT_mode_filt%f0 .gt. 0.0_mk) then
      err_pitch(1) = notch2orderfilt(deltat, stepno, DT_mode_filt, GenSpeedFiltErr)
-     err_pitch(2) = notch2orderfilt(deltat, stepno, pwr_DT_mode_filt, PeFilt - PeRated)
+     err_pitch(2) = notch2orderfilt(deltat, stepno, pwr_DT_mode_filt, PeFilt - PeRated*Deratevar%dr)
    else
      err_pitch(1) = GenSpeedFiltErr
-     err_pitch(2) = PeFilt - PeRated
+     err_pitch(2) = PeFilt - PeRated*Deratevar%dr
    endif
    PitchColRef = PID2(stepno, deltat, kgain, PID_pit_var, err_pitch, AddedPitchRate)
    ! Write into dump array

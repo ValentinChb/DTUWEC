@@ -376,8 +376,10 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
    ! Initialization
    TimerExcl = -0.02_mk
    ! Derating parameters
-   Deratevar%strat = array1(79)             
-   Deratevar%dr    = array1(80)/100.0 
+   Deratevar%strat = array1(79)    
+   if (Deratevar%strat > 0) then          
+     Deratevar%dr = array1(80)/100.0 
+   endif
    return
 end subroutine init_regulation_advanced
 !**************************************************************************************************
