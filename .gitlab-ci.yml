@@ -12,46 +12,54 @@ build_and_test-win32:
     - test_build
     - tags
 
-build_and_test-x64:
+build_and_test-win32:
     stage:
-        build
+      build
     script:
-    - devenv src/dtu_controller.sln /rebuild "release|x64"
-    - git clone -b master --depth 1 https://gitlab.windenergy.dtu.dk/HAWC2/hawc2-binary/hawc2-x64.git
-    - c:/Anaconda3/envs/pyHawc2/python hawc2-x64/update_module.py src/dtu_we_controller/x64/release/dtu_we_controller_64.dll master-test
-    - c:/Anaconda3/envs/pyHawc2/python.exe -m pytest --ignore=tests/test_32
+    - c:/Anaconda3/envs/pyHawc2/python.exe ci.py win32
+    artifacts:
+      paths:
+      - src/dtu_we_controller/Win32/Release/dtu_we_controller.dll
+      - src/dtu_we_controller_bladed/Win32/Release/dtu_we_controller_bladed.dll
     tags:
     - CPAV_old_PC
     except:
-    - test_build
-    - tags
-
-build_test_deploy_win32:
-    stage:
-      build
-    script:
-    - devenv src/dtu_controller.sln /rebuild "release|win32"
-    - git clone -b master --depth 1 https://gitlab.windenergy.dtu.dk/HAWC2/hawc2-binary/hawc2-win32.git
-    - c:/Anaconda3/envs/pyHawc2/python hawc2-win32/update_module.py src/dtu_we_controller/win32/release/dtu_we_controller.dll
-    - c:/Anaconda3/envs/pyHawc2/python.exe -m pytest
-    - c:/Anaconda3/envs/pyHawc2/python hawc2-win32/update_module.py push
-    tags:
-    - CPAV_old_PC
-    only:
-    - test_build
     - tags
     
-build_test_deploy_x64:
+
+
+build_and_test-x64:
     stage:
       build
     script:
-    - devenv src/dtu_controller.sln /rebuild "release|x64"
-    - git clone -b master --depth 1 https://gitlab.windenergy.dtu.dk/HAWC2/hawc2-binary/hawc2-x64.git
-    - c:/Anaconda3/envs/pyHawc2/python hawc2-x64/update_module.py src/dtu_we_controller/x64/release/dtu_we_controller_64.dll
-    # - c:/Anaconda3/envs/pyHawc2/python.exe -m pytest
-    - c:/Anaconda3/envs/pyHawc2/python hawc2-x64/update_module.py push
+    - c:/Anaconda3/envs/pyHawc2/python.exe ci.py x64
+    artifacts:
+      paths:
+      - src/dtu_we_controller/X64/Release/dtu_we_controller_64.dll
+      - src/dtu_we_controller_bladed/X64/Release/dtu_we_controller_bladed_64.dll
+    tags:
+    - CPAV_old_PC
+    except:
+    - tags
+
+
+build_test_deploy-win32:
+    stage:
+      build
+    script:
+    - c:/Anaconda3/envs/pyHawc2/python.exe ci.py win32 push
     tags:
     - CPAV_old_PC
     only:
-    - test_build
+    - tags
+
+
+build_test_deploy-x64:
+    stage:
+      build
+    script:
+    - c:/Anaconda3/envs/pyHawc2/python.exe ci.py x64 push
+    tags:
+    - CPAV_old_PC
+    only:
     - tags
