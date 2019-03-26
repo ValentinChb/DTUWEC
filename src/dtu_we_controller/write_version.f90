@@ -29,16 +29,16 @@ contains
   return
   end subroutine write_textversion
 !***********************************************************************
-  subroutine version(s)
+subroutine version(s)
+    !DEC$ ATTRIBUTES DLLEXPORT, STDCALL, REFERENCE, ALIAS:'version' :: version
     use buildinfo
     implicit none
-    !DEC$ ATTRIBUTES DLLEXPORT, ALIAS:'version' :: version
-    !DEC$ ATTRIBUTES STDCALL :: version
-    !DEC$ ATTRIBUTES REFERENCE:: s
-    character*255      :: s
+    character*(*)      :: s
+    integer :: i
     type (tbuildinfo)  :: binfo
     call buildInfo_initialise(binfo)
     s = binfo%git_tag
 end subroutine
+
 !***********************************************************************
 END MODULE write_version_mod
