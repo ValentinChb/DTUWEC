@@ -1,19 +1,5 @@
 build_and_test-win32:
     stage:
-        build
-    script:
-    - devenv src/dtu_controller.sln /rebuild "release|win32"
-    - git clone -b master --depth 1 https://gitlab.windenergy.dtu.dk/HAWC2/hawc2-binary/hawc2-win32.git
-    - c:/Anaconda3/envs/pyHawc2/python hawc2-win32/update_module.py src/dtu_we_controller/win32/release/dtu_we_controller.dll master-test
-    - c:/Anaconda3/envs/pyHawc2/python.exe -m pytest --ignore=tests/test_64
-    tags:
-    - CPAV_old_PC
-    except:
-    - test_build
-    - tags
-
-build_and_test-win32:
-    stage:
       build
     script:
     - c:/Anaconda3/envs/pyHawc2/python.exe ci.py win32
