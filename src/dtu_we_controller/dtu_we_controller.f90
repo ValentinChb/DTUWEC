@@ -6,8 +6,9 @@ module dtu_we_controller
    use turbine_controller_mod
    use safety_system_mod
    use write_version_mod
+   ! use misc_mod
    implicit none
-   integer  CtrlStatus
+   ! integer  CtrlStatus
    real(mk) dump_array(50)
    real(mk) time_old
    logical repeated
@@ -159,7 +160,8 @@ subroutine init_regulation(array1, array2) bind(c, name='init_regulation')
      generator_cutin=.false.
    endif
    ! Expert parameters (keep default values unless otherwise given)
-   PID_gen_var%velmax   = GenTorqueMax/(array1(33)+0.001_mk)
+   ! constant 33 is adjusted according to the htc control block comment
+   PID_gen_var%velmax   = GenTorqueMax/(array1(33)+0.01_mk)
    SwitchVar%pitang_upper   = array1(34)*degrad
    SwitchVar%rel_sp_open_Qg = array1(35)*0.01_mk
    wspfirstordervar%tau     = array1(36)*2.0_mk*pi/GenSpeedRefMax
@@ -292,11 +294,25 @@ subroutine init_regulation(array1, array2) bind(c, name='init_regulation')
 end subroutine init_regulation
 !**************************************************************************************************
 subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation_advanced')
+   use dtu_we_controller_fcns
    !DEC$ IF .NOT. DEFINED(__LINUX__)
    !DEC$ ATTRIBUTES DLLEXPORT::init_regulation_advanced
    !DEC$ END IF
    real(mk), dimension(100), intent(inout)  ::  array1
    real(mk), dimension(1)  , intent(inout) ::  array2
+   ! delclare loacl variables
+   type(TcontrolFile), pointer :: pAdditionalCtrlParamFile => null()
+   character(1) str
+   ! character(128) :: filename = './res/ctrl_output_' 
+   ! character(128) :: extension = '.txt' 
+   ! character(128) :: fullName = ''
+   ! character(50),dimension(3) :: strMsg
+   logical :: err = .false.
+   logical :: DEBUG_Flag = .true.
+   ! integer :: iostatus 
+   ! character(len=:), allocatable, dimension(3) :: strMsg
+   ! real(mk), pointer :: p1=>null();
+   !
    ! Torque exclusion zone
    !  constant  53 ; Exclusion zone: Lower speed limit [rad/s] (Default 0 used if zero)
    !  constant  54 ; Exclusion zone: Generator torque at lower limit [Nm] (Default 0 used if zero)
@@ -332,8 +348,10 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
    !  constant  77 ; Frequency of notch filter [Hz] applied on the rotor speed before computing torque above rated (constant power), if zero no notch filter used
    !  constant  78 ; Damping of notch filter [-] applied on the rotor speed before computing torque above rated (constant power), (Default 0.01 used if zero)
    !
-   !  constant  79 ; Derate strategy. 0 = No Derating, 1 = constant rotation, 2 = max rotation  
+   !  constant  79 ; Derate strategy. 0 = No Derating, 1 = constant rotation, 2 = max rotation, 3 = min ct  
    !  constant  80 ; Derate percentage (eg. 70 means 70% of nominal power)
+   !  constant  81 ; rotor inertia
+   !  constant  82 ; Rated wind speed (Only used when constant 79 = 3
    call init_regulation(array1, array2)
    ! Generator torque exclusion zone
    if (array1(53).gt.0.0_mk) ExcluZone%Lwr             = array1(53)
@@ -364,9 +382,14 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
    if (array1(74).gt.0.0_mk) MoniVar%rystevagtfirstordervar%tau         = array1(74)*2.0_mk*pi/GenSpeedRefMax
    SafetySystemVar%rystevagtfirstordervar%tau = MoniVar%rystevagtfirstordervar%tau
    ! Pitch devaiation monitor
+   ! constant 75: when the value is less than 1000000, this function is disabled.
+   ! Parameters for pitch deviation monitoring. The format is 1,nnn,mmm 
+   ! where 'nnn' [s] is the period of the moving average and 'mmm' is threshold of the deviation [0.1 deg]  
    if (array1(75).gt.1000000.0_mk) then
-     DeltaPitchThreshold = (array1(75)-floor(array1(75)/1000.0_mk)*1000.0_mk)*0.1_mk
-     TAve_Pitch = (array1(75)-1000000.0_mk-DeltaPitchThreshold*10.0_mk)/1000.0_mk
+       ! get the threshold of the pitch angle deviation defined by user in [deg]
+       DeltaPitchThreshold = (array1(75)-floor(array1(75)/1000.0_mk)*1000.0_mk)*0.1_mk 
+       ! get the period of the moving average defined by user in degrees in [s]
+       TAve_Pitch = (array1(75)-1000000.0_mk-DeltaPitchThreshold*10.0_mk)/1000.0_mk
    endif
    ! Gear ratio
    if (array1(76).gt.0.0_mk) GearRatio = array1(76)
@@ -378,11 +401,154 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
    ! Derating parameters
    Deratevar%strat = array1(79)    
    if (Deratevar%strat > 0) then          
-     Deratevar%dr = array1(80)/100.0 
+       Deratevar%dr = array1(80)/100.0_mk 
    endif
+   ! Read the additional control commands and parameters file
+   if (Deratevar%strat == 3) then
+       ! Set initial mean wind speed from type2_dll init block
+       ! This is mainly used for creating additional controller output file names 
+
+       ! Get the rated wind speed needed by min ct de-rating strategy
+       RatedWindSpeed = array1(82);
+       ! Get the filename from the subroution initstring() called by the HAWC2 
+       ! type2_dll interface
+       additionalCtrlParamFile%name = additionalCtrlParamFilename
+       ! Get a free file unit id for additional control parameter input file
+       call getFreeFileUnit(additionalCtrlParamFile%fileID)
+
+       ! this is reserved for create log out put file
+       ! Get a free file unit id for additional controller output file
+       ! variable "controllerOutput" is delared in "dtu_we_controller_fcns.f90"
+       ! call getFreeFileUnit(controllerOutput%fileID)
+
+       ! assign the control output file name
+       ! fullName = trim(filename)//real2str(array1(80))//'%'//'_'//'wsp'//int2str(int(array1(81)))//'_s'//int2str(int(array1(82)))//trim(extension)
+       ! controllerOutput%name = trim(fullName)
+
+       ! open the additional control output file for writing
+       ! open(unit=controllerOutput%fileID,file=controllerOutput%name,status='replace',iostat=iostatus)
+       ! if(iostatus == 0) then
+       !    write(6,*) ''
+       !    write(6,'(1X,A)') 'Additional control output file:'//trim(controllerOutput%name)//' is created.'
+       ! else
+       !     write(6,*) ''
+       !     write(6,'(1X,A)') 'Additional control output file:'//trim(controllerOutput%name)//' can not created.'
+       ! endif
+       
+       ! Allocate memory
+       if(.not. associated(pAdditionalCtrlParamFile)) then
+           allocate(pAdditionalCtrlParamFile)
+       endif
+       
+       ! Assign the memory address to the pointer variable 'pAdditionalCtrlParamFile'
+       pAdditionalCtrlParamFile = additionalCtrlParamFile
+       
+       ! open the additional control parameter file for reading
+       if(fileExists(pAdditionalCtrlParamFile%name)) then
+           open(unit=pAdditionalCtrlParamFile%fileID,file=pAdditionalCtrlParamFile%name,action='read')
+           write(6,'(A)') ' Reading additional control parameters from file: '//trim(adjustl(pAdditionalCtrlParamFile%name)) 
+       else
+           write(6,*) ' ERROR: additional control parameter file: '//trim(adjustl(pAdditionalCtrlParamFile%name))//' does not exist.'
+           stop
+       endif
+
+       ! read the additional control parameter file 
+       call readAdditionalCtrlParameter(pAdditionalCtrlParamFile,downRegulationData,CpData,err)
+       if(err) then
+           close(pAdditionalCtrlParamFile%fileID)
+           ! close(controllerOutput%fileID)
+           stop
+       else
+           close(pAdditionalCtrlParamFile%fileID)
+       endif
+
+   endif
+   
+   ! Rotor effective wind speed estimator
+   if (array1(81) .gt. 0.0_mk ) then
+   WindEstvar%J = array1(81)  ! 0.1051157075E+09_mk for DTU 10MW ! Rotor inertia
+   WindEstvar%est_Qa = 8e6 ! Initial guess
+   WindEstvar%Q = 1.0_mk  ! Tunning parameter
+   WindEstvar%R = 1.0_mk  ! Tunning parameter
+   WindEstvar%Kp = 1E5 ! Tunning parameter
+   WindEstvar%Ki = 1E7 ! Tunning parameter
+   WindEstvar%sum_err = 0
+   WindEstvar%P = 0
+   WindEstvar%xhat = 0
+   WindEstvar%radius = array1(47)/2.0_mk
+   write(6,*) "Rotor-effective wind speed estimator is active!!"									
+   
+   ! read Cp table
+   additionalCtrlParamFile%name = additionalCtrlParamFilename
+   call getFreeFileUnit(additionalCtrlParamFile%fileID)
+    ! Allocate memory
+       if(.not. associated(pAdditionalCtrlParamFile)) then
+           allocate(pAdditionalCtrlParamFile)
+       endif
+       
+       ! Assign the memory address to the pointer variable 'pAdditionalCtrlParamFile'
+       pAdditionalCtrlParamFile = additionalCtrlParamFile
+       
+       ! open the additional control parameter file for reading
+       if(fileExists(pAdditionalCtrlParamFile%name)) then
+           open(unit=pAdditionalCtrlParamFile%fileID,file=pAdditionalCtrlParamFile%name,action='read')
+           write(6,'(A)') ' Reading additional control parameters from file: '//trim(adjustl(pAdditionalCtrlParamFile%name)) 
+       else
+           write(6,*) ' ERROR: additional control parameter file: '//trim(adjustl(pAdditionalCtrlParamFile%name))//' does not exist.'
+           stop
+       endif
+
+       ! read the additional control parameter file 
+       call readAdditionalCtrlParameter(pAdditionalCtrlParamFile,downRegulationData,CpData,err)
+       if(err) then
+           close(pAdditionalCtrlParamFile%fileID)
+           ! close(controllerOutput%fileID)
+           stop
+       else
+           close(pAdditionalCtrlParamFile%fileID)
+       endif     
+   
+   endif
+   
+   ! This is only for debugging
+   write(6,*) "Type2_dll initialization is successed!!"
+   if(DEBUG_Flag) then
+       write(*,*) array1(100)
+       write(*,*) "Press 'c' to continue, 'q' to Quit the code."
+       read(*,*) str
+       if(str == 'q') then
+           stop
+       elseif(str == 'c') then
+           str = 'c'
+       endif
+   endif
+   
    return
 end subroutine init_regulation_advanced
 !**************************************************************************************************
+subroutine initstring(istring)
+    implicit none
+    !DEC$ IF .NOT. DEFINED(__LINUX__)
+    !DEC$ ATTRIBUTES DLLEXPORT, C, ALIAS:'initstring'::initstring
+    !DEC$ END IF
+    ! Declare the subroutine input arguments 
+    integer(1)    :: istring(*)
+
+    ! Declare the local variables
+    integer(1)    :: istring256(256)
+    character*256 :: cstring
+
+    ! allocate(additionalCtrlParamFile)
+
+    equivalence(istring256,cstring)
+
+    istring256(1:256)=istring(1:256)
+    ! assign the gloabl variable 'additionalCtrlParamFilename' using the file path string 
+    ! which has been read in the type2_dll block in HAWC2 main htc file 
+    additionalCtrlParamFilename = trim(adjustl(cstring))
+end subroutine initstring
+!**************************************************************************************************
+
 subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    !
    ! Controller interface.
@@ -407,6 +573,9 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    !   10: grid flag  ; [1=no grid,0=grid]
    !   11: Tower top x-acceleration  ; [m/s^2]
    !   12: Tower top y-acceleration  ; [m/s^2]
+   !   13: dll type2_dll individual_pitch_controller inpvec 1;
+   !   14: dll type2_dll individual_pitch_controller inpvec 2;
+   !   15: dll type2_dll individual_pitch_controller inpvec 3;
    !
    ! Output array2 contains
    !
@@ -442,22 +611,29 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    !   30: Reference pitch from tower damper        [rad]
    !   31: Monitored average of reference pitch     [rad]
    !   32: Monitored ave. of pitch (largest devia.) [rad]
-   !
+   !   34: generator constant k_opt        [Nm s^2/rad^2]
+   !   35: Tip-speed-ratio at minimum Ct   [-]
+   !   36: Generator speed up limit of region 2 assuming generator torque followings Qg=K*w^2 until rated generator torque when derating [rad/s]
+   !   37: Required pitch angle when operating at minimum Ct strategy [rad]
+   !   38: Thrust coefficient at derated operational point [-] 
+   !   39: Power coefficient at the derated operational point [-]
+
    ! Local variables
    integer GridFlag, EmergPitchStop, ActiveMechBrake
    real(mk) GenSpeed, wsp, PitchVect(3), Pe, TT_acc(2), time
+   real(mk) ipc_pitch(3);
    EmergPitchStop = 0
    ActiveMechBrake = 0
-   ! Time
+   ! Global Time from HAWC2
    time = array1(1)
    !***********************************************************************************************
    ! Increment time step (may actually not be necessary in type2 DLLs)
    !***********************************************************************************************
    !somehow the controller gets called twice in the very first time step...
-   if ((time==deltat).AND. (repeated==.FALSE.)) then
-       time_old=0.0_mk
-       repeated=.TRUE.
-   endif
+   ! if ((time==deltat).AND. (repeated==.FALSE.)) then
+   !    time_old=0.0_mk
+   !    repeated=.TRUE.
+   ! endif
    if (time .gt. time_old) then
      deltat = time - time_old
      time_old = time
@@ -469,6 +645,7 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
      newtimestep = .FALSE.
    endif
    ! Rotor (Generator) speed in LSS
+   ! We have to fix this Gearbox ratio issue
    GenSpeed = array1(2)/GearRatio
    ! Pitch angle
    PitchVect(1) = array1(3)
@@ -486,6 +663,9 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    ! Tower top acceleration
    TT_acc(1) = array1(11)
    TT_acc(2) = array1(12)
+   !
+   ! cyclic pitch angles ref. signal read in from individual pitch controller type2dll 
+   ipc_pitch(1:3) = array1(13:15)
    !***********************************************************************************************
    ! Safety system
    !***********************************************************************************************
@@ -520,10 +700,13 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    !***********************************************************************************************
    ! Output
    !***********************************************************************************************
-   array2( 1) = GenTorqueRef/GearRatio !    1: Generator torque reference               [Nm]
-   array2( 2) = PitchColRef            !    2: Pitch angle reference of blade 1         [rad]
-   array2( 3) = PitchColRef            !    3: Pitch angle reference of blade 2         [rad]
-   array2( 4) = PitchColRef            !    4: Pitch angle reference of blade 3         [rad]
+   array2( 1) = GenTorqueRef/GearRatio      !    1: Generator torque reference               [Nm]
+   array2( 2) = PitchColRef + ipc_pitch(1)  !    2: Pitch angle reference of blade 1         [rad]
+   array2( 3) = PitchColRef + ipc_pitch(2)  !    3: Pitch angle reference of blade 2         [rad]
+   array2( 4) = PitchColRef + ipc_pitch(3)  !    4: Pitch angle reference of blade 3         [rad]
+   !array2( 2) = PitchColRef  !    2: Pitch angle reference of blade 1         [rad]
+   !array2( 3) = PitchColRef  !    3: Pitch angle reference of blade 2         [rad]
+   !array2( 4) = PitchColRef  !    4: Pitch angle reference of blade 3         [rad]
    array2( 5) = dump_array(1)          !    5: Power reference                          [W]
    array2( 6) = dump_array(2)          !    6: Filtered wind speed                      [m/s]
    array2( 7) = dump_array(3)          !    7: Filtered rotor speed                     [rad/s]
@@ -552,6 +735,18 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    array2(30) = dump_array(26)         !   30: Reference pitch from tower damper        [rad]
    array2(31) = dump_array(27)         !   31: Monitored average of reference pitch     [rad]
    array2(32) = dump_array(28)         !   32: Monitored ave. of actual pitch (blade 1) [rad]
+   array2(33) = dump_array(29)/1000_mk !   33: Estimated aerodynamic torque [kNm]
+   array2(34) = dump_array(30)         !   34: generator constant k_opt        [Nm s^2/rad^2]
+   array2(35) = dump_array(31)         !   35: Tip-speed-ratio at minimum Ct   [-]
+   array2(36) = dump_array(32)         !   36: Generator rated speed when derating  [rad/s]
+   array2(37) = dump_array(33)         !   37: Required pitch angle when operating at minimum Ct strategy [rad]
+   array2(38) = dump_array(34)         !   38: Thrust coefficient at derated operational point [-] 
+   array2(39) = dump_array(35)         !   39: Power coefficient at the derated operational point [-]
+   array2(40) = dump_array(36)         !   40: Generator torque at the derated operational point [w]
+   array2(41) = dump_array(37)         !   41: 95% of Generator speed in region 2.5 when derating 
+   array2(42) = dump_array(38)         !   42: Generator torque limit in region 2.5 when derating
+   array2(43) = dump_array(39)         !   43: Estimated Tip-speed ratio (lambda)  [-]
+   array2(44) = dump_array(40)         !   44: Estimated rotor-effecitve wind speed [m/s]
    return
 end subroutine update_regulation
 !**************************************************************************************************

@@ -1,44 +1,55 @@
 module misc_mod
    !
-   ! Module where filters and the corresponding types are defined.
+   ! Module where IO and filter functions are defined.
+   ! some parameters of the type defined filters have default values but not all
    !
+   use user_defined_types
+
    implicit none
-   ! Constants
-   integer, parameter :: mk = kind(1.0d0)
-   real(mk) pi, degrad, raddeg
-   parameter(pi = 3.14159265358979_mk, degrad = 0.01745329251994_mk, raddeg = 57.295779513093144_mk)
-   ! Types
-   !  First order filter
-   type Tfirstordervar
-      real(mk) tau, x1, x1_old, y1, y1_old
-      integer :: stepno1 = 0
-   end type Tfirstordervar
-   !  Second order low pass filter filter
-   type Tlowpass2order
-      real(mk) zeta, f0, x1, x2, x1_old, x2_old, y1, y2, y1_old, y2_old
-      integer :: stepno1 = 0
-   end type Tlowpass2order
-   !  Second order notch filter
-   type Tnotch2order
-      real(mk) :: zeta1 = 0.1_mk
-      real(mk) :: zeta2 = 0.001_mk
-      real(mk) f0, x1, x2, x1_old, x2_old, y1, y2, y1_old, y2_old
-      integer :: stepno1 = 0
-   end type Tnotch2order
-   !  Second order band-pass filter
-   type Tbandpassfilt
-      real(mk) :: zeta = 0.02_mk
-      real(mk) :: tau = 0.0_mk
-      real(mk) f0, x1, x2, x1_old, x2_old, y1, y2, y1_old, y2_old
-      integer :: stepno1 = 0
-   end type Tbandpassfilt
-   !  Time delay
-   type Ttdelay
-      real(mk) xz(40)
-      real(mk) xz_old(40)
-      integer :: stepno1 = 0
-   end type Ttdelay
+
+   integer, save :: ctrl_logfile_unit = 78
+
 contains
+!**************************************************************************************************
+subroutine getFreeFileUnit(unitnr) bind(c, name='getFreeFileUnit')
+    integer,intent(inout) :: unitnr
+    integer, save :: lastUsedUnitNum = 127
+
+    unitnr=lastUsedUnitNum+1
+    lastUsedUnitNum=unitnr
+end subroutine getFreeFileUnit
+
+!**************************************************************************************************
+subroutine GetFreeFileUnitDllCall(unitnr) bind(c, name='GetFreeFileUnitDllCall')
+   !DEC$ IF .NOT. DEFINED(__LINUX__)
+   !DEC$ ATTRIBUTES DLLEXPORT :: GetFreeFileUnitDllCall
+   !DEC$ END IF
+
+    integer,intent(inout) :: unitnr
+    integer, save :: lastUsedUnitNum = 127
+
+    unitnr=lastUsedUnitNum+1
+    lastUsedUnitNum=unitnr
+end subroutine GetFreeFileUnitDllCall
+
+
+!**************************************************************************************************
+! Returns true if a file or folder exist
+logical function fileExists(filename)
+    character(len=*),intent(in) :: filename  ! 
+    INQUIRE(FILE=trim(filename), EXIST=fileExists) ! true if exist
+end function fileExists
+
+!**************************************************************************************************
+! Returns true if a file or folder exist
+logical function fileExistsDllCall(filename) bind(c, name='fileExistsDllCall')
+   !DEC$ IF .NOT. DEFINED(__LINUX__)
+   !DEC$ ATTRIBUTES DLLEXPORT :: fileExistsDllCall
+   !DEC$ END IF
+    character(len=*),intent(in) :: filename  ! 
+    INQUIRE(FILE=trim(filename), EXIST=fileExistsDllCall) ! true if exist
+end function fileExistsDllCall
+
 !**************************************************************************************************
 function lowpass1orderfilt(dt, stepno, filt, x)
    ! First order low-pass filter.

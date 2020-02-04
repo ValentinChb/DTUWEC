@@ -452,8 +452,9 @@ begin dll;
       constant 77  3.55 ; Frequency of notch filter [Hz] applied on the rotor speed before computing torque above rated (constant power), if zero no notch filter used
       constant 78  0.0 ; Damping of notch filter [-] applied on the rotor speed before computing torque above rated (constant power), (Default 0.01 used if zero)
 ; de-rating
-      constant  79 0; Derate strategy. 0 = No Derating, 1 = constant rotation, 2 = max rotation  
-      constant  80 70; Derate percentage (eg. 70 means 70% of nominal power)
+      constant 	79 0; 	Derate strategy. 0 = No Derating, 1 = constant rotation, 2 = max rotation  3 = min ct
+	  constant  80 100; 	Derate percentage (eg. 70 means 70% of nominal power
+	  constant 	81 0.0; Moment of inertia of the rotor 
     end init ;
 ;
     begin output ;
