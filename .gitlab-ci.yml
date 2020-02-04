@@ -1,51 +1,71 @@
-build_and_test-win32:
+variables:
+    GIT_SUBMODULE_STRATEGY: normal
+    
+build_and_test-gfortran:
     stage:
       build
     script:
-    - c:/Anaconda3/envs/pyHawc2/python.exe ci.py win32
+    - c:/Anaconda3/envs/pyHawc2/python.exe utils\ci\ci_utils.py x64 cmake gfortran
     artifacts:
       paths:
-      - src/dtu_we_controller/Win32/Release/dtu_we_controller.dll
-      - src/dtu_we_controller_bladed/Win32/Release/dtu_we_controller_bladed.dll
+      - build/dtu_we_controller_64.dll
     tags:
     - CPAV_old_PC
     except:
     - tags
+
+
+
+
+
+# build_and_test-win32:
+    # stage:
+      # build
+    # script:
+    # - c:/Anaconda3/envs/pyHawc2/python.exe ci.py win32
+    # artifacts:
+      # paths:
+      # - src/dtu_we_controller/Win32/Release/dtu_we_controller.dll
+      # - src/dtu_we_controller_bladed/Win32/Release/dtu_we_controller_bladed.dll
+    # tags:
+    # - CPAV_old_PC
+    # except:
+    # - tags
     
 
 
-build_and_test-x64:
-    stage:
-      build
-    script:
-    - c:/Anaconda3/envs/pyHawc2/python.exe ci.py x64
-    artifacts:
-      paths:
-      - src/dtu_we_controller/X64/Release/dtu_we_controller_64.dll
-      - src/dtu_we_controller_bladed/X64/Release/dtu_we_controller_bladed_64.dll
-    tags:
-    - CPAV_old_PC
-    except:
-    - tags
+# build_and_test-x64:
+    # stage:
+      # build
+    # script:
+    # - c:/Anaconda3/envs/pyHawc2/python.exe ci.py x64
+    # artifacts:
+      # paths:
+      # - src/dtu_we_controller/X64/Release/dtu_we_controller_64.dll
+      # - src/dtu_we_controller_bladed/X64/Release/dtu_we_controller_bladed_64.dll
+    # tags:
+    # - CPAV_old_PC
+    # except:
+    # - tags
 
 
-build_test_deploy-win32:
-    stage:
-      build
-    script:
-    - c:/Anaconda3/envs/pyHawc2/python.exe ci.py win32 push
-    tags:
-    - CPAV_old_PC
-    only:
-    - tags
+# build_test_deploy-win32:
+    # stage:
+      # build
+    # script:
+    # - c:/Anaconda3/envs/pyHawc2/python.exe ci.py win32 push
+    # tags:
+    # - CPAV_old_PC
+    # only:
+    # - tags
 
 
-build_test_deploy-x64:
-    stage:
-      build
-    script:
-    - c:/Anaconda3/envs/pyHawc2/python.exe ci.py x64 push
-    tags:
-    - CPAV_old_PC
-    only:
-    - tags
+# build_test_deploy-x64:
+    # stage:
+      # build
+    # script:
+    # - c:/Anaconda3/envs/pyHawc2/python.exe ci.py x64 push
+    # tags:
+    # - CPAV_old_PC
+    # only:
+    # - tags
