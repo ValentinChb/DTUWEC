@@ -1,43 +1,92 @@
 [![pipeline status](https://gitlab.windenergy.dtu.dk/OpenLAC/BasicDTUController/badges/master/pipeline.svg)](https://gitlab.windenergy.dtu.dk/OpenLAC/BasicDTUController/commits/master)
 
-# Basic DTU Wind Energy controller
+# DTU Wind Energy Controller (DTUWEC)
 ## Introduction
-The scope of this project is to provide a basic open-source open-access controller that can be used by the community as a reference.  
+The scope of this project is to provide an open-source open-access controller that can be used by the wind energy community as a reference. The DTU Wind Energy Controller (DTUWEC) is designed for pitch-regulated variable-speed wind turbines. It is built for high fidelity in-house aero-elastic simulation software (HAWC2). An interface to DNV-GL Bladed and OpenFAST is also provided for using DTUWEC with Bladed or OpenFAST. The controller features both partial and full load operation capabilities as well as switching mechanisms ensuring smooth transition between the two modes of operation. The partial load controller is based on a classical $`K\Omega^2`$ strategy or on a proportional-integral controller to track optimal tip speed ratio. The full load controller is also based on classical proportional-integral control theory. It also includes drivetrain and tower dampers, rotor speed exclusion zone control, de-rating control, wind speed estimation and filters on the feedback signal.
 
-The basic DTU Wind Energy controller is designed for pitch-regulated variable speed wind turbines.
-The controller features both partial and full load operation capabilities as well as switching mechanisms ensuring smooth transition between the two modes of operation. The partial load controller is based on a classical K Omega**2 strategy or on a proportional-integral controller to track constant tip speed ratio. The full load controllers is also based on classical proportional-integral control theory. The controller also includes drivetrain and tower dampers, a rotor speed exclusion zone, and filters on the feedback signal.
-
-Blade pitch servo and generator models are not included in this controller. They can be found in the project  [ServoAndUtilities](https://github.com/DTUWindEnergy/ServosAndUtilities).
+The DTUWEC also includes individual pitch control (IPC), individual flap control and cyclic flap control as separated DLLs. 
+Blade pitch servo, generator models, flap servo, mechanical brake are not included in this repository. They can be found in the project [ServoAndUtilities](https://github.com/DTUWindEnergy/ServosAndUtilities).
 
 ## Compatibility
-The repository includes Visual Studio project (for Windows) and Makefiles (for Linux) to create DLLs to interface the controller to HAWC2 and Bladed.
-
-The controller is written in Fortran and it is compatible with Intel and GFortran compilers. It can be compiled both on Windows and Linux. 
+The project uses CMake to generate standard build files (e.g., makefiles on Linux/Mac OS and projects/solution files on Windows Visual studio) which could be used in the usual way.
+The repository includes Visual Studio solution (for Windows) and CMakeLists.txt (for both Windows and Linux) to create DLLs to be used by HAWC2, Bladed and openFAST.
+The controller is written in Fortran and it is compatible with Intel and GFortran compilers. It can be compiled both on Windows (32bit and 64bit) and Linux. 
 
 ## Compilation
 
-- For compilation in Windows (as a dll), use the Visual Studio Solution or Project files provided (*.sln, *.vfproj)
+### Windows: Visual Studio 2019 only + Intel Fortran (WIP)
 
-- For compilation in Unix (as a so file), go to the /src subfolder and type `make FC=compiler`. Where 'compiler' should be replaced by an already installed compiler (e.g. ifort, mpif90).
+- Install Microsoft Visual Studio Community 2019 and Intel Parallel Studio XE 2019 Update 5 Composer Edition for Fortran Windows Integration for Microsoft Visual Studio
 
-## Documentation
+- Use the Visual Studio Solution or Project files (*.sln, *.vfproj) which will be provided in the future.
 
-The documentation can be found [here](http://dtuwindenergy.github.io/BasicDTUController/index.html).
+### Windows: Visual Studio 2019 with CMake + Intel Fortran
 
-The documentation is written in [Sphinx](http://sphinx-doc.org/) and can be built by typing:
+- Install Microsoft Visual Studio Community 2019 and Intel Parallel Studio XE 2019 Update 5 Composer Edition for Fortran Windows Integration for Microsoft Visual Studio
+- Install C++ CMake tools for Windows from (https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019). Alternative, you could also install CMake from (https://cmake.org/download/). The minimum required CMake version is 3.12.4.
+- Create a "build" directory inside the toplevel of your local repository directory. (e.g. C:\Users\xxx\BasicDTUController\)
 
-    $ cd docs
-    $ make html
-  
-The documentations requires the [Fortran Sphynx](https://github.com/VACUMM/sphinx-fortran) extension that can be pip installed by typing:
+```
+>> mkdir build
+```
+- Going to your build directory.
+```
+>> cd build
+```
+- For 32-bit, in build folder run (make sure cmake command is inside your user environment PATH): 
+ 
+```
+>> cmake .. -G "Visual Studio 16 2019" -A Win32 
+```
+- For 64-bit, in build folder run:
+```
+>> cmake .. -G "Visual Studio 16 2019" -A x64
+```
+- Now, a Visual Studio Solution file has been created and you could either use the following command to build the projects or open it with you Visual Studio IDE and build the projects as usual;
+```
+devenv DTUWEC.sln /Build 
+```
 
-    $ pip install sphinx-fortran
+### Windows: CMake + GNU Fortran (gfortran)
 
-## License
+- Install CMake from (https://cmake.org/download/). The minimum required CMake version is 3.12.4.
+- Install [MinGW] (https://osdn.net/projects/mingw/releases/). Currently, MinGW offers only a 32-bit GNU Compiler Collection (GCC) including gfortran. One can also install MinGW-w64 through [MSYS2](https://www.msys2.org/). It offers a 64-bit GNU Compiler Collection (GCC) including gfortran. It should also be able to compile DTUWEC, but it has not been tested.
+- Make sure both CMake and MinGW are inside your user environment PATH;
+- Create a "build" directory inside the toplevel of your local repository directory. (e.g. C:\Users\xxx\BasicDTUController\)
 
-The Basic DTU Wind Energy controller is distributed under the [GNU General Public License v3.0](http://en.wikipedia.org/wiki/GNU_General_Public_License).
+```
+>> mkdir build
+```
+- Going to your build directory.
+```
+>> cd build
+```
+- In the build folder run the following command to build the code
+```
+>> cmake .. -G "MinGW Makefiles" -D CMAKE_Fortran_COMPILER="gfortran" -D CMAKE_BUILD_TYPE="release"
+>> mingw32-make
+```
+ 
+### Linux/Mac: CMake + GNU Fortran (gfortran) (WIP)
 
-## References
-When using the Basic DTU Wind Energy controller, please refer to the following publications:
+- Install CMake and gfortran (e.g. in Ubuntu). The minimum required CMake version is 3.12.4.
+```
+$ sudo apt-get install cmake
+$ cmake -- version
+  cmake version 3.17.2
+$ sudo apt-get install gfortran
+```
+- Create a "build" directory inside the toplevel of your local repository directory. (e.g. /home/xxx/BasicDTUController/)
 
-* Hansen, MH & Henriksen, LC 2013, Basic DTU Wind Energy controller. DTU Wind Energy. DTU Wind Energy E, no. 0028 [link](http://orbit.dtu.dk/en/publications/basic-dtu-wind-energy-controller(ff8123f8-55d2-4907-af7f-2fa139987c33).html)
+```
+$ mkdir build
+```
+- Going to your build directory.
+```
+$ cd build
+```
+- In the build folder run the following command to build the code
+```
+$ cmake .. -DCMAKE_Fortran_COMPILER="gfortran"
+$ make
+```

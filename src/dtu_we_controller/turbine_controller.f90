@@ -1,10 +1,11 @@
-﻿module turbine_controller_mod
+module turbine_controller_mod
    ! ===============================================================================
    ! Module containing the main subroutines for the wind turbine regulation.
    ! ===============================================================================
-   use user_defined_types
-   use global_variables
+   ! use user_defined_types
+   ! use global_variables
    use dtu_we_controller_fcns
+   use logging
    implicit none
 !**************************************************************************************************
 contains
@@ -143,6 +144,8 @@ subroutine normal_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
    call towerdamper(TTfa_acc, theta_dam_ref, dump_array)
    x = switch_spline(P_filt, TTfa_PWR_lower*PeRated, TTfa_PWR_upper*PeRated)
    PitchColRef = min(max(PitchColRef + theta_dam_ref*x, PID_pit_var%outmin), PID_pit_var%outmax)
+   ! call log_info('pitch_twr_damper-ref: ',theta_dam_ref)
+   
    !***********************************************************************************************
    ! Calculate the estimated aerodynamic torque
    !***********************************************************************************************
@@ -153,7 +156,7 @@ subroutine normal_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
     dump_array(39) = estLambda ! [-]
     dump_array(40) = estREWS 
     print*,estLambda, estREWS
-    endif
+   endif
     
    ! Write into dump array
    dump_array(1) = GenTorqueRef*GenSpeed
@@ -237,12 +240,12 @@ subroutine derate_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
 
    case(1)  ! constant rotation
    
-	   GenSpeedDerate = ((Deratevar%dr*PeRated)/Kopt)**(1.0_mk/3.0_mk) ! Derated Rotor Speed: Remark: this is not completely right
-	   GenSpeedRefMax = min(GenSpeedRefMax,GenSpeedDerate)		    
-	   GenTorqueRated = (Deratevar%dr*PeRated)/GenSpeedRefMax
+     GenSpeedDerate = ((Deratevar%dr*PeRated)/Kopt)**(1.0_mk/3.0_mk) ! Derated Rotor Speed: Remark: this is not completely right
+     GenSpeedRefMax = min(GenSpeedRefMax,GenSpeedDerate)
+     GenTorqueRated = (Deratevar%dr*PeRated)/GenSpeedRefMax
 
    case(2)  ! maximum rotation
-	   GenTorqueRated  =  (Deratevar%dr*PeRated)/GenSpeedRefMax  
+     GenTorqueRated  =  (Deratevar%dr*PeRated)/GenSpeedRefMax  
    case(3)  ! minimun CT 
        ! Calculate the tip-speed-ratio and pitch angle through the dCp-Lambda and dCp-beta relation
        ! table
@@ -284,7 +287,7 @@ subroutine derate_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
            !GenSpeedMaxDerate = GenSpeedOptLimit2/(2*SwitchVar%rel_sp_open_Qg - 1)
            !GenSpeedDerate = GenSpeedMaxDerate
 
-           GenSpeedRefMax = min(GenSpeedRefMax,GenSpeedDerate)		    
+           GenSpeedRefMax = min(GenSpeedRefMax,GenSpeedDerate)
            GenTorqueRated = (Deratevar%dr*PeRated)/GenSpeedRefMax
            firstStep = .false.
        else
@@ -302,7 +305,7 @@ subroutine derate_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
            dump_array(38) = Kopt*GenSpeedOptLimit2**2  ! Save generator torque upper limit which follows the Kopt*w^2 relation when derating 
 
           ! output for debug purpose
-           if(debugFlag == .true.) then
+           if(debugFlag .eqv. .true.) then
                write(*,*) "Press 'c' to continue, 'q' to Quit the code."
                read(*,*) str
                if(str == 'q') then
@@ -993,6 +996,8 @@ subroutine rotorspeedexcl(GenSpeedFilt, GenTorque, Qg_min_partial, GenTorqueMax_
        outmin  = Qg_min_partial*(1.0_mk-x1 +x2) + Hwr_Tg * 0.95_mk*(x1-x1*x2)
    endif
    dump_array(24) = w_region
+   ! call open_log('test.log', 123)
+   ! call log_info('Generator Torque:',GenTorque)
    return
 end subroutine rotorspeedexcl
 !**************************************************************************************************
@@ -1024,7 +1029,8 @@ subroutine towerdamper(TTfa_acc, theta_dam_ref, dump_array)
    real(mk), intent(inout) :: dump_array(50) ! Array for output.
    real(mk) TTfa_acc_filt
    if ((TTfa_damper%gain .ne. 0.0_mk) .and. (TTfa_damper%bandpass%f0 .gt. 0.0_mk)) then
-      call damper(stepno, deltat, TTfa_acc, TTfa_damper, theta_dam_ref, TTfa_acc_filt)
+      call damper_twr(stepno, deltat, TTfa_acc, TTfa_damper, theta_dam_ref, TTfa_acc_filt)
+      ! call log_info('pitch_twr_damper-ref: ',theta_dam_ref)
    else
       TTfa_acc_filt = 0.0_mk
       theta_dam_ref = 0.0_mk

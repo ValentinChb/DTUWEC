@@ -85,7 +85,8 @@ end function
 !**************************************************************************************************
 
 function PID(stepno, dt, kgain, PIDvar, error)
-   ! PID controller with one input.
+   ! PID controller with one input. Used for generator torque controller and
+   ! tower fore-aft damper
    integer stepno
    real(mk) PID, dt, kgain(3), error
    type(Tpidvar) PIDvar
@@ -231,6 +232,22 @@ subroutine damper(stepno, dt, x, filters, y, x_filt)
 end subroutine damper
 !**************************************************************************************************
 
+!**************************************************************************************************
+subroutine damper_twr(stepno, dt, x, filters, y, x_filt)
+   ! Tower fore-aft damper based on notch filter, and a gain.
+   type(Tdamper), intent(in) :: filters
+   integer stepno
+   real(mk), intent(in)  :: x
+   real(mk), intent(out) :: y, x_filt
+   real(mk) dt
+  ! x_filt = bandpassfilt(dt, stepno, filters%bandpass, x)
+   x_filt = notch2orderfilt(dt, stepno, filters%notch, x)
+  ! x_filt = timedelay(dt, stepno, filters%delay, filters%Td, x_filt)
+   y = filters%gain*x_filt
+end subroutine damper_twr
+!**************************************************************************************************
+
+
 subroutine writeErrorMsg(controlDataFile,message)
     Type (TcontrolFile), pointer    :: controlDataFile
     character*(*), dimension(3), intent(in) :: message
@@ -371,7 +388,7 @@ subroutine getwords(line,words,controlDataFile)
 
     cont=.false.
 
-    do while (cont==.false.)
+    do while (cont.eqv..false.)
         cont=.true.
         words%wordArray(:)=''
         line=trim(adjustl(line))
@@ -381,7 +398,7 @@ subroutine getwords(line,words,controlDataFile)
         out=.false.
 
         if (endp>1) then
-            do while (out==.false.)
+            do while (out.eqv..false.)
                 blankpos=index(line(first:endp),blank)
 	            tabpos  =index(line(first:endp),tab)
 	            commapos=index(line(first:endp),comma)
@@ -473,64 +490,67 @@ subroutine getwords(line,words,controlDataFile)
     return
 end subroutine getwords
 
-!**************************************************************************************************
-subroutine type2_dll_input(ctrl_input_file,outvec)  bind(c, name='type2_dll_input')
-    !DEC$ IF .NOT. DEFINED(__LINUX__)
-    !DEC$ ATTRIBUTES DLLEXPORT :: type2_dll_input
-    !DEC$ END IF
-    ! passed in variables
-    type(TcontrolFile),     pointer :: ctrl_input_file
-    Real*8, dimension(:), intent(out) :: outvec
-   
-    ! loacl variables
-    Type (Tline) :: line
-    Type (Tword) :: words
-    real*8, dimension(MAX_WORDS) :: rea
+! **************************************************************************************************
+ !subroutine type2_dll_input(ctrl_input_file,outvec)  bind(c, name='type2_dll_input')
+  subroutine type2_dll_input(ctrl_input_file,outvec)  
+     !!DEC$ IF .NOT. DEFINED(__LINUX__)
+     !!DEC$ ATTRIBUTES DLLEXPORT :: type2_dll_input
+     !!GCC$ ATTRIBUTES DLLEXPORT :: type2_dll_input
+     !!DEC$ END IF
+     ! passed in variables
+     type(TcontrolFile),     pointer :: ctrl_input_file
+     Real*8, dimension(:), intent(out) :: outvec
     
-    integer :: i
-    
-    logical :: eof, &
-               err, &
-               all_ok
-    eof =.false.
-    
-    do while (eof ==.false.)
-      call readline(ctrl_input_file,line)                 ! line is read
-        call getwords(line%line,words,ctrl_input_file)         ! words in line is retrieved
-        select case (trim(words%wordArray(1)))
-        
-        case ('constant')
-          call getParameters(words,2,2,rea,err)
-          if (err==.true.) exit
-    	  i=nint(rea(1))
-    	  if (i.gt.(size(outvec))) then
-    	    write(0,*) '*** ERROR *** In type2 dll initialize, number of channels mismatch with used number'
-    	    write(0,*) '*** ERROR *** Error in command line ',ctrl_input_file%lineNumber,' Control input file name: ',trim(ctrl_input_file%name)
-    	    stop 1
-    	  endif
-          outvec(i)=rea(2)
-    
-        case ('')
-          continue
-        case (';')
-          continue
-        case ('end')
-          eof =.true.
-          ! Control of data given above is OK
-          all_ok=.true.
-    !      if (all_ok==.true.) then
-    !        write(0,*) 'output commands read with succes'
-    !      else
-    !        write(0,*) '*** ERROR *** Not all needed output commands present - error'
-    !      endif
-    
-    !      write(0,*) 'Output commands read'
-    
-        case default
-          write(0,*) '*** ERROR *** Error in command line ',ctrl_input_file%lineNumber,' Control input file name: ',trim(ctrl_input_file%name)
-        end select
-    enddo
-end subroutine type2_dll_input
+     ! loacl variables
+     Type (Tline) :: line
+     Type (Tword) :: words
+     real*8, dimension(MAX_WORDS) :: rea
+     
+     integer :: i
+     
+     logical :: eof, &
+                err, &
+                all_ok
+     eof =.false.
+     outvec = 0.0_mk
+     
+     do while (eof .eqv..false.)
+       call readline(ctrl_input_file,line)                 ! line is read
+         call getwords(line%line,words,ctrl_input_file)         ! words in line is retrieved
+         select case (trim(words%wordArray(1)))
+         
+         case ('constant')
+           call getParameters(words,2,2,rea,err)
+           if (err.eqv..true.) exit
+     	  i=nint(rea(1))
+     	  if (i.gt.(size(outvec))) then
+     	    write(0,*) '*** ERROR *** In type2 dll initialize, number of channels mismatch with used number'
+     	    write(0,*) '*** ERROR *** Error in command line ',ctrl_input_file%lineNumber,' Control input file name: ',trim(ctrl_input_file%name)
+     	    stop 1
+     	  endif
+           outvec(i)=rea(2)
+     
+         case ('')
+           continue
+         case (';')
+           continue
+         case ('end')
+           eof =.true.
+           ! Control of data given above is OK
+           all_ok=.true.
+     !      if (all_ok.eqv..true.) then
+     !        write(0,*) 'output commands read with succes'
+     !      else
+     !        write(0,*) '*** ERROR *** Not all needed output commands present - error'
+     !      endif
+     
+     !      write(0,*) 'Output commands read'
+     
+         case default
+           write(0,*) '*** ERROR *** Error in command line ',ctrl_input_file%lineNumber,' Control input file name: ',trim(ctrl_input_file%name)
+         end select
+     enddo
+ end subroutine type2_dll_input
 
 !**************************************************************************************************
 subroutine readAdditionalCtrlParameter(controlDataFile,downRegulationData,Cptable,err)
@@ -551,7 +571,7 @@ subroutine readAdditionalCtrlParameter(controlDataFile,downRegulationData,Cptabl
 
     ! Start main part of this subroutine.
     eof = .false.
-    do while (eof ==.false.)
+    do while (eof .eqv..false.)
         call readline(controlDataFile,line)                 ! line is read
         call getwords(line%line,words,controlDataFile)      ! words in line is retrieved
         select case (trim(words%wordArray(1)))
@@ -569,19 +589,19 @@ subroutine readAdditionalCtrlParameter(controlDataFile,downRegulationData,Cptabl
                 ! Rend the down_regulation block
                 write(6,*) 'Reading the down_regulation block ...'
                 call readDownRegulation(controlDataFile,downRegulationData,err,errMsg,errCode)
-                if((err == .true.) .and. (trim(errMsg)=='block')) then
+                if((err .eqv. .true.) .and. (trim(errMsg) == 'block')) then
                     call errorInvalidBlock(controlDataFile)
                     stop
-                elseif((err == .true.) .and. (trim(errMsg)=='keyword')) then
+                elseif((err .eqv. .true.) .and. (trim(errMsg)=='keyword')) then
                     call errorInvalidKeyword(controlDataFile)
                     stop
-                elseif((err == .true.) .and. (trim(errMsg)=='command')) then
+                elseif((err .eqv. .true.) .and. (trim(errMsg)=='command')) then
                     call errorInvalidCommand(controlDataFile)
                     stop
-                elseif((err == .true.) .and. (trim(errMsg)=='parameter')) then
+                elseif((err .eqv. .true.) .and. (trim(errMsg)=='parameter')) then
                     call errorInvalidParameter(controlDataFile)
                     stop
-                elseif((err == .true.) .and. (trim(errMsg)=='datatable')) then
+                elseif((err .eqv. .true.) .and. (trim(errMsg)=='datatable')) then
                     call errorCpAtMinCtTable(controlDataFile,errCode)
                     stop
                 endif
@@ -601,19 +621,19 @@ subroutine readAdditionalCtrlParameter(controlDataFile,downRegulationData,Cptabl
                 Cptable%PitchList(:,1) = FLOAT(INT(Cptable%PitchList(:,1)*10.0_mk+0.5_mk))/10.0_mk ! rounding to 1 decimal
                 
                ! write(6,*) Cptable%PitchList(:,1)
-                if((err == .true.) .and. (trim(errMsg)=='block')) then
+                if((err .eqv. .true.) .and. (trim(errMsg)=='block')) then
                     call errorInvalidBlock(controlDataFile)
                     stop
-                elseif((err == .true.) .and. (trim(errMsg)=='keyword')) then
+                elseif((err .eqv. .true.) .and. (trim(errMsg)=='keyword')) then
                     call errorInvalidKeyword(controlDataFile)
                     stop
-                elseif((err == .true.) .and. (trim(errMsg)=='command')) then
+                elseif((err .eqv. .true.) .and. (trim(errMsg)=='command')) then
                     call errorInvalidCommand(controlDataFile)
                     stop
-                elseif((err == .true.) .and. (trim(errMsg)=='parameter')) then
+                elseif((err .eqv. .true.) .and. (trim(errMsg)=='parameter')) then
                     call errorInvalidParameter(controlDataFile)
                     stop
-                elseif((err == .true.) .and. (trim(errMsg)=='datatable')) then
+                elseif((err .eqv. .true.) .and. (trim(errMsg)=='datatable')) then
                     call errorCpAtMinCtTable(controlDataFile,errCode)
                     stop
                 else
@@ -644,7 +664,7 @@ subroutine readAdditionalCtrlParameter(controlDataFile,downRegulationData,Cptabl
             eof =.true.
             ! Data in additional control parameter file given above is OK
             all_ok=.true.
-            if ((all_ok==.true.) .and. (err == .false.)) then
+            if ((all_ok.eqv..true.) .and. (err .eqv. .false.)) then
                 write(6,*) ' Additional control commands and parameters are read successfully.'
             else
                 write(6,*) ' ERROR: Not all needed Additional control commands and parameters are presented.'
@@ -673,7 +693,7 @@ subroutine readDownRegulation(controlDataFile,outData,err,errMsg,errCode)
 
     ! Start main part of this subroutine.
     jumpOut=.false.
-    do while (jumpOut==.false.)
+    do while (jumpOut.eqv..false.)
         call readline(controlDataFile,line)                 ! line is read
         call getwords(line%line,words,controlDataFile)      ! words in line is retrieved
         select case (trim(words%wordArray(1)))
@@ -681,7 +701,7 @@ subroutine readDownRegulation(controlDataFile,outData,err,errMsg,errCode)
             select case (trim(words%wordArray(2)))
             case('table')
                 call readTable(controlDataFile,outData,err,errMsg,errCode)
-                if (err==.true.) then
+                if (err.eqv..true.) then
                     exit
                 else
                     write(6,*) 'MESSAGE: '//'MinCtTable is read successfully from file: '//trim(adjustl(controlDataFile%includedFileName))
@@ -724,7 +744,7 @@ subroutine readTable(controlDataFile,outTable,err,errMsg,errCode)
 
     ! main part of this subroutine.
     jumpOut=.false.
-    do while (jumpOut==.false.)
+    do while (jumpOut.eqv..false.)
         ! read lines
         call readline(controlDataFile,line)                 
         ! retrieve words from the line
@@ -733,7 +753,7 @@ subroutine readTable(controlDataFile,outTable,err,errMsg,errCode)
         select case (trim(words%wordArray(1)))
         case ('dim')
             call getParameters(words,2,2,outParamVec,err)
-            if(err == .true.) then
+            if(err .eqv. .true.) then
                 errMsg = 'parameter'
                 exit
             else
@@ -749,13 +769,13 @@ subroutine readTable(controlDataFile,outTable,err,errMsg,errCode)
            ! errCode = 1: file does not exist 
            !           2: open file error 
            !           3: wrong number of columns
-           if((err == .true.) .and. (errCode == 1)) then
+           if((err .eqv. .true.) .and. (errCode == 1)) then
                errMsg = 'datatable'
                exit
-           elseif((err == .true.) .and. (errCode == 2)) then
+           elseif((err .eqv. .true.) .and. (errCode == 2)) then
                errMsg = 'datatable'
                exit
-           elseif((err == .true.) .and. (errCode == 3)) then
+           elseif((err .eqv. .true.) .and. (errCode == 3)) then
                errMsg = 'datatable'
                exit
            endif
@@ -897,7 +917,7 @@ recursive subroutine skipSection(controlDataFile)
 
     ! main part of the subroutine
     jumpOut=.false.
-    do while (jumpOut==.false.)
+    do while (jumpOut.eqv..false.)
         call readline(controlDataFile,line)        ! line is read
         call getwords(line%line,words,controlDataFile) ! words in line is retrieved
         select case (trim(words%wordArray(1)))
@@ -908,7 +928,7 @@ recursive subroutine skipSection(controlDataFile)
         case default
             continue
         end select
-    enddo ! while (jumpOut==.false.)
+    enddo ! while (jumpOut.eqv..false.)
 end subroutine skipSection
 
 !**************************************************************************************************
@@ -927,7 +947,7 @@ subroutine readEstimation(controlDataFile,outData,err,errMsg,errCode)
 
     ! Start main part of this subroutine.
     jumpOut=.false.
-    do while (jumpOut==.false.)
+    do while (jumpOut.eqv..false.)
         call readline(controlDataFile,line)                 ! line is read
         call getwords(line%line,words,controlDataFile)      ! words in line is retrieved
         select case (trim(words%wordArray(1)))
@@ -935,7 +955,7 @@ subroutine readEstimation(controlDataFile,outData,err,errMsg,errCode)
             select case (trim(words%wordArray(2)))
             case('cptable')
                 call readCpTable(controlDataFile,outData,err,errMsg,errCode)
-                if (err==.true.) then
+                if (err.eqv..true.) then
                     exit
                 else
                     write(6,*) 'MESSAGE: '//trim(words%wordArray(2))//' is read successfully from file:'//trim(adjustl(controlDataFile%includedFileName))
@@ -984,7 +1004,7 @@ subroutine readCpTable(controlDataFile,outTable,err,errMsg,errCode)
 
     ! main part of this subroutine.
     jumpOut=.false.
-    do while (jumpOut==.false.)
+    do while (jumpOut.eqv..false.)
         ! read lines
         call readline(controlDataFile,line)                 
         ! retrieve words from the line
@@ -993,7 +1013,7 @@ subroutine readCpTable(controlDataFile,outTable,err,errMsg,errCode)
         select case (trim(words%wordArray(1)))
         case ('dim')
             call getParameters(words,2,2,outParamVec,err)
-            if(err == .true.) then
+            if(err .eqv. .true.) then
                 errMsg = 'parameter'
                 exit
             else
@@ -1009,13 +1029,13 @@ subroutine readCpTable(controlDataFile,outTable,err,errMsg,errCode)
            ! errCode = 1: file does not exist 
            !           2: open file error 
            !           3: wrong number of columns
-           if((err == .true.) .and. (errCode == 1)) then
+           if((err .eqv. .true.) .and. (errCode == 1)) then
                errMsg = 'datatable'
                exit
-           elseif((err == .true.) .and. (errCode == 2)) then
+           elseif((err .eqv. .true.) .and. (errCode == 2)) then
                errMsg = 'datatable'
                exit
-           elseif((err == .true.) .and. (errCode == 3)) then
+           elseif((err .eqv. .true.) .and. (errCode == 3)) then
                errMsg = 'datatable'
                exit
            endif

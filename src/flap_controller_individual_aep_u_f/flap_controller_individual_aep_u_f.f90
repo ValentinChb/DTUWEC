@@ -1,5 +1,6 @@
 module flap_controller_individual_aep_u_f_mod
 !
+   use BuildInfo
 ! Control Dll of type 2:
 ! Dll for applying flap control actions for increasing power production in partial load based on optimal static beta tracking based on wind speed,
 ! decrease extreme design loads with a cut-off switch based on blade root bending moments and limit fatigue in the full load region with a PD control
@@ -11,54 +12,54 @@ module flap_controller_individual_aep_u_f_mod
 !    
    ! ******************************* example htc input *******************************
 !    begin type2_dll;
-!	name aep_u_flap_ctrl ;
-!   filename  ./control/flap_controller_individual_aep_u_f.dll ;
-!	dll_subroutine_init init_flap_controller_individual_aep_u_f ;
-!	dll_subroutine_update update_flap_controller_individual_aep_u_f ;	
-!   arraysizes_init   22 1 ;
-!	arraysizes_update  6 4 ;
-!	begin init ;
+!      name aep_u_flap_ctrl ;
+!      filename  ./control/flap_controller_individual_aep_u_f.dll ;
+!	     dll_subroutine_init init_flap_controller_individual_aep_u_f ;
+!	     dll_subroutine_update update_flap_controller_individual_aep_u_f ;	
+!      arraysizes_init   22 1 ;
+!	     arraysizes_update  6 4 ;
+!	   begin init ;
 !       ; - Gain scheduling and parameters for fatigue reduction part
-!		constant 1  0 ;                                      [1]  1st order term for linear interp of proportional term gain scheduling based on V_filt
-!		constant 2  0 ;                                      [2]  offset for linear interp of proportional term gain scheduling based on V_filt
-!		constant 3  0 ;                                      [3]  1st order term for linear interp of differential term gain scheduling based on V_filt
-!		constant 4  0 ;                                      [4]  offset for linear interp of differential term gain scheduling based on V_filt	
-!		constant 5 12;                                       [5]  Min. filtered V, below min gain is kept [m/s]
-!		constant 6 28 ;                                      [6]  Max. filtered V, above max gain is kept [m/s]
-!		constant 7 1 ;								         [7]  Threshold of "rated power indicator" above which flaps are fully on [-]
-!       ; - HP Filter setup  - ;
-!        constant 8  0.05 ;	                                 [8]  corner frequency for blade flapwise moments high-pass filter [rad/s]
-!	    ; - Time - ;
-!        constant 9  0.02 ;                                  [9]  simulation time step [s]
-!		; - Flap angle when the turbine is not in production mode
-!		constant  10 -15 ;                         	         [10] Flap angle to take when over-speed is detected [deg]	
-!       ;- Limit for operation status from main ctrl
-!       constant 11  0     ;                                 [11] Value of status signal from main controller for operation with the turbine connected [-]    		  
-!       constant 12  90    ;                                 [12] global wind speed upper limit after which beta is fixed to target [m/s]
-!       ; - Gain scheduling for optimal beta tracking in partial load
-!       constant 13  0  ;                                    [13] gain 1st order for AEP opti beta tracking (flap 1)
-!       constant 14  0  ;                                    [14] gain 2nd order for AEP opti beta tracking (flap 1)	
-!       constant 15  0  ;                                    [15] gain 3rd order for AEP opti beta tracking (flap 1)	
-!       constant 16  0  ;                                    [16] gain 4th order for AEP opti beta tracking (flap 1)	 
-!       constant 17  0  ;                                    [17] offset  for AEP opti beta tracking based on filtered wind speed (flap 1)
-!       ; - Threshold and limits for switching
-!       constant 18  13  ;                                   [18] speed limit to stop using AEP controller based on V LP filtered [m/s] 	 
-!       constant 19  100000  ;                               [19] MxBR load threshold for cut off switch part for extreme load alleviation [kNm]
-!       constant 20  100000  ;                               [20] Blade root bending moment threshold after which the fatigue load reduction mode will be deactivated [kNm]
-!       constant 21  18      ;                               [21] Speed Limit to switch to second threshold in order to decouple extreme and fatigue [m/s]
-!       constant 22  100000  ;                               [22] Blade root bending moment second (for V higher than the 2nd lim threshold) after which the fatigue load reduction mode will be deactivated [kNm]
+!		   constant 1  0 ;                  [1]  1st order term for linear interp of proportional term gain scheduling based on V_filt
+!		   constant 2  0 ;                  [2]  offset for linear interp of proportional term gain scheduling based on V_filt
+!		   constant 3  0 ;                  [3]  1st order term for linear interp of differential term gain scheduling based on V_filt
+!		   constant 4  0 ;                  [4]  offset for linear interp of differential term gain scheduling based on V_filt	
+!		   constant 5 12;                   [5]  Min. filtered V, below min gain is kept [m/s]
+!		   constant 6 28 ;                  [6]  Max. filtered V, above max gain is kept [m/s]
+!		   constant 7 1 ;								    [7]  Threshold of "rated power indicator" above which flaps are fully on [-]
+!      ; - HP Filter setup  - ;
+!      constant 8  0.05 ;	              [8]  corner frequency for blade flapwise moments high-pass filter [rad/s]
+!	     ; - Time - ;
+!      constant 9  0.02 ;               [9]  simulation time step [s]
+!		   ; - Flap angle when the turbine is not in production mode
+!		   constant  10 -15 ;               [10] Flap angle to take when over-speed is detected [deg]	
+!      ;- Limit for operation status from main ctrl
+!      constant 11  0     ;             [11] Value of status signal from main controller for operation with the turbine connected [-]    		  
+!      constant 12  90    ;             [12] global wind speed upper limit after which beta is fixed to target [m/s]
+!      ; - Gain scheduling for optimal beta tracking in partial load
+!      constant 13  0  ;                [13] gain 1st order for AEP opti beta tracking (flap 1)
+!      constant 14  0  ;                [14] gain 2nd order for AEP opti beta tracking (flap 1)	
+!      constant 15  0  ;                [15] gain 3rd order for AEP opti beta tracking (flap 1)	
+!      constant 16  0  ;                [16] gain 4th order for AEP opti beta tracking (flap 1)	 
+!      constant 17  0  ;                [17] offset  for AEP opti beta tracking based on filtered wind speed (flap 1)
+!      ; - Threshold and limits for switching
+!      constant 18  13  ;               [18] speed limit to stop using AEP controller based on V LP filtered [m/s] 	 
+!      constant 19  100000  ;           [19] MxBR load threshold for cut off switch part for extreme load alleviation [kNm]
+!      constant 20  100000  ;           [20] Blade root bending moment threshold after which the fatigue load reduction mode will be deactivated [kNm]
+!      constant 21  18      ;           [21] Speed Limit to switch to second threshold in order to decouple extreme and fatigue [m/s]
+!      constant 22  100000  ;           [22] Blade root bending moment second (for V higher than the 2nd lim threshold) after which the fatigue load reduction mode will be deactivated [kNm]
 !
-!	end init ;
-!	begin output;
-!		; - Blade root moments - ;
-!		mbdy momentvec  blade1 3 1 blade1 only 1 ;            [1]   Blade 1 flapwise root bending moment [kNm]
-!		mbdy momentvec  blade2 3 1 blade2 only 1 ;            [2]   Blade 2 flapwise root bending moment [kNm]
-!		mbdy momentvec  blade3 3 1 blade3 only 1 ;            [3]   Blade 3 flapwise root bending moment [kNm]
-!		; - Input from main controller ;
-!       dll inpvec 1 6 ;                                      [4]  filtered V [m/s]
-!		dll inpvec 1 22 ;								 	  [5]  Main power control status: 0. normal operation [-]
-!		dll inpvec 1 14 ;                               	  [6]  Power rating status: 0. below rated power operation 1. above rated power operation[-]		
-!end output;
+!	   end init ;
+!	   begin output;
+!		   ; - Blade root moments - ;
+!		   mbdy momentvec  blade1 3 1 blade1 only 1 ;            [1]   Blade 1 flapwise root bending moment [kNm]
+!		   mbdy momentvec  blade2 3 1 blade2 only 1 ;            [2]   Blade 2 flapwise root bending moment [kNm]
+!		   mbdy momentvec  blade3 3 1 blade3 only 1 ;            [3]   Blade 3 flapwise root bending moment [kNm]
+!		   ; - Input from main controller ;
+!      dll inpvec 1 6 ;                                      [4]  filtered V [m/s]
+!		   dll inpvec 1 22 ;								 	                   [5]  Main power control status: 0. normal operation [-]
+!		   dll inpvec 1 14 ;                               	     [6]  Power rating status: 0. below rated power operation 1. above rated power operation[-]		
+!    end output;
 !end type2_dll;
 ! *********************************************************************************
 !
@@ -106,9 +107,10 @@ real*8 fatigue_load_thres_2                 ! second threshold of blade root ben
 contains
 !%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ! ----------------------------- Initialization SubRoutine ---------------------------------
-subroutine init_flap_controller_individual_aep_u_f(array1,array2)
+subroutine init_flap_controller_individual_aep_u_f(array1,array2) bind(c,name='init_flap_controller_individual_aep_u_f')
 implicit none
-!DEC$ ATTRIBUTES DLLEXPORT, C, ALIAS:'init_flap_controller_individual_aep_u_f' :: init_flap_controller_individual_aep_u_f
+!DEC$ ATTRIBUTES DLLEXPORT :: init_flap_controller_individual_aep_u_f
+!GCC$ ATTRIBUTES DLLEXPORT :: init_flap_controller_individual_aep_u_f
 real*8 array1(22) ! Input array, from hawc2 to dll
 real*8 array2(1)  ! Array dll -> hawc2 In this case dummy 0
 !
@@ -137,6 +139,7 @@ real*8 array2(1)  ! Array dll -> hawc2 In this case dummy 0
 !  21: constant 21   ; Speed Limit to switch to second threshold in order to decouple extreme and fatigue [m/s]
 !  22: constant 22   ; Blade root bending moment second (for V higher than the 2nd lim threshold) after which the fatigue load reduction mode will be deactivated [kNm]
 !
+call echo_version()
 ! - Read in scheduling parameters for PD fatigue part - 
 gain1_p      = array1(1)
 offset_p     = array1(2)
@@ -177,9 +180,10 @@ end subroutine init_flap_controller_individual_aep_u_f
 ! ------------------------------------------------------------------------------ !
 ! ----------------------------- Update SubRoutine -------------------------------!
 ! ------------------------------------------------------------------------------ !
-subroutine update_flap_controller_individual_aep_u_f(array1,array2)
+subroutine update_flap_controller_individual_aep_u_f(array1,array2) bind(c,name='update_flap_controller_individual_aep_u_f')
 implicit none
-!DEC$ ATTRIBUTES DLLEXPORT, C, ALIAS:'update_flap_controller_individual_aep_u_f' :: update_flap_controller_individual_aep_u_f
+!DEC$ ATTRIBUTES DLLEXPORT :: update_flap_controller_individual_aep_u_f
+!GCC$ ATTRIBUTES DLLEXPORT :: update_flap_controller_individual_aep_u_f
 real(8) array1(6)	! Input array, from hawc2 to dll
 real(8) array2(4)	! Array dll -> hawc2
 ! Input array1 must contain
@@ -241,61 +245,61 @@ gfl_p = offset_p+ gain1_p *gs_PD_V_filt! can also be made to polynomial regresio
 gfl_d = offset_d+ gain1_d *gs_PD_V_filt
 !
 ! --Take action according to the different operating conditions -- !
-    IF (status_sig /= status_lim) THEN         ! signal status showing that the turbine is not producing (shut down, parking grid loss etc) does not indicate errors like DLC2.2b
-		beta_ref_1_1    = flap_target
-		beta_ref_2_1    = flap_target
-		beta_ref_3_1    = flap_target
-		ctrl_mode_out = 4.d0
-    ELSE IF (V_filt> V_limit_global) THEN      ! if wind speed is over a threshold  then switch flaps collectively to beta target
-		beta_ref_1_1    = flap_target
-		beta_ref_2_1    = flap_target
-		beta_ref_3_1    = flap_target
-		ctrl_mode_out = 4.d0
-    ELSE IF (ABS(Mx_1) >= load_thres_extr .OR. ABS(Mx_2) >= load_thres_extr .OR. ABS(Mx_3) >= load_thres_extr ) THEN ! MxBR threshold reached switch flap collectively to target beta
-        beta_ref_1_1    = flap_target
-		beta_ref_2_1    = flap_target
-		beta_ref_3_1    = flap_target
-		ctrl_mode_out = 2.d0
-	ELSE IF (V_filt <= V_limit_aep)	THEN       ! if filtered wind speed below the threshold and normal status signal is 0 (production) then track optimal static beta for power increase
-		IF (V_filt <= 4.d0) THEN               ! when speed below cut in keep the fit to cut in
-			beta_ref_1_1 = offset_stat_1+(gain_1_stat_1*4.d0)+(gain_2_stat_1*(4.d0)**2)+(gain_3_stat_1*(4.d0)**3)+(gain_4_stat_1*(4.d0)**4)
-			beta_ref_2_1 = beta_ref_1_1
-			beta_ref_3_1 = beta_ref_1_1
-		ELSE                                   ! normal operation in partial load controller tracking optimal collective beta for AEP 
-			beta_ref_1_1 = offset_stat_1+(gain_1_stat_1*V_filt)+(gain_2_stat_1*V_filt**2)+(gain_3_stat_1*V_filt**3)+(gain_4_stat_1*V_filt**4)
-			beta_ref_2_1 = beta_ref_1_1
-			beta_ref_3_1 = beta_ref_1_1
-	    ENDIF
-	    ctrl_mode_out = 1.d0	
-    ELSE IF (ABS(Mx_1) <= fatigue_load_thres .OR. ABS(Mx_2) <= fatigue_load_thres .OR. ABS(Mx_3) <= fatigue_load_thres )  THEN    ! Turbine is in normal operation and MxBR is within the normal production operational envelope: PD on blade root bending moment
-        IF      (ABS(Mx_1) <= fatigue_load_thres_2 .AND. V_filt >= V_limit_fatigue_thres_2 )  THEN   ! check blade 1
-			beta_ref_1_1 = r_switch_filt *(gfl_p *flap_moment_1_filter_new + gfl_d *flap_moment_1_D)
-        ELSE IF (ABS(Mx_1) <= fatigue_load_thres .AND. V_filt <= V_limit_fatigue_thres_2 )    THEN    
-            beta_ref_1_1 = r_switch_filt *(gfl_p *flap_moment_1_filter_new + gfl_d *flap_moment_1_D)
-        ELSE 
-			beta_ref_1_1 = 0.d0
-        ENDIF	   
-		IF     (ABS(Mx_2) <= fatigue_load_thres_2 .AND. V_filt >= V_limit_fatigue_thres_2 )   THEN   ! check blade 2
-			beta_ref_2_1 = r_switch_filt *(gfl_p *flap_moment_2_filter_new + gfl_d *flap_moment_2_D)
-        ELSE IF (ABS(Mx_2) <= fatigue_load_thres .AND. V_filt <= V_limit_fatigue_thres_2 )    THEN  
-            beta_ref_2_1 = r_switch_filt *(gfl_p *flap_moment_2_filter_new + gfl_d *flap_moment_2_D)
-		ELSE 
-			beta_ref_2_1 = 0.d0
-		ENDIF
-		IF     (ABS(Mx_3) <= fatigue_load_thres_2 .AND. V_filt >= V_limit_fatigue_thres_2 )   THEN   ! check blade 3
-			beta_ref_3_1 = r_switch_filt *(gfl_p *flap_moment_3_filter_new + gfl_d *flap_moment_3_D)
-        ELSE IF (ABS(Mx_3) <= fatigue_load_thres .AND. V_filt <= V_limit_fatigue_thres_2 )    THEN  
-            beta_ref_3_1 = r_switch_filt *(gfl_p *flap_moment_3_filter_new + gfl_d *flap_moment_3_D)
-        ELSE
-			beta_ref_3_1 = 0.d0
-        ENDIF
-		ctrl_mode_out = 3.d0
-    ELSE   ! Any other case, set the flaps to 0.0 
-        beta_ref_1_1    = 0.d0
-        beta_ref_2_1    = 0.d0
-        beta_ref_3_1    = 0.d0
-		ctrl_mode_out = 5.d0
-    ENDIF 
+IF (status_sig /= status_lim) THEN         ! signal status showing that the turbine is not producing (shut down, parking grid loss etc) does not indicate errors like DLC2.2b
+    beta_ref_1_1    = flap_target
+    beta_ref_2_1    = flap_target
+    beta_ref_3_1    = flap_target
+    ctrl_mode_out = 4.d0
+ELSE IF (V_filt> V_limit_global) THEN      ! if wind speed is over a threshold  then switch flaps collectively to beta target
+    beta_ref_1_1    = flap_target
+    beta_ref_2_1    = flap_target
+    beta_ref_3_1    = flap_target
+    ctrl_mode_out = 4.d0
+ELSE IF (ABS(Mx_1) >= load_thres_extr .OR. ABS(Mx_2) >= load_thres_extr .OR. ABS(Mx_3) >= load_thres_extr ) THEN ! MxBR threshold reached switch flap collectively to target beta
+    beta_ref_1_1    = flap_target
+    beta_ref_2_1    = flap_target
+    beta_ref_3_1    = flap_target
+    ctrl_mode_out = 2.d0
+ELSE IF (V_filt <= V_limit_aep) THEN       ! if filtered wind speed below the threshold and normal status signal is 0 (production) then track optimal static beta for power increase
+    IF (V_filt <= 4.d0) THEN               ! when speed below cut in keep the fit to cut in
+        beta_ref_1_1 = offset_stat_1+(gain_1_stat_1*4.d0)+(gain_2_stat_1*(4.d0)**2)+(gain_3_stat_1*(4.d0)**3)+(gain_4_stat_1*(4.d0)**4)
+        beta_ref_2_1 = beta_ref_1_1
+        beta_ref_3_1 = beta_ref_1_1
+    ELSE                                   ! normal operation in partial load controller tracking optimal collective beta for AEP 
+        beta_ref_1_1 = offset_stat_1+(gain_1_stat_1*V_filt)+(gain_2_stat_1*V_filt**2)+(gain_3_stat_1*V_filt**3)+(gain_4_stat_1*V_filt**4)
+        beta_ref_2_1 = beta_ref_1_1
+        beta_ref_3_1 = beta_ref_1_1
+    ENDIF
+    ctrl_mode_out = 1.d0
+ELSE IF (ABS(Mx_1) <= fatigue_load_thres .OR. ABS(Mx_2) <= fatigue_load_thres .OR. ABS(Mx_3) <= fatigue_load_thres )  THEN    ! Turbine is in normal operation and MxBR is within the normal production operational envelope: PD on blade root bending moment
+    IF      (ABS(Mx_1) <= fatigue_load_thres_2 .AND. V_filt >= V_limit_fatigue_thres_2 )  THEN   ! check blade 1
+        beta_ref_1_1 = r_switch_filt *(gfl_p *flap_moment_1_filter_new + gfl_d *flap_moment_1_D)
+    ELSE IF (ABS(Mx_1) <= fatigue_load_thres .AND. V_filt <= V_limit_fatigue_thres_2 )    THEN    
+        beta_ref_1_1 = r_switch_filt *(gfl_p *flap_moment_1_filter_new + gfl_d *flap_moment_1_D)
+    ELSE 
+        beta_ref_1_1 = 0.d0
+    ENDIF   
+    IF     (ABS(Mx_2) <= fatigue_load_thres_2 .AND. V_filt >= V_limit_fatigue_thres_2 )   THEN   ! check blade 2
+        beta_ref_2_1 = r_switch_filt *(gfl_p *flap_moment_2_filter_new + gfl_d *flap_moment_2_D)
+    ELSE IF (ABS(Mx_2) <= fatigue_load_thres .AND. V_filt <= V_limit_fatigue_thres_2 )    THEN  
+        beta_ref_2_1 = r_switch_filt *(gfl_p *flap_moment_2_filter_new + gfl_d *flap_moment_2_D)
+    ELSE 
+        beta_ref_2_1 = 0.d0
+    ENDIF
+    IF     (ABS(Mx_3) <= fatigue_load_thres_2 .AND. V_filt >= V_limit_fatigue_thres_2 )   THEN   ! check blade 3
+        beta_ref_3_1 = r_switch_filt *(gfl_p *flap_moment_3_filter_new + gfl_d *flap_moment_3_D)
+    ELSE IF (ABS(Mx_3) <= fatigue_load_thres .AND. V_filt <= V_limit_fatigue_thres_2 )    THEN  
+        beta_ref_3_1 = r_switch_filt *(gfl_p *flap_moment_3_filter_new + gfl_d *flap_moment_3_D)
+    ELSE
+        beta_ref_3_1 = 0.d0
+    ENDIF
+    ctrl_mode_out = 3.d0
+ELSE   ! Any other case, set the flaps to 0.0 
+    beta_ref_1_1    = 0.d0
+    beta_ref_2_1    = 0.d0
+    beta_ref_3_1    = 0.d0
+    ctrl_mode_out = 5.d0
+ENDIF 
 ! --------------------------------------------------------------- !
 ! Output to servo
 ! --------------------------------------------------------------- !

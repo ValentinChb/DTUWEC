@@ -1,11 +1,14 @@
 module dtu_we_controller
+   ! program dtu_we_controller
    !
    ! Main module of the Basic DTU Wind Energy Controller. Interface for HAWC2.
    !
-   use dtu_we_controller_fcns
-   use turbine_controller_mod
+   ! use dtu_we_controller_fcns
+   use BuildInfo
    use safety_system_mod
-   use write_version_mod
+   use dll_utils
+   use iso_c_binding
+
    ! use misc_mod
    implicit none
    ! integer  CtrlStatus
@@ -17,6 +20,7 @@ contains
 subroutine init_regulation(array1, array2) bind(c, name='init_regulation')
    !DEC$ IF .NOT. DEFINED(__LINUX__)
    !DEC$ ATTRIBUTES DLLEXPORT :: init_regulation
+   !GCC$ ATTRIBUTES DLLEXPORT :: init_regulation
    !DEC$ END IF
    real(mk), dimension(100), intent(inout) :: array1
    real(mk), dimension(1), intent(inout)   :: array2
@@ -25,8 +29,9 @@ subroutine init_regulation(array1, array2) bind(c, name='init_regulation')
    character(len=32) text32
    real(mk) minimum_pitch_angle
    logical findes
-   call write_textversion
-   write(6, *) trim(adjustl(TextVersion))
+
+   call echo_version()
+
    ! Input array1 must contain
    ! Overall parameters
    !  constant   1 ; Rated power [kW]
@@ -297,6 +302,7 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
    use dtu_we_controller_fcns
    !DEC$ IF .NOT. DEFINED(__LINUX__)
    !DEC$ ATTRIBUTES DLLEXPORT::init_regulation_advanced
+   !GCC$ ATTRIBUTES DLLEXPORT::init_regulation_advanced
    !DEC$ END IF
    real(mk), dimension(100), intent(inout)  ::  array1
    real(mk), dimension(1)  , intent(inout) ::  array2
@@ -308,7 +314,8 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
    ! character(128) :: fullName = ''
    ! character(50),dimension(3) :: strMsg
    logical :: err = .false.
-   logical :: DEBUG_Flag = .true.
+   logical :: DEBUG_Flag = .false.
+   integer(C_INTPTR_T) :: pdll
    ! integer :: iostatus 
    ! character(len=:), allocatable, dimension(3) :: strMsg
    ! real(mk), pointer :: p1=>null();
@@ -325,12 +332,12 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
    !  constant  60 ; Damping of notch filter [-] (Default 0.01 used if zero) 
    !  constant  61 ; Phase lag of damper [s] =>  max 40*dt (Default 0 used if zero) 
    ! Fore-aft Tower mode damper
-   !  constant  62 ; Frequency of BP filter [Hz] (Default 10 used if zero)\\ 
-   !  constant  63 ; Frequency of notch fiter [Hz] (Default 10 used if zero)\\ 
-   !  constant  64 ; Damping of BP filter [-] (Default 0.02 used if zero)\\
-   !  constant  65 ; Damping of notch filter [-] (Default 0.01 used if zero)\\
-   !  constant  66 ; Gain of damper [-] (Default 0 used if zero)\\ 
-   !  constant  67 ; Phase lag of damper [s] =>  max 40*dt (Default 0 used if zero)\\ 
+   !  constant  62 ; Frequency of BP filter [Hz] (Default 10 used if zero) 
+   !  constant  63 ; Frequency of notch fiter [Hz] (Default 10 used if zero) 
+   !  constant  64 ; Damping of BP filter [-] (Default 0.02 used if zero)
+   !  constant  65 ; Damping of notch filter [-] (Default 0.01 used if zero)
+   !  constant  66 ; Gain of damper [-] (Default 0 used if zero) 
+   !  constant  67 ; Phase lag of damper [s] =>  max 40*dt (Default 0 used if zero) 
    !  constant  68 ; Time constant of 1st order filter on PWR used for fore-aft Tower mode damper GS [Hz] (Default 10 used if zero)
    !  constant  69 ; Lower PWR limit used for fore-aft Tower mode damper GS [-] (Default 0 used if zero)
    !  constant  70 ; Upper PWR limit used for fore-aft Tower mode damper GS [-] (Default 0 used if zero) 
@@ -502,7 +509,6 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
        call readAdditionalCtrlParameter(pAdditionalCtrlParamFile,downRegulationData,CpData,err)
        if(err) then
            close(pAdditionalCtrlParamFile%fileID)
-           ! close(controllerOutput%fileID)
            stop
        else
            close(pAdditionalCtrlParamFile%fileID)
@@ -511,10 +517,16 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
    endif
    
    ! This is only for debugging
-   write(6,*) "Type2_dll initialization is successed!!"
+   write(6,*) "Controller dll initialization is successed!!"
    if(DEBUG_Flag) then
-       write(*,*) array1(100)
-       write(*,*) "Press 'c' to continue, 'q' to Quit the code."
+       
+       ! pdll = loaddll('./control/cyclic_pitch_controller.dll',0)
+
+       ! if(pdll == 0) then
+       !    write(*,*) " DLL NOT loaded. "
+       ! endif
+       
+       write(*,*) "Press 'c' to continue the simulation, 'q' to Quit the simulation."
        read(*,*) str
        if(str == 'q') then
            stop
@@ -526,10 +538,11 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
    return
 end subroutine init_regulation_advanced
 !**************************************************************************************************
-subroutine initstring(istring)
-    implicit none
+subroutine initstring(istring) bind(c,name='initstring')
+    ! implicit none
     !DEC$ IF .NOT. DEFINED(__LINUX__)
-    !DEC$ ATTRIBUTES DLLEXPORT, C, ALIAS:'initstring'::initstring
+    !DEC$ ATTRIBUTES DLLEXPORT :: initstring
+    !GCC$ ATTRIBUTES DLLEXPORT :: initstring
     !DEC$ END IF
     ! Declare the subroutine input arguments 
     integer(1)    :: istring(*)
@@ -550,7 +563,7 @@ end subroutine initstring
 !**************************************************************************************************
 
 subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
-   !
+   use turbine_controller_mod
    ! Controller interface.
    !  - sets DLL inputs/outputs.
    !  - sets controller timers.
@@ -558,6 +571,7 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    !
    !DEC$ IF .NOT. DEFINED(__LINUX__)
    !DEC$ ATTRIBUTES DLLEXPORT :: update_regulation
+   !GCC$ ATTRIBUTES DLLEXPORT :: update_regulation
    !DEC$ END IF
    real(mk), dimension(100), intent(inout) :: array1
    real(mk), dimension(100), intent(inout) :: array2
@@ -569,13 +583,13 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    !    4: constraint bearing2 pitch2 1 only 1     [rad]
    !    5: constraint bearing2 pitch3 1 only 1     [rad]
    !  6-8: wind free_wind 1 0.0 0.0 hub height     [m/s] global coords at hub height
-   !    9: elec. power  ; [W]
-   !   10: grid flag  ; [1=no grid,0=grid]
-   !   11: Tower top x-acceleration  ; [m/s^2]
-   !   12: Tower top y-acceleration  ; [m/s^2]
-   !   13: dll type2_dll individual_pitch_controller inpvec 1;
-   !   14: dll type2_dll individual_pitch_controller inpvec 2;
-   !   15: dll type2_dll individual_pitch_controller inpvec 3;
+   !    9: elec. power  ;                          [W]
+   !   10: grid flag  ;                            [1=no grid,0=grid]
+   !   11: Tower top x-acceleration  ;             [m/s^2]
+   !   12: Tower top y-acceleration  ;             [m/s^2]
+   !   13: dll type2_dll individual_pitch_controller inpvec 1;  [rad] only needed if using individual pitch control
+   !   14: dll type2_dll individual_pitch_controller inpvec 2;  [rad] only needed if using individual pitch control
+   !   15: dll type2_dll individual_pitch_controller inpvec 3;  [rad] only needed if using individual pitch control
    !
    ! Output array2 contains
    !
@@ -619,7 +633,7 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    !   39: Power coefficient at the derated operational point [-]
 
    ! Local variables
-   integer GridFlag, EmergPitchStop, ActiveMechBrake
+   integer  GridFlag, EmergPitchStop, ActiveMechBrake
    real(mk) GenSpeed, wsp, PitchVect(3), Pe, TT_acc(2), time
    real(mk) ipc_pitch(3);
    EmergPitchStop = 0
@@ -629,7 +643,6 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    !***********************************************************************************************
    ! Increment time step (may actually not be necessary in type2 DLLs)
    !***********************************************************************************************
-   !somehow the controller gets called twice in the very first time step...
    ! if ((time==deltat).AND. (repeated==.FALSE.)) then
    !    time_old=0.0_mk
    !    repeated=.TRUE.
@@ -664,7 +677,7 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    TT_acc(1) = array1(11)
    TT_acc(2) = array1(12)
    !
-   ! cyclic pitch angles ref. signal read in from individual pitch controller type2dll 
+   ! individual pitch angles ref. signal read in from individual pitch controller type2dll 
    ipc_pitch(1:3) = array1(13:15)
    !***********************************************************************************************
    ! Safety system
@@ -700,13 +713,14 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    !***********************************************************************************************
    ! Output
    !***********************************************************************************************
+
    array2( 1) = GenTorqueRef/GearRatio      !    1: Generator torque reference               [Nm]
    array2( 2) = PitchColRef + ipc_pitch(1)  !    2: Pitch angle reference of blade 1         [rad]
    array2( 3) = PitchColRef + ipc_pitch(2)  !    3: Pitch angle reference of blade 2         [rad]
    array2( 4) = PitchColRef + ipc_pitch(3)  !    4: Pitch angle reference of blade 3         [rad]
-   !array2( 2) = PitchColRef  !    2: Pitch angle reference of blade 1         [rad]
-   !array2( 3) = PitchColRef  !    3: Pitch angle reference of blade 2         [rad]
-   !array2( 4) = PitchColRef  !    4: Pitch angle reference of blade 3         [rad]
+   !array2( 2) = PitchColRef                !    2: Pitch angle reference of blade 1         [rad]
+   !array2( 3) = PitchColRef                !    3: Pitch angle reference of blade 2         [rad]
+   !array2( 4) = PitchColRef                !    4: Pitch angle reference of blade 3         [rad]
    array2( 5) = dump_array(1)          !    5: Power reference                          [W]
    array2( 6) = dump_array(2)          !    6: Filtered wind speed                      [m/s]
    array2( 7) = dump_array(3)          !    7: Filtered rotor speed                     [rad/s]
