@@ -6,9 +6,10 @@ build_and_test-gfortran:
       build
     script:
     - c:/Anaconda3/envs/pyHawc2/python.exe utils\ci\ci_utils.py x64 cmake gfortran
+    - copy /y build\src\dtu_we_controller\dtu_we_controller_64.dll dtu_we_controller_64.dll
     artifacts:
       paths:
-      - build/dtu_we_controller_64.dll
+      - dtu_we_controller_64.dll
     tags:
     - CPAV_old_PC
     except:
