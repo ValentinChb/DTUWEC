@@ -12,13 +12,27 @@ The project uses CMake to generate standard build files (e.g., makefiles on Linu
 The repository includes Visual Studio solution (for Windows) and CMakeLists.txt (for both Windows and Linux) to create DLLs to be used by HAWC2, Bladed and openFAST.
 The controller is written in Fortran and it is compatible with Intel and GFortran compilers. It can be compiled both on Windows (32bit and 64bit) and Linux.
 
+## Clone the repository (command line approach)
+- It is recommend to use git version 2.22 or above. Use the follow command to check the git version;
+```
+$ git version
+```
+- In order to get access to the submodule of the project (`utils`), use the flag `--recurse-submodules` while cloning. 
+```
+$ git clone --recurse-submodules https://gitlab.windenergy.dtu.dk/OpenLAC/BasicDTUController.git
+```
+- Note that switching to a new branch in the main BasicDTUController repository does not automatically update all the submodules included in this repository. In order to do so, please type:
+```
+$ git submodule update --init --recursive
+```
+
 ## Compilation
 
 ### Windows: Visual Studio 2019 only + Intel Fortran (WIP)
 
 - Install Microsoft Visual Studio Community 2019 and Intel Parallel Studio XE 2019 Update 5 Composer Edition for Fortran Windows Integration for Microsoft Visual Studio
 
-- Use the Visual Studio Solution or Project files (*.sln, *.vfproj) which will be provided in the future.
+- A pre generated Visual Studio Solution file (*.sln) will be provided in the future.
 
 ### Windows: Visual Studio 2019 with CMake + Intel Fortran
 
@@ -61,9 +75,12 @@ devenv DTUWEC.sln /Build
 ```
 >> cd build
 ```
-- In the build folder run the following command to build the code
+- In the build folder run the following command to generate makefiles 
 ```
 >> cmake .. -G "MinGW Makefiles" -D CMAKE_Fortran_COMPILER="gfortran" -D CMAKE_BUILD_TYPE="release"
+```
+- Type the following command to build the code
+```
 >> mingw32-make
 ```
 
@@ -85,9 +102,12 @@ $ mkdir build
 ```
 $ cd build
 ```
-- In the build folder run the following command to build the code
+- In the build folder run the following command to generate makefiles 
 ```
 $ cmake .. -DCMAKE_Fortran_COMPILER="gfortran"
+```
+- Type the following command to build the code
+```
 $ make
 ```
 
