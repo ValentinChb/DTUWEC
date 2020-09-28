@@ -3,25 +3,26 @@ module flap_controller_cyclic_fcns_mod
 ! Types and functions used in cyclic flap control dll
 ! Copied from cyclic_pitch_controller_fcns
 use misc_mod
+implicit none
 ! Types
-type Tpidvar
+type Tpidvarloc
     ! . From Input
   real*8 Kpro,Kdif,Kint,outmin,outmax,error1,outset1,outres1
   real*8  :: velmax=0.d0
     ! . Internal variables
   integer*4 stepno1
   real*8 outset,outpro,outdif,error1_old,outset1_old,outres1_old,outres
-end type Tpidvar
+end type Tpidvarloc
 ! Constant matrices
 integer*4 rev_blade_no(3)
-data rev_blade_no /1,3,2/               ! Bl.1: points to top, bl.2 is at 4/3 pi, bl.3 at 2/3 pi - swap the channels so to have 1,2,3 from azimuth 
+data rev_blade_no /1,3,2/               ! Bl.1: points to top, bl.2 is at 4/3 pi, bl.3 at 2/3 pi - swap the channels so to have 1,2,3 from azimuth
 real*8 B0mat(3,3),Bcmat(3,3),Bsmat(3,3)
 real*8 B0inv(3,3),Bcinv(3,3),Bsinv(3,3)
 ! Parameters and variables:
 type(Tlowpass2order) LP2_cos_var        ! 2nd order LP filter variables
 type(Tlowpass2order) LP2_sin_var
-type(Tpidvar) PID_cos_var               ! PID variables
-type(Tpidvar) PID_sin_var
+type(Tpidvarloc) PID_cos_var               ! PID variables
+type(Tpidvarloc) PID_sin_var
 real*8    :: psi_ref  = 0.d0            ! Lead angle for cos-sin coupling  [deg]
 real*8    :: thr_ratcyclic = 0.99d0     ! Threshold value above which full gain on cyclic control is applied [-]
 real*8    :: ctrl_tstart = 0.d0         ! At what time to start with cyclic action
@@ -104,55 +105,55 @@ end function Blead
 !**************************************************************************************************
 function PID(stepno,dt,kgain,PIDvar,error)
 implicit none
-integer*4 stepno              
+integer*4 stepno
 real*8 PID,dt,kgain(3),error
-type(Tpidvar) PIDvar
+type(Tpidvarloc) PIDvar
 real*8 eps
 parameter(eps=1.d-6)
 ! Initiate
 if (stepno.eq.1) then
-  PIDvar.outset1=0
-  PIDvar.outres1=0
-  PIDvar.error1=0
-  PIDvar.error1_old=0.0
-  PIDvar.outset1_old=0.0
-  PIDvar.outres1_old=0.0
+  PIDvar%outset1=0
+  PIDvar%outres1=0
+  PIDvar%error1=0
+  PIDvar%error1_old=0.0
+  PIDvar%outset1_old=0.0
+  PIDvar%outres1_old=0.0
 endif
 ! Save previous values
-if (stepno.gt.PIDvar.stepno1) then
-  PIDvar.outset1_old=PIDvar.outset1
-  PIDvar.outres1_old=PIDvar.outres1
-  PIDvar.error1_old=PIDvar.error1
+if (stepno.gt.PIDvar%stepno1) then
+  PIDvar%outset1_old=PIDvar%outset1
+  PIDvar%outres1_old=PIDvar%outres1
+  PIDvar%error1_old=PIDvar%error1
 endif
 ! Update the integral term
-PIDvar.outset=PIDvar.outset1_old+0.5d0*(error+PIDvar.error1)*kgain(2)*PIDvar.Kint*dt
+PIDvar%outset=PIDvar%outset1_old+0.5d0*(error+PIDvar%error1)*kgain(2)*PIDvar%Kint*dt
 ! Update proportional term
-PIDvar.outpro=kgain(1)*PIDvar.Kpro*0.5d0*(error+PIDvar.error1)
+PIDvar%outpro=kgain(1)*PIDvar%Kpro*0.5d0*(error+PIDvar%error1)
 ! Update differential term
-PIDvar.outdif=kgain(3)*PIDvar.Kdif*(error-PIDvar.error1_old)/dt
+PIDvar%outdif=kgain(3)*PIDvar%Kdif*(error-PIDvar%error1_old)/dt
 ! Sum to up
-PIDvar.outres=PIDvar.outset+PIDvar.outpro+PIDvar.outdif
+PIDvar%outres=PIDvar%outset+PIDvar%outpro+PIDvar%outdif
 ! Satisfy hard limits
-if (PIDvar.outres.lt.PIDvar.outmin) then 
-  PIDvar.outres=PIDvar.outmin
-elseif (PIDvar.outres.gt.PIDvar.outmax) then 
-  PIDvar.outres=PIDvar.outmax
+if (PIDvar%outres.lt.PIDvar%outmin) then
+  PIDvar%outres=PIDvar%outmin
+elseif (PIDvar%outres.gt.PIDvar%outmax) then
+  PIDvar%outres=PIDvar%outmax
 endif
 ! Satisfy max velocity
-if (PIDvar.velmax.gt.eps) then
-    if ((abs(PIDvar.outres-PIDvar.outres1_old)/dt).gt.PIDvar.velmax) &
-      PIDvar.outres=PIDvar.outres1_old+dsign(PIDvar.velmax*dt,PIDvar.outres-PIDvar.outres1_old)
+if (PIDvar%velmax.gt.eps) then
+    if ((abs(PIDvar%outres-PIDvar%outres1_old)/dt).gt.PIDvar%velmax) &
+      PIDvar%outres=PIDvar%outres1_old+dsign(PIDvar%velmax*dt,PIDvar%outres-PIDvar%outres1_old)
 endif
 ! Anti-windup on integral term and save results
-PIDvar.outset1 = PIDvar.outres-PIDvar.outpro-PIDvar.outdif  ! . makes the integral term react faster
-PIDvar.outres1 = PIDvar.outres
-PIDvar.error1  = error
-PIDvar.stepno1 = stepno
+PIDvar%outset1 = PIDvar%outres-PIDvar%outpro-PIDvar%outdif  ! . makes the integral term react faster
+PIDvar%outres1 = PIDvar%outres
+PIDvar%error1  = error
+PIDvar%stepno1 = stepno
 ! Set output
-if (stepno.eq.0) then 
+if (stepno.eq.0) then
   PID=0
-else 
-  PID=PIDvar.outres
+else
+  PID=PIDvar%outres
 endif
 return
 end function PID

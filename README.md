@@ -4,13 +4,13 @@
 ## Introduction
 The scope of this project is to provide an open-source open-access controller that can be used by the wind energy community as a reference. The DTU Wind Energy Controller (DTUWEC) is designed for pitch-regulated variable-speed wind turbines. It is built for high fidelity in-house aero-elastic simulation software (HAWC2). An interface to DNV-GL Bladed and OpenFAST is also provided for using DTUWEC with Bladed or OpenFAST. The controller features both partial and full load operation capabilities as well as switching mechanisms ensuring smooth transition between the two modes of operation. The partial load controller is based on a classical $`K\Omega^2`$ strategy or on a proportional-integral controller to track optimal tip speed ratio. The full load controller is also based on classical proportional-integral control theory. It also includes drivetrain and tower dampers, rotor speed exclusion zone control, de-rating control, wind speed estimation and filters on the feedback signal.
 
-The DTUWEC also includes individual pitch control (IPC), individual flap control and cyclic flap control as separated DLLs. 
+The DTUWEC also includes individual pitch control (IPC), individual flap control and cyclic flap control as separated DLLs.
 Blade pitch servo, generator models, flap servo, mechanical brake are not included in this repository. They can be found in the project [ServoAndUtilities](https://github.com/DTUWindEnergy/ServosAndUtilities).
 
 ## Compatibility
 The project uses CMake to generate standard build files (e.g., makefiles on Linux/Mac OS and projects/solution files on Windows Visual studio) which could be used in the usual way.
 The repository includes Visual Studio solution (for Windows) and CMakeLists.txt (for both Windows and Linux) to create DLLs to be used by HAWC2, Bladed and openFAST.
-The controller is written in Fortran and it is compatible with Intel and GFortran compilers. It can be compiled both on Windows (32bit and 64bit) and Linux. 
+The controller is written in Fortran and it is compatible with Intel and GFortran compilers. It can be compiled both on Windows (32bit and 64bit) and Linux.
 
 ## Compilation
 
@@ -33,10 +33,10 @@ The controller is written in Fortran and it is compatible with Intel and GFortra
 ```
 >> cd build
 ```
-- For 32-bit, in build folder run (make sure cmake command is inside your user environment PATH): 
- 
+- For 32-bit, in build folder run (make sure cmake command is inside your user environment PATH):
+
 ```
->> cmake .. -G "Visual Studio 16 2019" -A Win32 
+>> cmake .. -G "Visual Studio 16 2019" -A Win32
 ```
 - For 64-bit, in build folder run:
 ```
@@ -44,7 +44,7 @@ The controller is written in Fortran and it is compatible with Intel and GFortra
 ```
 - Now, a Visual Studio Solution file has been created and you could either use the following command to build the projects or open it with you Visual Studio IDE and build the projects as usual;
 ```
-devenv DTUWEC.sln /Build 
+devenv DTUWEC.sln /Build
 ```
 
 ### Windows: CMake + GNU Fortran (gfortran)
@@ -66,7 +66,7 @@ devenv DTUWEC.sln /Build
 >> cmake .. -G "MinGW Makefiles" -D CMAKE_Fortran_COMPILER="gfortran" -D CMAKE_BUILD_TYPE="release"
 >> mingw32-make
 ```
- 
+
 ### Linux/Mac: CMake + GNU Fortran (gfortran) (WIP)
 
 - Install CMake and gfortran (e.g. in Ubuntu). The minimum required CMake version is 3.12.4.
@@ -88,5 +88,50 @@ $ cd build
 - In the build folder run the following command to build the code
 ```
 $ cmake .. -DCMAKE_Fortran_COMPILER="gfortran"
+$ make
+```
+
+### Linux on DTU's cluster Jess, to be used for MPI applications:
+
+- In order to get access to all the submodules of the project, use the flag `--recurse-submodules` while cloning. To use the same user and password for all the git submodules, the git configuration can be also changed
+before cloning:
+```
+$ git config --global credential.helper cache
+$ git clone --recurse-submodules https://gitlab.windenergy.dtu.dk/OpenLAC/BasicDTUController.git
+```
+- Note that the default git version installed on 'Jess' does not support this capability, but it can be loaded
+through the 'easy' module by typing the following sequence before cloning:
+```
+$ module purge
+$ module load easy
+$ ml git
+$ unset SSH_ASKPASS
+```
+- Remember to re-type these lines before executing any git command, even after cloning.
+- Note that switching to a new branch in the main BasicDTUController repository does not automatically update all the submodules included in this repository. In order to do so, please type:
+```
+$ git submodule update --init --recursive
+```
+- Load the compiler and a newer CMake version
+```
+$ module purge
+$ module load easy
+$ module load intel/2017a
+$ module load CMake/3.15.3-GCCcore-7.3.0
+```
+- Create a "build" directory
+```
+$ mkdir build
+```
+- Going to your build directory
+```
+$ cd build
+```
+- In the build folder run the following command to build the makefile:
+```
+$ cmake .. -DCMAKE_Fortran_COMPILER=mpiifort
+```
+- In the build folder type make to build the code
+```
 $ make
 ```

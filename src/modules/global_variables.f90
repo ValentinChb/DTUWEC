@@ -8,7 +8,6 @@ module global_variables
 
     !DEC$ IF .NOT. DEFINED(__LINUX__)
     !DEC$ attributes  DLLEXPORT :: pCtrlInputFile
-    !!GCC$ attributes  DLLEXPORT :: pCtrlInputFile
     !DEC$ END IF
     
 
