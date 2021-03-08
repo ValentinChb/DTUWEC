@@ -1,72 +1,47 @@
 variables:
     GIT_SUBMODULE_STRATEGY: normal
-    
-build_and_test-gfortran:
-    stage:
-      build
-    script:
-    - c:/Anaconda3/envs/pyHawc2/python.exe utils\ci\ci_utils.py x64 cmake gfortran
-    - copy /y build\src\dtu_we_controller\dtu_we_controller_64.dll dtu_we_controller_64.dll
-    artifacts:
-      paths:
-      - dtu_we_controller_64.dll
-    tags:
-    - CPAV_old_PC
-    except:
-    - tags
 
+build_x86:
+  image: openlac_build_winserv1809:intel2021.1_x86
+  stage:
+    build
+  script:
+  - mkdir build ; cd build
+  - cmake .. -GNinja -DCMAKE_BUILD_TYPE=RELEASE
+  - ninja
+  artifacts:
+    paths:
+    - build\src\*\*.dll
+    expire_in: 30 mins
+  tags:
+  - vind-pone-ci02
 
+build_x64:
+  image: openlac_build_winserv1809:intel2021.1
+  stage:
+    build
+  script:
+  - mkdir build ; cd build
+  - cmake .. -GNinja -DCMAKE_BUILD_TYPE=RELEASE
+  - ninja
+  artifacts:
+    paths:
+    - build\src\*\*.dll
+    expire_in: 30 mins
+  tags:
+  - vind-pone-ci02
 
-
-
-# build_and_test-win32:
-    # stage:
-      # build
-    # script:
-    # - c:/Anaconda3/envs/pyHawc2/python.exe ci.py win32
-    # artifacts:
-      # paths:
-      # - src/dtu_we_controller/Win32/Release/dtu_we_controller.dll
-      # - src/dtu_we_controller_bladed/Win32/Release/dtu_we_controller_bladed.dll
-    # tags:
-    # - CPAV_old_PC
-    # except:
-    # - tags
-    
-
-
-# build_and_test-x64:
-    # stage:
-      # build
-    # script:
-    # - c:/Anaconda3/envs/pyHawc2/python.exe ci.py x64
-    # artifacts:
-      # paths:
-      # - src/dtu_we_controller/X64/Release/dtu_we_controller_64.dll
-      # - src/dtu_we_controller_bladed/X64/Release/dtu_we_controller_bladed_64.dll
-    # tags:
-    # - CPAV_old_PC
-    # except:
-    # - tags
-
-
-# build_test_deploy-win32:
-    # stage:
-      # build
-    # script:
-    # - c:/Anaconda3/envs/pyHawc2/python.exe ci.py win32 push
-    # tags:
-    # - CPAV_old_PC
-    # only:
-    # - tags
-
-
-# build_test_deploy-x64:
-    # stage:
-      # build
-    # script:
-    # - c:/Anaconda3/envs/pyHawc2/python.exe ci.py x64 push
-    # tags:
-    # - CPAV_old_PC
-    # only:
-    # - tags
+build_ubuntu:
+  image: openlac_build_ubuntu20.04:intel2021.1
+  stage:
+    build
+  script:
+  - mkdir build ; cd build
+  - cmake .. -DCMAKE_BUILD_TYPE=RELEASE
+  - make -j
+  artifacts:
+    paths:
+    - build/src/*/*.so
+    expire_in: 30 mins
+  tags:
+  - ci-ubuntu
