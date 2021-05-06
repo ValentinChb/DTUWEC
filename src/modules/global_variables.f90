@@ -48,6 +48,8 @@ module global_variables
     integer :: CountPitchDeviation=0
     real(mk) :: lambdaAtMinCt = 0.0_mk, pitchAtMinCt = 0.0_mk, minCt = 0.0_mk
     real(mk) :: CpAtMinCt = 0.0_mk 
+	real(mk) :: GenTorque_addition = 0.0_mk
+	real(mk) :: Pitch_addition = 0.0_mk
     !
     ! Variables with user defined Types
     !
@@ -72,6 +74,12 @@ module global_variables
     type(TWindEstvar),    save :: WindEstvar
     type(Twpdata),        save :: OPdatavar
     type(Texclzone),      save :: ExcluZone
+	!
+	! Define variables for floating control
+	type(TFloatingvar),   save :: Floatingvar
+	type(Tfirstordervar), save :: switchingvar
+	type(Tlowpass2order), save :: float2orderlpfvar
+	type(Tbandpassfilt), save :: float2orderbpfvar
 
     ! defined global variables for down regulation control strategy
     type(TdownRegulationData), save :: downRegulationData
@@ -81,6 +89,9 @@ module global_variables
     type(TCpData),        save :: CpData
 
     type(TcontrolFile), pointer :: pCtrlInputFile
+
+    ! define global avariables for external 3rd party DLLs
+    Type (Tdll),          save :: external_dll
 !**************************************************************************************************
 end module global_variables
     

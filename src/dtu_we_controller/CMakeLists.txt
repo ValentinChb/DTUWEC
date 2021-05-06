@@ -17,6 +17,7 @@ file(GLOB_RECURSE SRC "${SRC_DIR}/dtu_we_controller.f90"
                       "${SRC_DIR}/dtu_we_controller_fcns.f90"
 					  "${SRC_DIR}/turbine_controller.f90"
 					  "${SRC_DIR}/safety_system.f90"
+					  "${SRC_DIR}/floating_controller.f90"
     )
 list (APPEND SRC ${MODSRC})
 

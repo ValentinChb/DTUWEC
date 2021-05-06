@@ -1162,7 +1162,7 @@ function AeroTorqEstimator( GenTorqueRef, GenSpeed, WindEstvar,deltat)
     WindEstvar%est_Qa = est_Qa
     return
 end function AeroTorqEstimator 
-
+!
 function GradDesc(estQ, GenSpeed, PitchMean, WindEstvar,Cptable)
 ! In the current version, gearbox ratio is omitted
     implicit none

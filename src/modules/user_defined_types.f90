@@ -1,6 +1,7 @@
 module user_defined_types 
 
     use global_constants
+    use iso_c_binding
 
     implicit none 
     ! =============================================================================
@@ -51,7 +52,7 @@ module user_defined_types
 
     ! Blade pitch PID data type
     type Tpid2var
-       real(mk) Kpro(2),Kdif(2),Kint(2),outmin,outmax,velmax,error1(2),outset1,outres1
+       real(mk) Kpro(2),Kdif(2),Kint(2),outmin,outmax,velmax,error1(2),outset1,outres1, Kpro_init(2)
        integer :: stepno1 = 0
        real(mk) outset,outpro,outdif,error1_old(2),outset1_old,outres1_old,outres
     end type Tpid2var
@@ -102,6 +103,22 @@ module user_defined_types
     type TWindEstvar
         real(mk) :: J, est_Qa , sum_err, xhat ,P , Q , R, Kp, Ki, radius
     end type
+	
+	! Floating
+	type TFloatingvar
+		real(mk) :: TPgain = 0.0_mk
+		real(mk) ::	TGgain = 0.0_mk
+		real(mk) :: time_on = 0.0_mk
+		real(mk) :: KK1_tp = 0.0_mk ! gain-scheduling for tower-pitch loop
+		real(mk) :: KK2_tp = 0.0_mk
+		real(mk) :: KK1_tq = 0.0_mk ! gain-scheduling for tower-genTorq loop
+		real(mk) :: KK2_tq = 0.0_mk 
+		real(mk) :: RatedWindSpeed = 11.4_mk 
+		real(mk) :: GSmode = 1.0_mk
+		real(mk) :: GSvar = 0.0_mk
+		real(mk) :: switchfactor = 0.0_mk
+		real(mk) :: TTfa_vel_filt = 0.0_mk
+	end type
 
     ! MIN CT control data type
     type TdownRegulationData
@@ -176,5 +193,29 @@ module user_defined_types
         character(len=:),allocatable :: str
         integer :: length
     end type Tstring
+
+    ! DLL data type
+    Type Tdll
+        integer (C_INTPTR_T)         :: p_dll                 ! integer pointer to DLL
+#if defined __GFORTRAN__
+        type(C_FUNPTR)         :: p_func                ! integer pointer to DLL subroutine discon
+#elif defined __INTEL_COMPILER
+        integer (C_INTPTR_T)         :: p_func                ! integer pointer to DLL subroutine discon
+#endif
+
+        character*256                :: filename=''
+        character*256				 :: infile =''
+        character*256				 :: outfile=''
+        character*256				 :: func_name=''
+        real(4),dimension(32)        :: avrSWAP=0.0          ! The swap array, used to pass data to, and receive data from, the DLL controller.
+        integer(c_int)               :: is_shutdown
+        integer(c_int)               :: hawc2_status
+        integer                      :: istep_hawc2 
+        integer                      :: istep_controller    !
+        real*8					     :: aero_power
+        real*8					     :: elec_power
+        real*8                       :: efficiency
+        real*8                       :: time_step = 0.d0     ! time step used in simulation [s]
+    end Type Tdll
 
 end module user_defined_types

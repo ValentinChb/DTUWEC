@@ -145,7 +145,7 @@ subroutine normal_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
    x = switch_spline(P_filt, TTfa_PWR_lower*PeRated, TTfa_PWR_upper*PeRated)
    PitchColRef = min(max(PitchColRef + theta_dam_ref*x, PID_pit_var%outmin), PID_pit_var%outmax)
    ! call log_info('pitch_twr_damper-ref: ',theta_dam_ref)
-   
+   !
    !***********************************************************************************************
    ! Calculate the estimated aerodynamic torque
    !***********************************************************************************************
@@ -813,7 +813,7 @@ subroutine pitchcontroller(GenSpeedFilt, dGenSpeed_dtFilt, PitchMeanFilt, PeFilt
    ! Gainscheduling according to dQaero/dOmega
    aero_damp = 1.0_mk + PitchGSVar%invkk1_speed*PitchMeanFilt + &
                PitchGSVar%invkk2_speed*PitchMeanFilt**2
-   PID_pit_var%kpro(1) = PID_pit_var%kpro(1) + PitchGSVar%kp_speed*aero_damp
+   PID_pit_var%kpro(1) = PID_pit_var%kpro_init(1) + PitchGSVar%kp_speed*aero_damp
    !-----------------------------------------------------------------------------------------------
    ! Compute PID feedback to pitch demand
    !-----------------------------------------------------------------------------------------------
@@ -872,7 +872,7 @@ subroutine individualpitchcontroller(GenSpeedFilt, dGenSpeed_dtFilt, PitchMeanFi
    ! Gainscheduling according to dQaero/dOmega
    aero_damp = 1.0_mk + PitchGSVar%invkk1_speed*PitchMeanFilt + &
                PitchGSVar%invkk2_speed*PitchMeanFilt**2
-   PID_pit_var%kpro(1) = PID_pit_var%kpro(1) + PitchGSVar%kp_speed*aero_damp
+   PID_pit_var%kpro(1) = PID_pit_var%kpro_init(1) + PitchGSVar%kp_speed*aero_damp
    !-----------------------------------------------------------------------------------------------
    ! Compute PID feedback to pitch demand
    !-----------------------------------------------------------------------------------------------

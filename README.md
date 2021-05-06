@@ -6,6 +6,7 @@ The scope of this project is to provide an open-source open-access controller th
 
 The DTUWEC also includes individual pitch control (IPC), individual flap control and cyclic flap control as separated DLLs.
 Blade pitch servo, generator models, flap servo, mechanical brake are not included in this repository. They can be found in the project [ServoAndUtilities](https://github.com/DTUWindEnergy/ServosAndUtilities).
+A Working in progress (WIP) version of the user manual can be found [here](https://gitlab.windenergy.dtu.dk/OpenLAC/BasicDTUControllerReport):
 
 ## Compatibility
 The project uses CMake to generate standard build files (e.g., makefiles on Linux/Mac OS and projects/solution files on Windows Visual studio) which could be used in the usual way.
@@ -28,15 +29,15 @@ $ git submodule update --init --recursive
 
 ## Compilation
 
-### Windows: Visual Studio 2019 only + Intel Fortran (WIP)
+### Windows: Visual Studio 2017/2019 + Intel Fortran compiler (WIP)
 
-- Install Microsoft Visual Studio Community 2019 and Intel Parallel Studio XE 2019 Update 5 Composer Edition for Fortran Windows Integration for Microsoft Visual Studio
+- Install Microsoft Visual Studio Community 2017 or 2019 and Intel Parallel Studio XE 2019 Update 5 Composer Edition for Fortran Windows Integration for Microsoft Visual Studio
 
 - A pre generated Visual Studio Solution file (*.sln) will be provided in the future.
 
-### Windows: Visual Studio 2019 with CMake + Intel Fortran
+### Windows: Visual Studio 2017/2019 with CMake + Intel Fortran compiler
 
-- Install Microsoft Visual Studio Community 2019 and Intel Parallel Studio XE 2019 Update 5 Composer Edition for Fortran Windows Integration for Microsoft Visual Studio
+- Install Microsoft Visual Studio Community 2017 or 2019 and Intel Parallel Studio XE 2019 Update 5 Composer Edition for Fortran Windows Integration for Microsoft Visual Studio
 - Install C++ CMake tools for Windows from (https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019). Alternative, you could also install CMake from (https://cmake.org/download/). The minimum required CMake version is 3.12.4.
 - Create a "build" directory inside the toplevel of your local repository directory. (e.g. C:\Users\xxx\BasicDTUController\)
 
@@ -47,16 +48,25 @@ $ git submodule update --init --recursive
 ```
 >> cd build
 ```
-- For 32-bit, in build folder run (make sure cmake command is inside your user environment PATH):
+- For Visual Studio 2019, 32-bit, in build folder run (make sure cmake command is inside your user environment PATH):
 
 ```
 >> cmake .. -G "Visual Studio 16 2019" -A Win32
 ```
-- For 64-bit, in build folder run:
+- For Visual Studio 2019, 64-bit, in build folder run:
 ```
 >> cmake .. -G "Visual Studio 16 2019" -A x64
 ```
-- Now, a Visual Studio Solution file has been created and you could either use the following command to build the projects or open it with you Visual Studio IDE and build the projects as usual;
+- For Visual Studio 2017, 32-bit, in build folder run (make sure cmake command is inside your user environment PATH):
+
+```
+>> cmake .. -G "Visual Studio 15 2017" -A Win32
+```
+- For Visual Studio 2017, 64-bit, in build folder run:
+```
+>> cmake .. -G "Visual Studio 15 2017" -A x64
+```
+- Now, a Visual Studio Solution file has been created and you could either use the following command to build the projects or open the generated solution file (DTUWEC.sln) with you Visual Studio IDE and build the projects as usual;
 ```
 devenv DTUWEC.sln /Build
 ```

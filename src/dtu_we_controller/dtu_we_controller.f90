@@ -1,20 +1,43 @@
 module dtu_we_controller
-   ! program dtu_we_controller
-   !
-   ! Main module of the Basic DTU Wind Energy Controller. Interface for HAWC2.
-   !
-   ! use dtu_we_controller_fcns
+! program dtu_we_controller
+!
+! Main module of the Basic DTU Wind Energy Controller. 
+!      Interface for HAWC2 type2_dll
+!
+! use dtu_we_controller_fcns
    use BuildInfo
    use safety_system_mod
    use dll_utils
    use iso_c_binding
+ ! use misc_mod
 
-   ! use misc_mod
    implicit none
-   ! integer  CtrlStatus
+
    real(mk) dump_array(50)
    real(mk) time_old
    logical repeated
+
+   ! variables for debugging purpose
+   character(1) str
+   logical, save :: DEBUG_Flag = .true.
+   ! Now it works for Intel Fortran Compiler with Visual Studio 2017/2019 and GNU Fortran on Windows
+   ! TODO: 
+   ! Remember to test this implementation on Linux
+   ! Define external function/subroutine abstract interface
+   interface
+      subroutine WTController(GenRot,YawBrTAyp,time,ShutDown, U) bind(c,name='WTController')
+         use, intrinsic :: iso_c_binding
+         implicit none
+         real(c_float) , value  :: GenRot,YawBrTAyp,time
+         integer(c_int), value  :: ShutDown
+         real(c_float) , intent(inout) :: U(*)
+      end subroutine WTController
+   end interface
+   ! TODO: 
+   ! Now it works with intel fortran using VS 2017/2019
+   ! Remember to consider cross-platform and cross-compiler
+   procedure(WTController), bind(c), pointer :: fp_WTController
+
 contains
 !**************************************************************************************************
 subroutine init_regulation(array1, array2) bind(c, name='init_regulation')
@@ -141,6 +164,7 @@ subroutine init_regulation(array1, array2) bind(c, name='init_regulation')
    PID_pit_var%kpro(2) = array1(19)
    PID_pit_var%kint(2) = array1(20)
    PID_pit_var%kdif(2) = 0.0_mk
+   PID_pit_var%kpro_init(1) = PID_pit_var%kpro(1) ! back-up for dQdOmega scheduling 
    ! - Gain-scheduling
    PitchGSVar%invkk1 = 1.0_mk/(array1(21)*degrad)
    if (array1(22).eq.0.0_mk) then
@@ -308,14 +332,12 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
    real(mk), dimension(1)  , intent(inout) ::  array2
    ! delclare loacl variables
    type(TcontrolFile), pointer :: pAdditionalCtrlParamFile => null()
-   character(1) str
    ! character(128) :: filename = './res/ctrl_output_' 
    ! character(128) :: extension = '.txt' 
    ! character(128) :: fullName = ''
    ! character(50),dimension(3) :: strMsg
    logical :: err = .false.
-   logical :: DEBUG_Flag = .false.
-   integer(C_INTPTR_T) :: pdll
+   ! integer(C_INTPTR_T) :: pdll
    ! integer :: iostatus 
    ! character(len=:), allocatable, dimension(3) :: strMsg
    ! real(mk), pointer :: p1=>null();
@@ -354,11 +376,27 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
    ! Rotor speed notch filter
    !  constant  77 ; Frequency of notch filter [Hz] applied on the rotor speed before computing torque above rated (constant power), if zero no notch filter used
    !  constant  78 ; Damping of notch filter [-] applied on the rotor speed before computing torque above rated (constant power), (Default 0.01 used if zero)
-   !
+   ! Down-regulation control
    !  constant  79 ; Derate strategy. 0 = No Derating, 1 = constant rotation, 2 = max rotation, 3 = min ct  
    !  constant  80 ; Derate percentage (eg. 70 means 70% of nominal power)
+   ! Rotor effective wind speed estimator
    !  constant  81 ; rotor inertia
-   !  constant  82 ; Rated wind speed (Only used when constant 79 = 3
+   ! Floating turbine control
+   !  constant  82 ; Rated wind speed (Only used when constant 79 = 3 OR constant 95 = 0)
+   !  constant  83 ; Gain for the loop mapping from tower velocity to pitch [rad/(m/s)]
+   !  constant  84 ; Gain for the loop mapping from tower velocity to GenTorque [Nm/(m/s)]
+   !  constant  85 ; Time to switch on the floating control loop [s]
+   !  constant  86 ; Frequency of LP filter [Hz] (Default 0 if filter not used)
+   !  constant  87 ; Damping ratio of LP filter  [-]
+   !  constant  88 ; Frequency of BP filter [Hz] (Default 0 if filter not used)
+   !  constant  89 ; Damping ratio of BP filter  [-] (Default 0.02)
+   !  constant  90 ; Time constant of BP filter [s] (Default 0)
+   !  cosntant 91 ; Coefficient of linear term in gain-scheduling for tower-pitch loop, KK1 [1/(m/s)];
+   !              ; Kgain * (1 + KK1 *abs(WSPfilt - WSPrated) + KK2 * abs(WSPfilt - WSPrated)**2)
+   !  constant 92 ; Coefficient of quadratic term in gain-scheduling for tower-pitch loop, KK2 [1/(m/s)^2];
+   !  cosntant 93 ; Coefficient of linear term in gain-scheduling for tower-genTorq loop, KK1 [1/(m/s)];
+   !  constant 94 ; Coefficient of quadratic term in gain-scheduling for tower-genTorq loop, KK2 [1/(m/s)^2];
+   !  constant 95 ; Choice of gain-scheduling variable (0: WSPfilt, 1: Pitch angle (Default));
    call init_regulation(array1, array2)
    ! Generator torque exclusion zone
    if (array1(53).gt.0.0_mk) ExcluZone%Lwr             = array1(53)
@@ -535,8 +573,33 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
        endif
    endif
    
+   
+   ! Floating 
+   if ((array1(83) .gt. 0.0_mk).or.(array1(83).lt.0.0_mk)) then
+		Floatingvar%TPgain = array1(83)
+		write(6,*) "*** Tower-Pitch loop is activated ***"
+   endif
+  if ((array1(84) .gt. 0.0_mk).or.(array1(84).lt.0.0_mk)) then
+		Floatingvar%TGgain = array1(84)
+		write(6,*) "*** Tower-GenTorque loop is activated ***"
+   endif
+  if (array1(85) .gt. 0.0_mk) then
+		Floatingvar%time_on = array1(85)
+  endif
+  float2orderlpfvar%f0 = array1(86)
+  float2orderlpfvar%zeta = array1(87)
+  float2orderbpfvar%f0 = array1(88)
+  float2orderbpfvar%zeta = array1(89)
+  float2orderbpfvar%tau = array1(90)
+  Floatingvar%RatedWindSpeed = array1(82)
+  Floatingvar%KK1_tp = array1(91)
+  Floatingvar%KK2_tp = array1(92)
+  Floatingvar%KK1_tq = array1(93)
+  Floatingvar%KK2_tq = array1(94)
+  if (array1(95).gt.0.0_mk) Floatingvar%GSmode = array1(95)
    return
 end subroutine init_regulation_advanced
+
 !**************************************************************************************************
 subroutine initstring(istring) bind(c,name='initstring')
     ! implicit none
@@ -550,21 +613,54 @@ subroutine initstring(istring) bind(c,name='initstring')
     ! Declare the local variables
     integer(1)    :: istring256(256)
     character*256 :: cstring
-
-    ! allocate(additionalCtrlParamFile)
+    character(len=7) :: ext(4) = (/'.dll','.txt','.dat','.so '/) ! all extentions
+    character(kind=C_CHAR,len=256) :: name, tmp, tmp1, tmp2 ! C-String
+    integer       :: i_ext,n_idx
 
     equivalence(istring256,cstring)
-
     istring256(1:256)=istring(1:256)
-    ! assign the gloabl variable 'additionalCtrlParamFilename' using the file path string 
-    ! which has been read in the type2_dll block in HAWC2 main htc file 
-    additionalCtrlParamFilename = trim(adjustl(cstring))
+
+    ! Read in the initstring given in the type2_dll block in HAWC2 main htc file 
+    tmp = trim(adjustl(cstring))
+    ! Remove the last null character, if there
+    if ( tmp(len_trim(tmp):len_trim(tmp)) == C_NULL_CHAR ) then
+      tmp1 = tmp(1:len_trim(tmp)-1)
+    else
+      tmp1 = trim(tmp)
+    end if
+
+    ! split the input string if exist ':'
+    n_idx = index(tmp1,':')
+    if (n_idx /= 0) then
+        name = tmp1(1:n_idx-1) ! dll name
+        external_dll%func_name = tmp1(n_idx+1:len_trim(tmp1)) ! function name
+    else
+        name = tmp1
+    end if 
+
+    ! Get extension from file name
+    do i_ext = 1, size(ext) 
+        if (name(len_trim(name)-len_trim(ext(i_ext))+1:len_trim(name))==trim(ext(1))) then
+            external_dll%filename = trim(adjustl(name))
+            write(6,'(A)') 'HAWC2 found controller dll: "'//trim(external_dll%filename)//'" from third party.'
+            ! TODO: set a flag here
+            exit
+        else if (name(len_trim(name)-len_trim(ext(i_ext))+1:len_trim(name))==trim(ext(2))) then
+            additionalCtrlParamFilename = trim(adjustl(name))
+            write(6,'(A)') 'HAWC2 found additional control parameter file: '//trim(additionalCtrlParamFilename)
+            ! TODO: set a flag here
+            exit
+        end if
+    enddo
 end subroutine initstring
 !**************************************************************************************************
 
+!**************************************************************************************************
 subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    use turbine_controller_mod
+   use floating_controller_mod
    ! Controller interface.
+   ! This is HAWC2 type2_dll Controller interface.
    !  - sets DLL inputs/outputs.
    !  - sets controller timers.
    !  - calls the safety system monitor (higher level).
@@ -590,7 +686,7 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    !   13: dll type2_dll individual_pitch_controller inpvec 1;  [rad] only needed if using individual pitch control
    !   14: dll type2_dll individual_pitch_controller inpvec 2;  [rad] only needed if using individual pitch control
    !   15: dll type2_dll individual_pitch_controller inpvec 3;  [rad] only needed if using individual pitch control
-   !
+   !   16: Tower top x-velocity [m/s]
    ! Output array2 contains
    !
    !    1: Generator torque reference               [Nm]
@@ -636,6 +732,7 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    integer  GridFlag, EmergPitchStop, ActiveMechBrake
    real(mk) GenSpeed, wsp, PitchVect(3), Pe, TT_acc(2), time
    real(mk) ipc_pitch(3);
+   real(mk) TTfa_vel ! floating
    EmergPitchStop = 0
    ActiveMechBrake = 0
    ! Global Time from HAWC2
@@ -679,6 +776,10 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    !
    ! individual pitch angles ref. signal read in from individual pitch controller type2dll 
    ipc_pitch(1:3) = array1(13:15)
+   !
+   ! Tower fore-aft velocity
+   TTfa_vel = array1(16)
+   !
    !***********************************************************************************************
    ! Safety system
    !***********************************************************************************************
@@ -710,14 +811,21 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    !***********************************************************************************************
    call turbine_controller(CtrlStatus, GridFlag, GenSpeed, PitchVect, wsp, Pe, TT_acc, &
                            GenTorqueRef, PitchColRef, dump_array)
+   ! ********************************************************************************
+   ! Floating additional loop
+   ! ********************************************************************************
+   ! TTfa_vel = tower_velocity_calcuation(TTfa_acc)
+	if ((abs(Floatingvar%TPgain) .gt. 0.0_mk).or.(abs(Floatingvar%TGgain) .gt. 0.0_mk)) then
+		call floating_controller(CtrlStatus, time, Floatingvar, TTfa_vel, wsp, Pitch_addition, GenTorque_addition, dump_array)
+	endif
    !***********************************************************************************************
    ! Output
    !***********************************************************************************************
 
-   array2( 1) = GenTorqueRef/GearRatio      !    1: Generator torque reference               [Nm]
-   array2( 2) = PitchColRef + ipc_pitch(1)  !    2: Pitch angle reference of blade 1         [rad]
-   array2( 3) = PitchColRef + ipc_pitch(2)  !    3: Pitch angle reference of blade 2         [rad]
-   array2( 4) = PitchColRef + ipc_pitch(3)  !    4: Pitch angle reference of blade 3         [rad]
+   array2( 1) = GenTorqueRef/GearRatio   +GenTorque_addition    !    1: Generator torque reference               [Nm]
+   array2( 2) = PitchColRef + ipc_pitch(1)  + Pitch_addition !    2: Pitch angle reference of blade 1         [rad]
+   array2( 3) = PitchColRef + ipc_pitch(2)  + Pitch_addition !    3: Pitch angle reference of blade 2         [rad]
+   array2( 4) = PitchColRef + ipc_pitch(3)  + Pitch_addition !    4: Pitch angle reference of blade 3         [rad]
    !array2( 2) = PitchColRef                !    2: Pitch angle reference of blade 1         [rad]
    !array2( 3) = PitchColRef                !    3: Pitch angle reference of blade 2         [rad]
    !array2( 4) = PitchColRef                !    4: Pitch angle reference of blade 3         [rad]
@@ -761,7 +869,165 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    array2(42) = dump_array(38)         !   42: Generator torque limit in region 2.5 when derating
    array2(43) = dump_array(39)         !   43: Estimated Tip-speed ratio (lambda)  [-]
    array2(44) = dump_array(40)         !   44: Estimated rotor-effecitve wind speed [m/s]
+   array2(45) = Floatingvar%switchfactor           !   45: switch factor for floating turbine 
+   array2(46) = Floatingvar%TTfa_vel_filt          !   46: Filtered tower-top fore-aft velocity [m/s]
+   array2(47) = GenTorque_addition     !   47: Generator Torque from additional loop [Nm]
+   array2(48) = Pitch_addition         !   48: Blade pitch angle from additional loop [rad]
    return
 end subroutine update_regulation
 !**************************************************************************************************
+subroutine init_external_ctrl_dll(array1, array2) bind(c, name='init_external_ctrl_dll')
+   ! Call this subroution in HAWC2 type2_dll block for init purpose 
+   ! when using controller dlls from the 3rd party
+   !DEC$ IF .NOT. DEFINED(__LINUX__)
+   !DEC$ ATTRIBUTES DLLEXPORT :: init_external_ctrl_dll
+   !GCC$ ATTRIBUTES DLLEXPORT :: init_external_ctrl_dll
+   !DEC$ END IF
+   ! I/O parameters
+   real(mk), dimension(10), intent(inout) :: array1
+   real(mk), dimension(1), intent(inout)  :: array2
+   ! local variables
+
+   ! Required init parameters from users to initialize the controller :
+   ! constant    1: time step                       [s]
+   ! constant    2: total drivetrain efficiency     [-]
+   ! constant    3: reserved init parameters        [-]
+   ! constant    4: reserved init parameters        [-]
+
+   external_dll%time_step  = array1(1)
+   external_dll%efficiency = array1(2)
+   external_dll%func_name = 'WTController'
+
+   ! Load the 3rd party dll into memory
+   write(6,'(A)') 'The external 3rd party DLL "'//trim(external_dll%filename)//'" is attempted to open.'
+   external_dll%p_dll=loaddll(external_dll%filename,0)
+   if (external_dll%p_dll==0) then
+     write(0,'(A)') '*** ERROR *** External 3rd party DLL "'//trim(external_dll%filename)//'" could not be loaded!'
+     array2(1)=0.0
+   else
+     write(6,'(A)') 'Successfully opening the external 3rd party DLL "'//trim(external_dll%filename)//'"'
+     array2(1)=1.0
+   endif
+  
+   ! Load function or subroutine from this 3rd party dll
+   external_dll%p_func = loadsymbol(external_dll%p_dll,trim(adjustl(external_dll%func_name)),0) 
+
+   if (transfer(external_dll%p_func,C_INTPTR_T)==0) then
+     write(0,'(A)') '*** ERROR *** The function "'//trim(adjustl(external_dll%func_name))//'" could not be loaded in the external 3rd party DLL.'
+     array2(1)=0.0
+   else
+     write(6,'(A)') 'Successfully loading function "'//trim(adjustl(external_dll%func_name))//'" from the external 3rd party DLL.'
+     array2(1)=1.0
+   endif   
+   ! Now it works for Intel Fortran Compiler in VS 2017/2019 and GNU Fortran on Windows
+   ! TODO: 
+   ! Remember to test this implementation on Linux
+   call c_f_procpointer(transfer(external_dll%p_func,c_null_funptr),fp_WTController)
+
+   stepno = 0
+   time_old = 0.0_mk
+
+end subroutine init_external_ctrl_dll
+
+subroutine update_external_ctrl_dll(array1, array2) bind(c, name='update_external_ctrl_dll')
+   ! Call this subroution in HAWC2 type2_dll block at each time step
+   ! when using the controller dlls from the 3rd party
+   !DEC$ IF .NOT. DEFINED(__LINUX__)
+   !DEC$ ATTRIBUTES DLLEXPORT :: update_external_ctrl_dll
+   !GCC$ ATTRIBUTES DLLEXPORT :: update_external_ctrl_dll
+   !DEC$ END IF
+   ! subroutine arguments
+   real(mk), dimension(10), intent(inout) :: array1
+   real(mk), dimension(10), intent(inout) :: array2
+
+   ! local variables
+   integer       :: i
+   integer, save :: i_step = 0
+   logical, save :: is_verbose = .false.
+   real(4), save :: ctrl_output(50)
+   real(mk)         time 
+    
+   !--------------------------------------------------------------------------------------------    
+   !Required inputs from hawc2 to controller in array1:
+   ! avrSWAP(1)  1: rotor speed                     [rad/s]
+   ! avrSWAP(2)  2: tower top fore-aft acceleration [m/s^2]
+   ! avrSWAP(3)  3: time                            [s]
+   ! avrSWAP(4)  4: Shut down trigger (1: shutdown) [-]
+   ! avrSWAP(5)  5: simulation status (0,1,-1 )     [-] 0: first step, 1: reset step, -1: last step
+   !--------------------------------------------------------------------------------------------    
+   !--------------------------------------------------------------------------------------------    
+   !Returned outputs from controller to hawc2 in array2:
+   ! array2(1)   1: generator reference torque      [Nm]
+   ! array2(2)   2: blade 1 pitch angle reference   [radians]
+   ! array2(3)   3: blade 2 pitch angle reference   [radians]
+   ! array2(4)   4: blade 3 pitch angle reference   [radians]
+   ! array2(5)   5: region switch                   [-]
+   ! array2(6)   6: low-pass filtered tower top fore-aft acceleration [m/s^2]
+   ! array2(7)   7: integrated/calculated tower top fore-aft velocity [m/s]
+   ! array2(8)   8: additional pitch angle due to the tower top velocity feedback loop [radians]
+   ! array2(9)   9: Electrical power [W]
+   ! array2(10) 10: Mechanical power [W]
+   !--------------------------------------------------------------------------------------------    
+   ! p = external_dll%p_func
+   external_dll%avrSWAP(1)   = array1(1)
+   external_dll%avrSWAP(2)   = array1(2)
+   external_dll%avrSWAP(3)   = array1(3)
+   external_dll%is_shutdown  = int(array1(4))
+   external_dll%hawc2_status = int(array1(5))
+
+   time = array1(3)
+
+   if (time .gt. time_old) then
+       deltat = time - time_old
+       time_old = time
+       stepno = stepno + 1
+       newtimestep = .TRUE.
+   else 
+       newtimestep = .FALSE.
+   endif
+   ! hawc2 status == 0 is the first hawc2 timestep
+   if(external_dll%is_shutdown /= 1 .and. external_dll%hawc2_status == 0) then
+       write(6,*) 'HAWC2 info: First timestep:', stepno, time
+       if(DEBUG_Flag) then
+           write(6,*) "Press 'c' to Continue without debug INFO! , 'q' to Quit!, 'p' to print debug info and run!"
+           read(*,*) str
+           if(str == 'q') then
+               stop
+           elseif(str == 'c') then
+               str = 'c'
+               is_verbose = .false.
+           elseif(str == 'p') then
+               is_verbose = .true.
+           endif
+       endif
+   elseif(external_dll%is_shutdown /= 1 .and. external_dll%hawc2_status == -1) then
+       write(6,*) 'HAWC2 info: Last timestep:', stepno, time
+   elseif(external_dll%is_shutdown == 1) then
+       write(6,*) 'HAWC2 info: Shut down is triggered!.'
+   endif 
+   if(stepno == 2 .and. is_verbose) then
+       write(6,'(8a20)') 'Time [s]','RotorSpeed [rad/s]','PitchAngle [deg]','GenTorq [Nm]','Pe[W]','RegionSwitch [-]','AdditionPitch [deg]','TwrTopVel [m/s]'
+   endif
+   ! Run the external 3rd part controller
+   call fp_WTController(external_dll%avrSWAP(1),external_dll%avrSWAP(2), &
+                        external_dll%avrSWAP(3),external_dll%is_shutdown, &
+                        ctrl_output)
+   external_dll%aero_power = external_dll%avrSWAP(1)*ctrl_output(2) 
+   external_dll%elec_power = external_dll%aero_power * external_dll%efficiency 
+   if((mod(stepno,250) == 0) .and. is_verbose) then
+       write(6,'(8E20.6)') time,external_dll%avrSWAP(1),ctrl_output(1),ctrl_output(2),ctrl_output(8), ctrl_output(3), ctrl_output(6), ctrl_output(5)
+   endif
+   
+   array2(1)   = -ctrl_output(2)        ! generator reference torque on the LSS side [Nm]
+   array2(2:4) =  ctrl_output(1)*degrad ! blade 1,2,3 reference pitch angle [rads]
+   array2(5)   =  ctrl_output(3)        ! region switch                     [-]
+   array2(6)   =  ctrl_output(4)        ! low-pass filtered tower top fore-aft acceleration [m/s^2]
+   array2(7)   =  ctrl_output(5)        ! integrated/calculated tower top fore-aft velocity [m/s]
+   array2(8)   =  ctrl_output(6)*degrad ! additional pitch angle due to the tower top velocity feedback loop [rads]
+   array2(9)   =  ctrl_output(8)        ! Electrical power [W]
+   array2(10)  =  ctrl_output(8)/external_dll%efficiency        ! Mechanical power [W]
+
+   return
+end subroutine update_external_ctrl_dll
+ 
 end module dtu_we_controller
