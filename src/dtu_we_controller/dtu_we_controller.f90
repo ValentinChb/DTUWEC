@@ -19,7 +19,7 @@ module dtu_we_controller
 
    ! variables for debugging purpose
    character(1) str
-   logical, save :: DEBUG_Flag = .true.
+   logical, save :: DEBUG_Flag = .false.
    ! Now it works for Intel Fortran Compiler with Visual Studio 2017/2019 and GNU Fortran on Windows
    ! TODO: 
    ! Remember to test this implementation on Linux
