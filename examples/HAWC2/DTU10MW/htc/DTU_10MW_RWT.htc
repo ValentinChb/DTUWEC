@@ -361,17 +361,14 @@
 ;
     begin type2_dll;
       name	dtu_we_controller;
-	  filename C:\Users\famen\repos_BasicDTUController\build_DHI_vs17\src\dtu_we_controller\Debug\dtu_we_controller.dll;
-;      filename	./dtu_we_controller.dll;
-;      dll_subroutine_init	init_regulation_advanced;
-      dll_subroutine_init	init_external_ctrl_dll;
+      filename	./control/dtu_we_controller.dll;
+      dll_subroutine_init	init_regulation_advanced;
       dll_subroutine_update	update_regulation;
       arraysizes_init	100 1;
       arraysizes_update	100 100;
 ; used in down regulation control strategies, wind speed estimation or 3rd party controller dll
-;	  init_string ./control/additional_control_parameters.txt; 
-	  init_string ./control/libFloatStep_DHI_FoWTCtrl.dll;
-      begin init;
+;	    init_string ./control/additional_control_parameters.txt; 
+    begin init;
 ; Overall parameters
         constant	1 10000;	Rated power [kW]
         constant	2 0.628;	Minimum rotor (LSS) speed [rad/s]
@@ -483,7 +480,7 @@
 		constant 	81 0.0; Moment of inertia of the rotor 
 ; 	  Floating additional control loop
 		constant 	82 11.4;    Rated wind speed (Only used when constant 79 = 3 OR constant 95 = 0)
-		constant 	83 1.0;		Gain for the loop mapping from tower velocity to blade pitch [rad/(m/s)]
+		constant 	83 0.0;		Gain for the loop mapping from tower velocity to blade pitch [rad/(m/s)]
 		constant  	84 0.0; 	Gain for the loop mapping from tower velocity to GenTorque [Nm/(m/s)]
 		constant  	85 10.0; 	Time to switch on the floating control loop [s]
 		constant    86 0.0; 	Frequency of LP filter [Hz] (Default 0 if filter not used)
@@ -519,7 +516,7 @@
 ;
     begin type2_dll;
       name	generator_servo;
-      filename	./generator_servo.dll;
+      filename	./control/generator_servo.dll;
       dll_subroutine_init	init_generator_servo;
       dll_subroutine_update	update_generator_servo;
       arraysizes_init	100 1;
@@ -548,7 +545,7 @@
 ;
     begin type2_dll;
       name	mech_brake;
-      filename	./mech_brake.dll;
+      filename	./control/mech_brake.dll;
       dll_subroutine_init	init_mech_brake;
       dll_subroutine_update	update_mech_brake;
       arraysizes_init	100 1;
@@ -573,7 +570,7 @@
 ;
     begin type2_dll;
       name	servo_with_limits;
-      filename	./servo_with_limits.dll;
+      filename	./control/servo_with_limits.dll;
       dll_subroutine_init	init_servo_with_limits;
       dll_subroutine_update	update_servo_with_limits;
       arraysizes_init	100 1;
@@ -609,7 +606,7 @@
 ;-------------------------------------------
     begin type2_dll;
       name	towerclearance_mblade;
-      filename	./towerclearance_mblade.dll;
+      filename	./control/towerclearance_mblade.dll;
       dll_subroutine_init	initialize;
       dll_subroutine_update	update;
       arraysizes_init	3 1;
