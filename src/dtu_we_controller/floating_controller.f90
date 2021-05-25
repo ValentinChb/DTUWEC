@@ -49,12 +49,14 @@ subroutine floating_controller(CtrlStatus, time, Floatingvar, TTfa_vel, wsp, Pit
 	TTfa_vel_filt = y(1)
 	!!******************
 	! filterd wind speed for gain-scheduling
-	WSPfilt = lowpass1orderfilt(deltat, stepno, wspfirstordervar, wsp)
-	if (Floatingvar%GSmode .gt. 0.0_mk) then
-		Floatingvar%GSvar = abs(WSPfilt - Floatingvar%RatedWindSpeed)
-	else
+
+	if (Floatingvar%GSmode .gt. 0.0_mk)  then
 		Floatingvar%GSvar = PitchColRef
+	else
+		WSPfilt = lowpass1orderfilt(deltat, stepno, wspfirstordervar, wsp)
+		Floatingvar%GSvar = abs(WSPfilt - Floatingvar%RatedWindSpeed)
 	endif
+
 	!!****************** 
 	! Main Loop
 	! Tower-pitch loop

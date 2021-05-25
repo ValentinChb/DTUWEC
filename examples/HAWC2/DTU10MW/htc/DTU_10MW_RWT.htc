@@ -488,10 +488,10 @@
 		constant    88 0.0; 	Frequency of BP filter [Hz] (Default 0 if filter not used)
 		constant    89 0.02; 	Damping ratio of BP filter  [-] (Default 0.02)
 		constant    90 0.0; 	Time constant of BP filter [s] (Default 0)
-		cosntant    91 0.0; 	Coefficient of linear term in gain scheduling for tower-pitch loop, KK1 [1/(m/s)];
+		constant    91 0.0; 	Coefficient of linear term in gain scheduling for tower-pitch loop, KK1 [1/(m/s)];
 								; Kgain * (1 + KK1 *abs(WSPfilt - WSPrated) + KK2 * abs(WSPfilt - WSPrated)**2)
 		constant    92 0.0; 	Coefficient of quadratic term in gain scheduling for tower-pitch loop, KK2 [1/(m/s)^2];
-		cosntant    93 0.0; 	Coefficient of linear term in gain scheduling for tower-genTorq loop, KK1 [1/(m/s)];
+		constant    93 0.0; 	Coefficient of linear term in gain scheduling for tower-genTorq loop, KK1 [1/(m/s)];
 		constant    94 0.0; 	Coefficient of quadratic term in gain scheduling for tower-genTorq loop, KK2 [1/(m/s)^2];
 		constant    95 1.0;     Choice of gain-scheduling variable (0: WSPfilt, 1:Pitch angle (Default))
 	 end init;
