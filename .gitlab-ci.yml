@@ -1,47 +1,15 @@
-variables:
-    GIT_SUBMODULE_STRATEGY: normal
+include:
+  project: 'OpenLAC/utils'
+  file: 'ci/control_dlls.yml'
 
-build_x86:
-  image: openlac_build_winserv1809:intel2021.1_x86
-  stage:
-    build
-  script:
-  - mkdir build ; cd build
-  - cmake .. -GNinja -DCMAKE_BUILD_TYPE=RELEASE
-  - ninja
-  artifacts:
-    paths:
-    - build\src\*\*.dll
-    expire_in: 30 mins
-  tags:
-  - vind-pone-ci02
-
-build_x64:
-  image: openlac_build_winserv1809:intel2021.1
-  stage:
-    build
-  script:
-  - mkdir build ; cd build
-  - cmake .. -GNinja -DCMAKE_BUILD_TYPE=RELEASE
-  - ninja
-  artifacts:
-    paths:
-    - build\src\*\*.dll
-    expire_in: 30 mins
-  tags:
-  - vind-pone-ci02
-
-build_ubuntu:
-  image: openlac_build_ubuntu20.04:intel2021.1
-  stage:
-    build
-  script:
-  - mkdir build ; cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=RELEASE
-  - make -j
-  artifacts:
-    paths:
-    - build/src/*/*.so
-    expire_in: 30 mins
-  tags:
-  - ci-ubuntu
+.build_release:
+    stage: build
+    artifacts:
+        paths:
+        - $BUILD_DIR/src/*/*.exe
+        - $BUILD_DIR/src/*/*.dll
+        - $BUILD_DIR/src/*/*.so
+        - $BUILD_DIR/src/*/PGOPTI.* # codecov files
+        expire_in: 1 week
+    script:
+    - python utils/ci/ci_utils.py "$RELEASE_CONF" cmake $COMPILER $BUILDER
