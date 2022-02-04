@@ -97,6 +97,8 @@ module user_defined_types
     type TDeratevar
        integer  :: strat          
        real(mk) :: dr = 1.0_mk
+       type(Tlowpass2order) :: dr2ordervar
+       integer  :: Nsteps_update ! VC edit: Number of steps between each parameter update of the minimum-Ct de-rating algorithm
     end type
 
     ! Wind speed estimator data type

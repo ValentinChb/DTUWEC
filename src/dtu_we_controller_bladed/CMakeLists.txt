@@ -21,6 +21,7 @@ file(GLOB_RECURSE SRC "${BLADED_INTERFACE_SRC_DIR}/dtu_we_controller_bladed.f90"
 					  "${DTUWEC_SRC_DIR}/turbine_controller.f90"
 					  "${DTUWEC_SRC_DIR}/safety_system.f90"
 					  "${DTUWEC_SRC_DIR}/floating_controller.f90"
+					  "${BLADED_INTERFACE_SRC_DIR}/SCClientSubs.f90"
 	)
 	
 list (APPEND SRC ${MODSRC})

@@ -217,9 +217,9 @@ subroutine init_regulation(array1, array2) bind(c, name='init_regulation')
      OPdatavar%wpdata(2,2) = minimum_pitch_angle
    else
      write(text32,'(i3)') int(minimum_pitch_angle*raddeg)
-     inquire(file='./control/wpdata.'//trim(adjustl(text32)),exist=findes)
+     inquire(file=trim(control_dir)//'/wpdata.'//trim(adjustl(text32)),exist=findes)
      if (findes) then
-       open(88,file='./control/wpdata.'//trim(adjustl(text32)))
+       open(88,file=trim(control_dir)//'/wpdata.'//trim(adjustl(text32)))
        read(88,*,iostat=ifejl) OPdatavar%lines
        if (ifejl.eq.0) then
          do i=1,OPdatavar%lines
@@ -558,7 +558,7 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
    write(6,*) "Controller dll initialization is successed!!"
    if(DEBUG_Flag) then
        
-       ! pdll = loaddll('./control/cyclic_pitch_controller.dll',0)
+       ! pdll = loaddll(trim(control_dir)//'/cyclic_pitch_controller.dll',0)
 
        ! if(pdll == 0) then
        !    write(*,*) " DLL NOT loaded. "

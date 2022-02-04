@@ -92,6 +92,10 @@ module global_variables
 
     ! define global avariables for external 3rd party DLLs
     Type (Tdll),          save :: external_dll
+
+    ! VC edit: local directory (instead of the original ./control)
+    character(255),       save :: control_dir 
+
 !**************************************************************************************************
 end module global_variables
     

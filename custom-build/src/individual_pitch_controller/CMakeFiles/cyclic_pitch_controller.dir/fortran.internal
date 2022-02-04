@@ -1,0 +1,15 @@
+# The fortran modules provided by this target.
+provides
+ buildinfo.mod
+ cyclic_pitch_controller_fcns_mod.mod
+ cyclic_pitch_controller_mod.mod
+ dfwin.mod
+ dll_utils.mod
+ filesystem_tools.mod
+ global_constants.mod
+ global_variables.mod
+ logging.mod
+ misc_mod.mod
+ path_utils.mod
+ stringutils.mod
+ user_defined_types.mod

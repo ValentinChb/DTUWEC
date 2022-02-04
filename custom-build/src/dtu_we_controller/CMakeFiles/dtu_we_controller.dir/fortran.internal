@@ -1,0 +1,18 @@
+# The fortran modules provided by this target.
+provides
+ buildinfo.mod
+ dfwin.mod
+ dll_utils.mod
+ dtu_we_controller.mod
+ dtu_we_controller_fcns.mod
+ filesystem_tools.mod
+ floating_controller_mod.mod
+ global_constants.mod
+ global_variables.mod
+ logging.mod
+ misc_mod.mod
+ path_utils.mod
+ safety_system_mod.mod
+ stringutils.mod
+ turbine_controller_mod.mod
+ user_defined_types.mod
