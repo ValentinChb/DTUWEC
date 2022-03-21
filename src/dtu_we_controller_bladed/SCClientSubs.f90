@@ -15,20 +15,20 @@ real                            :: SC_DT       ! timestep for the supercontrolle
 integer                         :: UseSC
 integer                         :: Mod_AmbWind
 character(256)                  :: MPIinit_filename
-logical, parameter              :: verbose = .false.
+logical, parameter              :: verbose = .true.
 logical, parameter              :: textout = .true.
 integer                         :: output_unit_eff
+character(255), save            :: dir_ctrl, dir_fast           
 
-character(255), save, public    :: dir_ctrl, dir_fast           ! directory of this routine (containing dll); root OpenFAST directory (normally two folders up)
-
-public                          :: SC_MPI, FDT!, TSC
+public                          :: SC_MPI, TSC, get_TSC
 
 ! User defined type for super controller - deprecated. internal use in SCClientsSubs module only, initialized by SC_Init without going through calling routine (turbine controller)
 type :: TSC
+    integer                     :: useSC
     integer(C_SIZE_T)           :: iT                           ! Current turbine number, for super controller
     integer(C_SIZE_T)           :: nT                           ! Number of turbines, for super controller
     real(C_FLOAT)               :: SC_DT                        ! FAST.farm time step
-    character(256)              :: SC_setup                     ! Setup file for super controller
+    character(255)              :: dir_ctrl, dir_fast           ! directory of this routine (containing dll); root OpenFAST directory (normally two folders up)
 end type TSC
 
 contains
@@ -41,6 +41,7 @@ subroutine SC_MPI(status, avrSWAP, lfilename, SCinit_filename, ierror)
     integer, intent(in)                     :: lfilename
     character(kind=c_char), intent(in)      :: SCinit_filename(lfilename)       ! The name of the parameter input .IN file
     integer                                 :: ierror
+    ! logical, parameter                      :: powerramp=.true.
 
     ! logical                                 :: initflag
     ! integer                                 :: taskID, ntasks
@@ -52,7 +53,7 @@ subroutine SC_MPI(status, avrSWAP, lfilename, SCinit_filename, ierror)
     ! if (status /=0) print*, iT
     if (UseSC==0) then
         avrSWAP(13)=12e6 ! make sure the commanded power is higher than rated power
-        !avrSWAP(13)=avrSWAP(13)-ABS(FLOOR(avrSWAP(2)/100.0)*1.0e6-avrSWAP(13))  ! Power ramp
+        ! if(powerramp) avrSWAP(13)=avrSWAP(13)-ABS(FLOOR(avrSWAP(2)/100.0)*1.0e6-avrSWAP(13))  ! Power ramp
         if(status/=0) goto 10
     endif
 
@@ -177,11 +178,16 @@ subroutine SC_init(lfilename,SCinit_filename_C,ierror)
 end subroutine SC_init
 
 !-------------------------------------------------------------------------
-! Gives farm-level timestep
-function FDT()
-    real(C_FLOAT)       :: FDT
-    FDT = SC_DT
-endfunction FDT
+! Get farm-level variables
+subroutine get_TSC(SC_var)
+    type(TSC), intent(inout) :: SC_var
+    SC_var%useSC = useSC
+    SC_var%SC_DT = SC_DT
+    SC_var%iT = iT
+    SC_var%nT = nT
+    SC_var%dir_ctrl = dir_ctrl
+    SC_var%dir_fast = dir_fast
+endsubroutine get_TSC
 
 !-------------------------------------------------------------------------
 ! Works in coordination with InflowWind_Driver to progressively provide vtk files to FAST.farm

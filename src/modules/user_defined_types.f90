@@ -97,8 +97,12 @@ module user_defined_types
     type TDeratevar
        integer  :: strat          
        real(mk) :: dr = 1.0_mk
-       type(Tlowpass2order) :: dr2ordervar
+       real(mk) :: dr0 = 1.0_mk ! VC edit: initial de-rating factor
+       type(Tlowpass2order) :: dr2ordervar ! VC edit: filter parameters for de-rating factor
        integer  :: Nsteps_update ! VC edit: Number of steps between each parameter update of the minimum-Ct de-rating algorithm
+       type(Tlowpass2order) :: omega2ordervar ! VC edit: filter parameters for generator speed
+       type(tfirstordervar) :: wspfirstordervar ! VC edit: filter parameters for wind speed
+       type(Tlowpass2order) :: Pitch2ordervar ! VC edit: filter parameters for wind speed
     end type
 
     ! Wind speed estimator data type

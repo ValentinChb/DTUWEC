@@ -587,7 +587,7 @@ subroutine readAdditionalCtrlParameter(controlDataFile,downRegulationData,Cptabl
             select case (trim(words%wordArray(2)))    
             case ('down_regulation')
                 ! Rend the down_regulation block
-                write(6,*) 'Reading the down_regulation block ...'
+                write(6,*) 'Reading the down regulation block ...'
                 call readDownRegulation(controlDataFile,downRegulationData,err,errMsg,errCode)
                 if((err .eqv. .true.) .and. (trim(errMsg) == 'block')) then
                     call errorInvalidBlock(controlDataFile)
@@ -644,13 +644,13 @@ subroutine readAdditionalCtrlParameter(controlDataFile,downRegulationData,Cptabl
             case ('turbine_property')
                 ! Read the wind turbine property block
                 ! need to be implemented together with Alan
-                write(6,*) ' WARNING: turbine property block is not implemented yet. Ignored!'
+                if(verbose .or. iturb==1) write(6,*) ' WARNING: turbine property block is not implemented yet. Ignored!' ! VC edit: print only if asked
                 ! Skip the sub-blocks inside this block.
                 call skipSection(controlDataFile)
             !--------------------------------------------
             case ('mpc')
                 ! Read the mpc block
-                write(6,*) ' WARNING: mpc block is not implemented yet. Ignored!'
+                if(verbose .or. iturb==1) write(6,*) ' WARNING: mpc block is not implemented yet. Ignored!' ! VC edit: print only if asked
                 ! Skip the sub-blocks inside this block.
                 call skipSection(controlDataFile)
             !--------------------------------------------
@@ -665,7 +665,7 @@ subroutine readAdditionalCtrlParameter(controlDataFile,downRegulationData,Cptabl
             ! Data in additional control parameter file given above is OK
             all_ok=.true.
             if ((all_ok.eqv..true.) .and. (err .eqv. .false.)) then
-                write(6,*) ' Additional control commands and parameters are read successfully.'
+                if(verbose .or. iturb==1) write(6,*) ' Additional control commands and parameters are read successfully (unimplemented features have been ignored)' ! VC edit: print only if asked
             else
                 write(6,*) ' ERROR: Not all needed Additional control commands and parameters are presented.'
             endif
@@ -704,7 +704,7 @@ subroutine readDownRegulation(controlDataFile,outData,err,errMsg,errCode)
                 if (err.eqv..true.) then
                     exit
                 else
-                    write(6,*) 'MESSAGE: '//'MinCtTable is read successfully from file: '//trim(adjustl(controlDataFile%includedFileName))
+                    if(verbose .or. iturb==1) write(6,*) 'MESSAGE: '//'MinCtTable is read successfully from file: '//trim(adjustl(controlDataFile%includedFileName)) ! VC edit: print only if asked
                 endif
             case default
                 ! call errorInvalidBlock(controlDataFile)
@@ -763,7 +763,7 @@ subroutine readTable(controlDataFile,outTable,err,errMsg,errCode)
         case ('')
             continue
         case ('file')
-           filename = trim(words%wordArray(2)) 
+           filename = adjustl(trim(control_dir)//'\'//trim(words%wordArray(2))) ! VC edit: the path is now given relative to working directory
            controlDataFile%includedFileName = filename
            call readDataAtMinCt(filename,nRow,nCol,outTable,err,errCode)
            ! errCode = 1: file does not exist 
@@ -796,7 +796,7 @@ end subroutine readTable
 !**************************************************************************************************
 subroutine readDataAtMinCt(dataFile,numRows,numCols,downRegulationData,err,errCode)
     ! Declare subroution input argument variables
-    character(64), intent(in) :: dataFile
+    character(256), intent(in) :: dataFile ! VC edit: increased string length
     integer, intent(in) :: numRows, numCols
     type(TdownRegulationData), intent(inout)::downRegulationData
     logical, intent(inout) :: err
@@ -853,7 +853,7 @@ end subroutine readDataAtMinCt
 !**************************************************************************************************
 subroutine readDataCp(dataFile,numRows,numCols,outData,err,errCode)
     ! Declare subroution input argument variables
-    character(64), intent(in) :: dataFile
+    character(256), intent(in) :: dataFile  ! VC edit: increased string length
     integer, intent(in) :: numRows, numCols
     type(TCpData), intent(inout):: outData
     logical, intent(inout) :: err
@@ -958,12 +958,12 @@ subroutine readEstimation(controlDataFile,outData,err,errMsg,errCode)
                 if (err.eqv..true.) then
                     exit
                 else
-                    write(6,*) 'MESSAGE: '//trim(words%wordArray(2))//' is read successfully from file:'//trim(adjustl(controlDataFile%includedFileName))
+                    if(verbose .or. iturb==1) write(6,*) 'MESSAGE: '//trim(words%wordArray(2))//' is read successfully from file:'//trim(adjustl(controlDataFile%includedFileName)) ! VC edit: print only if asked
                 endif
             case('cttable','pitchangle','lambda')
                 ! skip those three sections for now
                 call skipSection(controlDataFile)
-                write(6,*) ' WARNING: '//trim(words%wordArray(2))//'block is not implemented yet. Ignored!'
+                if(verbose .or. iturb==1) write(6,*) ' WARNING: '//trim(words%wordArray(2))//'block is not implemented yet. Ignored!' ! VC edit: print only if asked
             case default
                 ! Invalid Block names
                 err = .true.
@@ -1023,7 +1023,7 @@ subroutine readCpTable(controlDataFile,outTable,err,errMsg,errCode)
         case ('')
             continue
         case ('file')
-           filename = trim(words%wordArray(2)) 
+           filename = adjustl(trim(control_dir)//'\'//trim(words%wordArray(2))) ! VC edit: the path is now given relative to working directory
            controlDataFile%includedFileName = filename
            call readDataCp(filename,nRow,nCol,outTable,err,errCode)
            ! errCode = 1: file does not exist 
@@ -1202,5 +1202,48 @@ function GradDesc(estQ, GenSpeed, PitchMean, WindEstvar,Cptable)
     GradDesc = lambda    
     return
 end function GradDesc
+
+! VC edit: get fixed pitch angle in partial load derated operation
+function GetOptiPitchDerate(Cpderate,lambda,Pitch0,PitchMin,Cptable)
+    real(mk), intent(in) :: Cpderate, lambda, Pitch0, PitchMin
+    type(TCpData), intent(in) :: Cptable 
+    real(mk) :: f, f_deriv, Pitch, Cp, Cpmax, GetOptiPitchDerate, dCpdPitch, dPitch
+    integer :: i
+
+    Pitch=Pitch0 ! initial guess
+    f= 1.0_mk
+    f_deriv =  1.0_mk
+    dPitch=0.5 ! perturbation for differentiation
+
+    ! Get max power coefficient
+    Cpmax=0.0
+    do i=1,Cptable%NumPitchAngles
+        Cp=look_up_Cp(Cptable,lambda,Cptable%PitchList(i,1))
+        if(Cp>Cpmax) then
+            Pitch=PitchMin
+            return
+        endif
+    enddo
+
+    i = 0
+    do while (abs(f/f_deriv) > 0.1_mk)
+        Pitch = Pitch - min(max(f/f_deriv,-5*dPitch),5*dPitch)
+        Cp = look_up_Cp(Cptable,lambda,Pitch)
+        ! print*, 'GetOptiPitchDerate: ', Cpderate, Cpmax, Cp, Pitch, lambda
+        f = (min(Cpderate,Cpmax) - Cp)/lambda**3.0_mk
+        dCpdPitch = (look_up_Cp(Cptable,lambda,Pitch) - look_up_Cp(Cptable,lambda,Pitch-dPitch))/dPitch
+        f_deriv =  -dCpdPitch/lambda**3.0_mk
+        ! Show warning if looping
+        i = i+1
+        if (i > 10) then
+            write(6,*) "Divergence in derated pitch solver!! Pitch = " , Pitch
+            i = 0
+            Pitch=PitchMin
+            exit
+        endif
+    end do
+    GetOptiPitchDerate=Pitch
+    return
+end function GetOptiPitchDerate
 !**************************************************************************************************
 end module dtu_we_controller_fcns

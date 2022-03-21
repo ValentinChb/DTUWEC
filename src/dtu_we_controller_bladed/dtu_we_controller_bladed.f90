@@ -37,7 +37,8 @@ subroutine DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG) bind(c,name=
     ! Define local Variables
     real(c_double) array1(100), array2(100)
     real(c_double),save :: gearboxRatio = 1.0
-    integer(4) :: i, iostat, callno = 0
+    integer(4) :: i, iostat 
+    integer(4), save :: callno = 0 ! VC edit: added save attribute (don't get what this variable was for if not incrementing the call number?)
     integer(c_int) :: iStatus
 
     CHARACTER(LEN=SIZE(avcINFILE))     :: cInFile      ! CHARACTER string giving the name of the parameter input file, 'DISCON.IN'
@@ -47,15 +48,17 @@ subroutine DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG) bind(c,name=
     
     ! VC edit
     real(c_float)                      :: avrSWAP_temp(84)
-    real(c_float)                      :: PPc
+    real(c_float), save                :: Vobs ! Effective wind speed
     logical                            :: ROSCO_flag = .false.
     integer(c_size_t)                  :: ROSCO_IN_LEN
-    character(Kind=c_char)             :: ROSCO_IN(nint(avrSWAP(50))) ! ROSCO_DISCON.IN//C_NULL_CHAR should be shorter that the controller input file's name (typically controller_input.dat)
-    logical, parameter                 :: verbose = .false.  
+    character(Kind=c_char)             :: ROSCO_IN(nint(avrSWAP(50))) ! ROSCO_DISCON.IN//C_NULL_CHAR should be shorter that the controller input file's name (typically controller_input.dat) 
     logical                            :: PrintFlag
-    real(c_float), save                :: dr0 ! Initial derating factor from input file
-    
-    
+    integer                            :: error
+    integer, save                      :: fidout
+    real(c_float), parameter           :: GenEff=0.94 ! Generator efficiency. Should match value in ServoDyn input file. Hardcoded here, but should be read in. 
+    type(TSC), save                    :: SC_var
+    logical, parameter                 :: powerramp=.true.
+
     iStatus = nint(avrSWAP(1))
 
     ! Convert c character arrays to Fortran CHARACTER strings:
@@ -67,8 +70,41 @@ subroutine DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG) bind(c,name=
     cInFile = transfer(avcINFILE(1:len(cInFile)),cInFile)
     i = index(cInFile, C_NULL_CHAR) - 1       ! Find the c NULL character at the end of cInFile, if it has then remove it
     if (i>0) cInFile = cInFile(1:i)
+
+
+    !------------------------------ VC edit ----------------------------------------
+    PrintFlag = mod(dble(avrSWAP(2)),SC_var%SC_DT)==0.0 .or. callno==0 ! Outputs only at new farm-level timestep
+
+    ! Call ROSCO if actual
+    avrSWAP_temp=avrSWAP(1:84)
+    if (ROSCO_flag) then
+        i = max(index(cInFile,"/",back=.true.),index(cInFile,"\",back=.true.)) ! Get working directory as the root folder of the specified controller input file
+        ROSCO_IN=c_null_char
+        ROSCO_IN_LEN=i+len("ROSCO.IN")+1 ! Append a c_null_char at the end
+        ROSCO_IN(1:ROSCO_IN_LEN)=transfer(cInFile(1:i)//"ROSCO.IN"//c_null_char,ROSCO_IN(1:ROSCO_IN_LEN))
+        print*, ROSCO_IN_LEN, ROSCO_IN
+        avrSWAP_temp(50)=real(ROSCO_IN_LEN,c_float)
+        avrSWAP_temp(65) = merge(1.0,0.0,PrintFlag)
+        call ROSCO_DISCON(avrSWAP_temp,aviFAIL,ROSCO_IN(1:ROSCO_IN_LEN),avcOUTNAME,avcMSG)
+        ! Update wind speed
+        ! avrSWAP(27) = avrSWAP_temp(27) ! Override anemometer wind speed. If using this, make sure array1(36) is 0 in controller input file to make low-pass filters on wind speed ineffective
+    endif
+    if(WindEstvar%J == 0.0 .or. array2(44)==0.0) Vobs = avrSWAP_temp(27) ! Update effective wind speed by either nacelle wind speed or ROSCO's estimator in case DTUWEC's estimator is deactivated.
+    ! print*, 'Vobs', Vobs, EstSpeed_flag, avrSWAP_temp(27), avrSWAP(27), array2(44), callno
+    ! Call supercontroller routine. If useSC=0, MPI communication will not be used.
+    avrSWAP_temp = avrSWAP(1:84)
+    avrSWAP_temp(27) = Vobs ! Override with effective wind speed
+    call SC_MPI(iStatus, avrSWAP_temp(1:84), nint(avrSWAP_temp(50)), avcINFILE , aviFAIL)
+    avrSWAP_temp(27) = avrSWAP(27)
+    if(iStatus>=1) avrSWAP(1:84)=avrSWAP_temp
+    !---------------------------------------------------------------------------------
     
     if (callno == 0 .and. iStatus == 0) then
+
+        ! VC edit : Get supercontroller type variable and broadcast to global variables
+        call get_TSC(SC_var)
+        iturb=SC_var%iT 
+        control_dir=SC_var%dir_ctrl 
     
         pCtrlInputFile=>null()
         if(.not. associated(pCtrlInputFile)) then
@@ -84,7 +120,7 @@ subroutine DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG) bind(c,name=
 
         if(fileExistsDllCall(trim(adjustl(pCtrlInputFile%name)))) then
             open(unit=pCtrlInputFile%fileID,file=trim(adjustl(pCtrlInputFile%name)),action='read')
-            if(verbose) write(6,'(A)') ' Reading controller input parameters from file: '//trim(adjustl(pCtrlInputFile%name)) ! VC edit: print only if asked
+            if(verbose .or. iturb==1) write(6,'(A)') ' Reading controller input parameters from file: '//trim(adjustl(pCtrlInputFile%name)) ! VC edit: print only if asked
         else
             write(6,*) ' ERROR: FAST/BLADED interface Control input file: '//trim(adjustl(pCtrlInputFile%name))//' does not exist.'
             stop
@@ -94,51 +130,26 @@ subroutine DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG) bind(c,name=
         ! type2_dll input array1 style controller init data block
 
         call type2_dll_input(pCtrlInputFile,array1)
+        if (EstSpeed_flag) array1(36) = 0.0 ! VC edit: if estimated wind speed is used instead of measured, it should not be filtered.
         call init_regulation_advanced(array1, array2)
 
         ! gearboxRatio = array1(82)
-        gearboxRatio=GearRatio ! VC edit. Don't understand the original (commented out) statement. array1(82) refers to "Rated wind speed used as reference in min Ct de-rating strategy" in input file.
+        gearboxRatio=1 ! VC edit: gear ratio should be 1 here, using gearboxRatio=GearRatio would lead to a double count in update_regulation. Don't understand the original (commented out) statement: array1(82) refers to "Rated wind speed used as reference in min Ct de-rating strategy" in input file.
 
-        if(verbose) write(*,*) 'Controller input parameters read successfully!' ! VC edit: print only if asked
+        if(verbose .or. iturb==1) write(*,*) 'Controller input parameters read successfully!' ! VC edit: print only if asked
         if(verbose) write(*,*) 'Current time: ',dble(avrSWAP( 2)) ! VC edit: print only if asked
 
-        ! Controller initialization is done and set callno to 1
-        callno = 1
-        array1 = 0.0_mk
+        ! Controller initialization is done and set callno to 1 ! VC edit: commented this out (obsolete)
+        ! callno = 1 
+        ! array1 = 0.0_mk 
 
     endif
 
     !------------------------------ VC edit ----------------------------------------
-    PrintFlag = mod(dble(avrSWAP(2)),FDT())==0.0 .or. callno==1 ! Outputs only at new farm-level timestep
-
-    ! Call ROSCO if actual
-    if (ROSCO_flag) then
-        i = max(index(cInFile,"/",back=.true.),index(cInFile,"\",back=.true.)) ! Get working directory as the root folder of the specified controller input file
-        ROSCO_IN=c_null_char
-        ROSCO_IN_LEN=i+len("ROSCO.IN")+1 ! Append a c_null_char at the end
-        ROSCO_IN(1:ROSCO_IN_LEN)=transfer(cInFile(1:i)//"ROSCO.IN"//c_null_char,ROSCO_IN(1:ROSCO_IN_LEN))
-        print*, ROSCO_IN_LEN, ROSCO_IN
-        avrSWAP_temp=avrSWAP(1:84)
-        avrSWAP_temp(50)=real(ROSCO_IN_LEN,c_float)
-        avrSWAP_temp(65) = merge(1.0,0.0,PrintFlag)
-        call ROSCO_DISCON(avrSWAP_temp,aviFAIL,ROSCO_IN(1:ROSCO_IN_LEN),avcOUTNAME,avcMSG)
-        ! Update wind speed
-        array2(40) = avrSWAP_temp(27) ! Effective wind speed. This will override any value written by DTUWEC's windEstimator routine at last time step.
-        ! avrSWAP(27) = avrSWAP_temp(27) ! Override anemometer wind speed. If using this, make sure array1(36) is 0 in controller input file to make low-pass filters on wind speed ineffective
-    endif
-
-    ! Call supercontroller routine. If useSC=0, MPI communication will not be used.
-    avrSWAP_temp=avrSWAP(1:84)
-    avrSWAP_temp(27)=array2(40) ! Override with effective wind speed
-    call SC_MPI(iStatus, avrSWAP_temp(1:84), nint(avrSWAP_temp(50)), avcINFILE , aviFAIL)
-    if(iStatus>=1) avrSWAP(1:84)=avrSWAP_temp
-    ! print*, avrSWAP(13), iStatus
-    PPc = avrSWAP(13) ! Demanded power
-    
-    if(callno==1) dr0=Deratevar%dr ! Obtained from input file, derived from available power (if updated)
-    Deratevar%dr=PPc/PeRated
-    
-    if(callno==1) control_dir=dir_ctrl ! Broadcast working directory to global variable
+    if(callno==0) Deratevar%dr0=Deratevar%dr ! Obtained from input file, derived from available power (if updated)
+    if (SC_var%useSC==0) avrSWAP(13) = Deratevar%dr0*PeRated
+    if(powerramp) avrSWAP(13)=max(PeRated-ABS((FLOOR(avrSWAP(2)/100.0)+1)*PeRated/10.0-PeRated),PeRated/10.0)  ! Power ramp
+    Deratevar%dr=avrSWAP(13)/PeRated
     !-------------------------------------------------------------------------------
 
     array1 = 0.0_mk
@@ -155,7 +166,7 @@ subroutine DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG) bind(c,name=
         array1( 4) = dble(avrSWAP(33))             !    4: constraint bearing2 pitch2 1 only 1
         array1( 5) = dble(avrSWAP(34))             !    5: constraint bearing2 pitch3 1 only 1
         array1( 7) = 0.0_mk                        !  6-8: wind free_wind 1 0.0 0.0 hub height
-        array1( 6) = dble(avrSWAP(27))             !  VC edit: swap 6 and 7, the x component should well come first??? that has no strong impact in update_regulation as total horizontal speed is used
+        array1( 6) = dble(merge(Vobs,avrSWAP(27),EstSpeed_flag))             !  VC edit: use estimated wind speed if actual; VC edit: swap 6 and 7, the x component should well come first??? that has no strong impact in update_regulation as total horizontal speed is used
         array1( 8) = 0.0_mk
         array1( 9) = dble(avrSWAP(15))             !    9: elec. power
         array1(10) = int(0)                        !   10: grid flag  ; [1=no grid,0=grid]
@@ -175,7 +186,7 @@ subroutine DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG) bind(c,name=
         avrSWAP(44) = array2( 4)   ! "
         avrSWAP(45) = array2( 2)   ! Use the command angle of blade 1 if using collective pitch
         avrSWAP(46) = 0.0e0          ! Demanded pitch rate (Collective pitch)
-        avrSWAP(47) = array2( 1)/gearboxRatio     ! Demanded generator torque
+        avrSWAP(47) = array2( 1)/gearboxRatio/GenEff     ! Demanded generator torque ! VC edit: compensate for drivetrain losses
         avrSWAP(48) = 0.0e0          ! Demanded nacelle yaw rate
         avrSWAP(55) = 0.0e0          ! Pitch override: 0=yes
         avrSWAP(56) = 0.0e0          ! Torque override: 0=yes
@@ -184,7 +195,22 @@ subroutine DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG) bind(c,name=
         avrSWAP(79) = 0.0e0          ! Request for loads: 0=none
         avrSWAP(80) = 0.0e0          ! Variable slip current status
         avrSWAP(81) = 0.0e0          ! Variable slip current demand
+
     endif 
+    
+    if(WindEstvar%J /= 0.0) Vobs = array2(44) ! VC edit: update effective wind speed
+
+    ! VC edit: print out avrSWAP for debug
+    if(callno==0) then
+        call getFreeFileUnit(fidout)
+        open(unit=fidout,file=trim(control_dir)//'\DTUWEC_out.dat',iostat=error)
+    endif
+    write(fidout,'(*(e13.4))') avrSWAP(2), avrSWAP(21), avrSWAP(45)*180.0/pi, avrSWAP(4)*180.0/pi, avrSWAP(47), avrSWAP(13), avrSWAP(15), avrSWAP(27), Vobs
+    if(PrintFlag) call flush(fidout)
+    if (iStatus < 0) close(fidout)
+    ! if(iturb==1) print*, 'DISCON: ',iStatus, avrSWAP(13), Vobs
+
+    callno=callno+1 ! VC edit: had incrementation been omitted originally?
     
     return
 end subroutine DISCON

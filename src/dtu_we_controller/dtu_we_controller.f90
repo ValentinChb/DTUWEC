@@ -53,7 +53,7 @@ subroutine init_regulation(array1, array2) bind(c, name='init_regulation')
    real(mk) minimum_pitch_angle
    logical findes
 
-   call echo_version()
+   if(verbose .or. iturb==1) call echo_version() ! VC edit: print version info only if asked
 
    ! Input array1 must contain
    ! Overall parameters
@@ -448,16 +448,17 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
    if (Deratevar%strat > 0) then          
        Deratevar%dr = array1(80)/100.0_mk 
    endif
-   ! Read the additional control commands and parameters file
-   if (Deratevar%strat == 3) then
+   ! Read the additional control commands and parameters file ! VC edit: added wind estimator to trigger this if block, don't know why this was done separately (and possibly once more) originally 
+   if (Deratevar%strat .ge. 4 .or. array1(81) .gt. 0.0_mk ) then
        ! Set initial mean wind speed from type2_dll init block
        ! This is mainly used for creating additional controller output file names 
 
        ! Get the rated wind speed needed by min ct de-rating strategy
        RatedWindSpeed = array1(82);
-       ! Get the filename from the subroution initstring() called by the HAWC2 
-       ! type2_dll interface
-       additionalCtrlParamFile%name = additionalCtrlParamFilename
+       ! Get the filename from the subroution initstring() called by the HAWC2 type2_dll interface ! VC edit: I can't see that initstring is called anywhere, perhaps init_string in .htc files? Anyway, let's use a harcoded filename in working directory
+      !  additionalCtrlParamFile%name = additionalCtrlParamFilename 
+
+       additionalCtrlParamFile%name = trim(control_dir)//'\additional_control_parameters.txt'
        ! Get a free file unit id for additional control parameter input file
        call getFreeFileUnit(additionalCtrlParamFile%fileID)
 
@@ -477,7 +478,7 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
        !    write(6,'(1X,A)') 'Additional control output file:'//trim(controllerOutput%name)//' is created.'
        ! else
        !     write(6,*) ''
-       !     write(6,'(1X,A)') 'Additional control output file:'//trim(controllerOutput%name)//' can not created.'
+       !     write(6,'(1X,A)') 'Additional control output file:'//trim(controllerOutput%name)//' can not be created.'
        ! endif
        
        ! Allocate memory
@@ -487,11 +488,10 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
        
        ! Assign the memory address to the pointer variable 'pAdditionalCtrlParamFile'
        pAdditionalCtrlParamFile = additionalCtrlParamFile
-       
        ! open the additional control parameter file for reading
        if(fileExists(pAdditionalCtrlParamFile%name)) then
            open(unit=pAdditionalCtrlParamFile%fileID,file=pAdditionalCtrlParamFile%name,action='read')
-           write(6,'(A)') ' Reading additional control parameters from file: '//trim(adjustl(pAdditionalCtrlParamFile%name)) 
+           if(verbose .or. iturb==1) write(6,'(A)') ' Reading additional control parameters from file: '//trim(adjustl(pAdditionalCtrlParamFile%name))  ! VC edit: print only if asked
        else
            write(6,*) ' ERROR: additional control parameter file: '//trim(adjustl(pAdditionalCtrlParamFile%name))//' does not exist.'
            stop
@@ -511,51 +511,54 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
    
    ! Rotor effective wind speed estimator
    if (array1(81) .gt. 0.0_mk ) then
-   WindEstvar%J = array1(81)  ! 0.1051157075E+09_mk for DTU 10MW ! Rotor inertia
-   WindEstvar%est_Qa = 8e6 ! Initial guess
-   WindEstvar%Q = 1.0_mk  ! Tunning parameter
-   WindEstvar%R = 1.0_mk  ! Tunning parameter
-   WindEstvar%Kp = 1E5 ! Tunning parameter
-   WindEstvar%Ki = 1E7 ! Tunning parameter
-   WindEstvar%sum_err = 0
-   WindEstvar%P = 0
-   WindEstvar%xhat = 0
-   WindEstvar%radius = array1(47)/2.0_mk
-   write(6,*) "Rotor-effective wind speed estimator is active!!"									
+      WindEstvar%J = array1(81)  ! 0.1051157075E+09_mk for DTU 10MW ! Rotor inertia
+      WindEstvar%est_Qa = 8e6 ! Initial guess
+      WindEstvar%Q = 1.0_mk  ! Tunning parameter
+      WindEstvar%R = 1.0_mk  ! Tunning parameter
+      WindEstvar%Kp = 1E5 ! Tunning parameter
+      WindEstvar%Ki = 1E7 ! Tunning parameter
+      WindEstvar%sum_err = 0
+      WindEstvar%P = 0
+      WindEstvar%xhat = 0
+      WindEstvar%radius = array1(47)/2.0_mk
+      if(verbose .or. iturb==1) write(6,*) "Rotor-effective wind speed estimator is active!!"	 ! VC edit: print only if asked								
    
-   ! read Cp table
-   additionalCtrlParamFile%name = additionalCtrlParamFilename
-   call getFreeFileUnit(additionalCtrlParamFile%fileID)
-    ! Allocate memory
-       if(.not. associated(pAdditionalCtrlParamFile)) then
-           allocate(pAdditionalCtrlParamFile)
-       endif
-       
-       ! Assign the memory address to the pointer variable 'pAdditionalCtrlParamFile'
-       pAdditionalCtrlParamFile = additionalCtrlParamFile
-       
-       ! open the additional control parameter file for reading
-       if(fileExists(pAdditionalCtrlParamFile%name)) then
-           open(unit=pAdditionalCtrlParamFile%fileID,file=pAdditionalCtrlParamFile%name,action='read')
-           write(6,'(A)') ' Reading additional control parameters from file: '//trim(adjustl(pAdditionalCtrlParamFile%name)) 
-       else
-           write(6,*) ' ERROR: additional control parameter file: '//trim(adjustl(pAdditionalCtrlParamFile%name))//' does not exist.'
-           stop
-       endif
+      ! VC edit: commented this out, this is now performed in the previous if block
 
-       ! read the additional control parameter file 
-       call readAdditionalCtrlParameter(pAdditionalCtrlParamFile,downRegulationData,CpData,err)
-       if(err) then
-           close(pAdditionalCtrlParamFile%fileID)
-           stop
-       else
-           close(pAdditionalCtrlParamFile%fileID)
-       endif     
+      ! ! read Cp table
+      ! ! additionalCtrlParamFile%name = additionalCtrlParamFilename
+      ! additionalCtrlParamFile%name = trim(control_dir)//"\"
+      ! call getFreeFileUnit(additionalCtrlParamFile%fileID)
+      ! ! Allocate memory
+      ! if(.not. associated(pAdditionalCtrlParamFile)) then
+      !     allocate(pAdditionalCtrlParamFile)
+      ! endif
+      
+      ! ! Assign the memory address to the pointer variable 'pAdditionalCtrlParamFile'
+      ! pAdditionalCtrlParamFile = additionalCtrlParamFile
+      
+      ! ! open the additional control parameter file for reading
+      ! if(fileExists(pAdditionalCtrlParamFile%name)) then
+      !     open(unit=pAdditionalCtrlParamFile%fileID,file=pAdditionalCtrlParamFile%name,action='read')
+      !     write(6,'(A)') ' Reading additional control parameters from file: '//trim(adjustl(pAdditionalCtrlParamFile%name)) 
+      ! else
+      !     write(6,*) ' ERROR: additional control parameter file: '//trim(adjustl(pAdditionalCtrlParamFile%name))//' does not exist.'
+      !     stop
+      ! endif
+
+      ! ! read the additional control parameter file 
+      ! call readAdditionalCtrlParameter(pAdditionalCtrlParamFile,downRegulationData,CpData,err)
+      ! if(err) then
+      !     close(pAdditionalCtrlParamFile%fileID)
+      !     stop
+      ! else
+      !     close(pAdditionalCtrlParamFile%fileID)
+      ! endif     
    
    endif
    
    ! This is only for debugging
-   write(6,*) "Controller dll initialization is successed!!"
+   if(verbose .or. iturb==1) write(6,*) "Controller dll initialization succeeded" ! VC edit: modified message. print only if actual.
    if(DEBUG_Flag) then
        
        ! pdll = loaddll(trim(control_dir)//'/cyclic_pitch_controller.dll',0)
@@ -822,7 +825,7 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    ! Output
    !***********************************************************************************************
 
-   array2( 1) = GenTorqueRef/GearRatio   +GenTorque_addition    !    1: Generator torque reference               [Nm]
+   array2( 1) = GenTorqueRef/GearRatio   + GenTorque_addition    !    1: Generator torque reference               [Nm]
    array2( 2) = PitchColRef + ipc_pitch(1)  + Pitch_addition !    2: Pitch angle reference of blade 1         [rad]
    array2( 3) = PitchColRef + ipc_pitch(2)  + Pitch_addition !    3: Pitch angle reference of blade 2         [rad]
    array2( 4) = PitchColRef + ipc_pitch(3)  + Pitch_addition !    4: Pitch angle reference of blade 3         [rad]

@@ -93,8 +93,11 @@ module global_variables
     ! define global avariables for external 3rd party DLLs
     Type (Tdll),          save :: external_dll
 
-    ! VC edit: local directory (instead of the original ./control)
-    character(255),       save :: control_dir 
+    ! VC edit
+    character(255),       save :: control_dir  ! local directory (instead of the original ./control)
+    logical, parameter         :: verbose = .false. 
+    integer                    :: iturb     ! turbine number (used for debug)
+    logical, parameter         :: EstSpeed_flag = .false. ! Use estimated wind speed instead of nacelle measurement (anemometer)?
 
 !**************************************************************************************************
 end module global_variables
