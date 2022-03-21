@@ -1,4 +1,4 @@
-# DTU Wind Enenergy Controller modified for power tracking and co-simulation
+# DTU Wind Energy Controller modified for power tracking and co-simulation
 
 This is a branch of the Basic DTU Wind Energy Controller:
 https://gitlab.windenergy.dtu.dk/OpenLAC/BasicDTUController
