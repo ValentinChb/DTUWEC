@@ -161,6 +161,9 @@ if(CMAKE_Fortran_COMPILER)
 
         set(CMAKE_Fortran_FLAGS_DEBUG   "-O0 -g3 -fcheck=bounds")
         set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -march=native -static -fcheck=bounds")
+
+        #VC edit: add flag to fix error "invalid register for .seh_savexmm"
+		set(CMAKE_Fortran_FLAGS_RELEASE "${CMAKE_Fortran_FLAGS_RELEASE} -fno-asynchronous-unwind-tables")
         
     elseif (${CMAKE_Fortran_COMPILER_ID} STREQUAL "Intel")
         # message ("Using Intel fortran")
