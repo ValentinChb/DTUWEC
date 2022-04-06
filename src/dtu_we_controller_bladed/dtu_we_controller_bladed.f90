@@ -57,7 +57,7 @@ subroutine DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG) bind(c,name=
     integer, save                      :: fidout
     real(c_float), parameter           :: GenEff=0.94 ! Generator efficiency. Should match value in ServoDyn input file. Hardcoded here, but should be read in. 
     type(TSC), save                    :: SC_var
-    logical, parameter                 :: powerramp=.true.
+    logical, parameter                 :: powerramp=.false.
 
     iStatus = nint(avrSWAP(1))
 
