@@ -450,7 +450,7 @@ subroutine derate_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
    ! Calculate the estimated aerodynamic torque and effective wind speed 
    !***********************************************************************************************
    if (WindEstvar%J > 0.0_mk) then
-      call windEstimator(GenTorqueRef, GenSpeed, PitchMean, WindEstvar, Cpdata, deltat,estAeroTorq,estLambda,estREWS )
+      call windEstimator(GenTorqueRef, GenSpeed, PitchMean, WindEstvar, Cpdata, deltat,estAeroTorq,estLambda,estREWS, WSPfilt )
       ! Write into dump array 
       dump_array(29) = estAeroTorq 
       dump_array(39) = estLambda ! [-]
