@@ -151,7 +151,7 @@ subroutine normal_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
    ! Calculate the estimated aerodynamic torque and effective wind speed
    !***********************************************************************************************
    if (WindEstvar%J > 0.0_mk) then
-    call windEstimator(GenTorqueRef, GenSpeed, PitchMean, WindEstvar, Cpdata, deltat,estAeroTorq,estLambda,estREWS )
+    call windEstimator(GenTorqueRef, GenSpeed, PitchMean, WindEstvar, Cpdata, deltat,estAeroTorq,estLambda,estREWS,WSPfilt )
     ! Write into dump array 
     dump_array(29) = estAeroTorq 
     dump_array(39) = estLambda ! [-]
@@ -1156,7 +1156,7 @@ subroutine towerdamper(TTfa_acc, theta_dam_ref, dump_array)
    return
 end subroutine towerdamper
 !**************************************************************************************************
-subroutine windEstimator(GenTorqueRef, GenSpeed, PitchMean, WindEstvar, Cptable, deltat,estAeroTorq,estLambda,estREWS )
+subroutine windEstimator(GenTorqueRef, GenSpeed, PitchMean, WindEstvar, Cptable, deltat,estAeroTorq,estLambda,estREWS,WSPfilt )
     !
     ! Wind Estimator based on "Estimation of effective wind speed" by Ostergaard et al. (2007)
     !
@@ -1164,10 +1164,11 @@ subroutine windEstimator(GenTorqueRef, GenSpeed, PitchMean, WindEstvar, Cptable,
     type(TWindEstvar), intent(inout) :: WindEstvar  
     type(TCpData), intent(in) :: Cptable 
     real(mk), intent(inout) :: estAeroTorq, estLambda, estREWS
+    real(mk), intent(in) :: WSPfilt ! VC edit
     estAeroTorq = AeroTorqEstimator(GenTorqueRef, GenSpeed, WindEstvar, deltat) ! [Nm]
   !  PitchIndex = findloc(PitchMean, CpData%
   !  dump_array(50) = FLOAT(INT(1.26_mk*10.0_mk+0.5_mk))/10.0_mk
-    estLambda= GradDesc(estAeroTorq, GenSpeed,PitchMean*raddeg,WindEstvar,CpData)
+    estLambda= GradDesc(estAeroTorq, GenSpeed,PitchMean*raddeg,WindEstvar,CpData,WSPfilt)
     estREWS= GenSpeed*WindEstvar%radius/estLambda
     return
 end subroutine windEstimator
