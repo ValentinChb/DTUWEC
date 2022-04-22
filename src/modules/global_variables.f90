@@ -98,6 +98,8 @@ module global_variables
     logical, parameter         :: verbose = .false. 
     integer                    :: iturb     ! turbine number (used for debug)
     logical, parameter         :: EstSpeed_flag = .false. ! Use estimated wind speed instead of nacelle measurement (anemometer)?
+    real(mk)                   :: EstSpeed
+    real(mk)                   :: time 
 
 !**************************************************************************************************
 end module global_variables

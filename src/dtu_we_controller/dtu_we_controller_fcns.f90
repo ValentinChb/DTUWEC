@@ -1163,7 +1163,7 @@ function AeroTorqEstimator( GenTorqueRef, GenSpeed, WindEstvar,deltat)
     return
 end function AeroTorqEstimator 
 !
-function GradDesc(estQ, GenSpeed, PitchMean, WindEstvar,Cptable)
+function GradDesc(estQ, GenSpeed, PitchMean, WindEstvar,Cptable,WSPfilt)
 ! In the current version, gearbox ratio is omitted
     implicit none
     integer, parameter :: mk = kind(1.0d0) 
@@ -1173,6 +1173,7 @@ function GradDesc(estQ, GenSpeed, PitchMean, WindEstvar,Cptable)
     ! WindEstvar and their temp arrays
     type(TWindEstvar), intent(inout) :: WindEstvar  
     type(TCpData), intent(in) :: Cptable 
+    real(mk), intent(in) :: WSPfilt
     integer :: i
     ! assign WindEstvar value
     r = WindEstvar%radius
@@ -1193,9 +1194,12 @@ function GradDesc(estQ, GenSpeed, PitchMean, WindEstvar,Cptable)
          ! Show warning if looping
          i = i +1
          if (i > 10) then
-         write(6,*) "Divergence in wind speed estimator!! Lambda = " , lambda
-         lambda = lambda + 5.0_mk ! add a random number to break the loop
-         i = 0
+            write(6,*) "Turbine ",iturb, ": Divergence in wind speed estimator!! Lambda = " , lambda ! VC edit: add info about turbine number
+            ! VC edit: use filtered anemometer wind speed and exit for numerical stability
+            ! lambda = lambda + 5.0_mk ! add a random number to break the loop
+            ! i = 0
+            lambda=GenSpeed*r/WSPfilt
+            exit
          endif
       
     end do
