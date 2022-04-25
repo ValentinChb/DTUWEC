@@ -58,7 +58,7 @@ src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/utils/string_
 	$(CMAKE_COMMAND) -E touch src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/utils/string_utils.f90.obj.provides.build
 src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/build: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/utils/string_utils.f90.obj.provides.build
 src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/version/BuildInfo.f90.obj: ../src/dtu_we_controller/file_info.h
-src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/version/BuildInfo.f90.obj: src/dtu_we_controller/version.h
+src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/version/BuildInfo.f90.obj: ../utils/version/version.h
 
 src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/version/BuildInfo.f90.obj.provides.build: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/buildinfo.mod.stamp
 src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/buildinfo.mod.stamp: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/version/BuildInfo.f90.obj
@@ -148,6 +148,6 @@ src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/turbine_controller.f90.ob
 	$(CMAKE_COMMAND) -E touch src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/turbine_controller.f90.obj.provides.build
 src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/build: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/turbine_controller.f90.obj.provides.build
 src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/version/version.rc.obj: ../src/dtu_we_controller/file_info.h
+src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/version/version.rc.obj: ../utils/version/version.h
 src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/version/version.rc.obj: ../utils/version/version.rc
-src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/version/version.rc.obj: src/dtu_we_controller/version.h
 

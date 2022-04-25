@@ -1,5 +1,5 @@
-#define GIT_ID "0.5-16-gf693d18-dirty" 
-#define GIT_VERSION  =,-1 
+#define GIT_ID "0.5-17-gc3e3004-dirty" 
+#define GIT_VERSION 0,5,-1 
 #define GIT_BRANCH "master" 
 #define USERNAME "valentinc" 
 #define COMPUTERNAME "SINTEFPC8945" 

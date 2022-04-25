@@ -58,7 +58,7 @@ src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/uti
 	$(CMAKE_COMMAND) -E touch src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/utils/string_utils.f90.obj.provides.build
 src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/build: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/utils/string_utils.f90.obj.provides.build
 src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/version/BuildInfo.f90.obj: ../src/flap_controller_cyclic/file_info.h
-src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/version/BuildInfo.f90.obj: src/flap_controller_cyclic/version.h
+src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/version/BuildInfo.f90.obj: ../utils/version/version.h
 
 src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/version/BuildInfo.f90.obj.provides.build: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/buildinfo.mod.stamp
 src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/buildinfo.mod.stamp: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/version/BuildInfo.f90.obj
@@ -115,6 +115,6 @@ src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/flap_controller
 	$(CMAKE_COMMAND) -E touch src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/flap_controller_cyclic_fcns.f90.obj.provides.build
 src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/build: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/flap_controller_cyclic_fcns.f90.obj.provides.build
 src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/version/version.rc.obj: ../src/flap_controller_cyclic/file_info.h
+src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/version/version.rc.obj: ../utils/version/version.h
 src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/version/version.rc.obj: ../utils/version/version.rc
-src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/version/version.rc.obj: src/flap_controller_cyclic/version.h
 

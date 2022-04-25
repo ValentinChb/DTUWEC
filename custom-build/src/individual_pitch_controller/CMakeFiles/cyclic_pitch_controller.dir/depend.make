@@ -58,7 +58,7 @@ src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/uti
 	$(CMAKE_COMMAND) -E touch src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/utils/string_utils.f90.obj.provides.build
 src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/build: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/utils/string_utils.f90.obj.provides.build
 src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/version/BuildInfo.f90.obj: ../src/individual_pitch_controller/file_info.h
-src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/version/BuildInfo.f90.obj: src/individual_pitch_controller/version.h
+src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/version/BuildInfo.f90.obj: ../utils/version/version.h
 
 src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/version/BuildInfo.f90.obj.provides.build: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/buildinfo.mod.stamp
 src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/buildinfo.mod.stamp: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/version/BuildInfo.f90.obj
@@ -115,6 +115,6 @@ src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/cyclic_pi
 	$(CMAKE_COMMAND) -E touch src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/cyclic_pitch_controller_fcns.f90.obj.provides.build
 src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/build: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/cyclic_pitch_controller_fcns.f90.obj.provides.build
 src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/version/version.rc.obj: ../src/individual_pitch_controller/file_info.h
+src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/version/version.rc.obj: ../utils/version/version.h
 src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/version/version.rc.obj: ../utils/version/version.rc
-src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/version/version.rc.obj: src/individual_pitch_controller/version.h
 

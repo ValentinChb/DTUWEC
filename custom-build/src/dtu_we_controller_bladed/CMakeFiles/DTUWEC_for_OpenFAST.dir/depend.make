@@ -66,7 +66,7 @@ src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/util
 	$(CMAKE_COMMAND) -E touch src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/utils/string_utils.f90.obj.provides.build
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/build: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/utils/string_utils.f90.obj.provides.build
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/BuildInfo.f90.obj: ../src/dtu_we_controller_bladed/file_info.h
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/BuildInfo.f90.obj: src/dtu_we_controller_bladed/version.h
+src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/BuildInfo.f90.obj: ../utils/version/version.h
 
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/BuildInfo.f90.obj.provides.build: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/buildinfo.mod.stamp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/buildinfo.mod.stamp: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/BuildInfo.f90.obj
@@ -167,6 +167,6 @@ src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controlle
 	$(CMAKE_COMMAND) -E touch src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.obj.provides.build
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/build: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.obj.provides.build
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/version.rc.obj: ../src/dtu_we_controller_bladed/file_info.h
+src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/version.rc.obj: ../utils/version/version.h
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/version.rc.obj: ../utils/version/version.rc
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/version.rc.obj: src/dtu_we_controller_bladed/version.h
 
