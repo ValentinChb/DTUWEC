@@ -243,7 +243,7 @@ subroutine VTKSync(status,time)
     endif
 
     ! Update time for InflowWind_driver
-    if (iT==1) call UpdateTime(nint(time/SC_DT),trim(winddir_src_f),1000,t_writelo) ! Low-resolution domain
+    if (iT==1) call UpdateTime(floor(time/SC_DT),trim(winddir_src_f),1000,t_writelo) ! Low-resolution domain
     call UpdateTime(nint(time/VTK_DT),trim(winddir_src_t),1000+iT,t_write) 
     if (iT==1 .and. OutputTiming) t_write=t_write+t_writelo
     
