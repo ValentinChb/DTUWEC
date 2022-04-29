@@ -341,6 +341,7 @@ subroutine VTKSync(status,time)
             inquire(file=path_src,exist=file_exists)
             call system_clock(count_clock)
             tcmp=(count_clock/count_rate_f)-tic
+            print*, "VTKSync: waiting for ",trim(adjustl(path_src))," to be created"
             if (tcmp>2.0 .and. .not. warningflag) then
                 print*, "VTKSync: waiting for ",trim(adjustl(path_src))," to be created"
                 warningflag=.true.
