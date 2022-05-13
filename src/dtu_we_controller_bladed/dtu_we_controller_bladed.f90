@@ -205,7 +205,7 @@ subroutine DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG) bind(c,name=
         call getFreeFileUnit(fidout)
         open(unit=fidout,file=trim(control_dir)//'\DTUWEC_out.dat',iostat=error)
     endif
-    write(fidout,'(*(e13.4))') avrSWAP(2), avrSWAP(21), avrSWAP(45)*180.0/pi, avrSWAP(4)*180.0/pi, avrSWAP(47), avrSWAP(13), avrSWAP(15), avrSWAP(27), Vobs
+    write(fidout,'(*(e13.5))') avrSWAP(2), avrSWAP(21), avrSWAP(45)*180.0/pi, avrSWAP(4)*180.0/pi, avrSWAP(47), avrSWAP(13), avrSWAP(15), avrSWAP(27), Vobs
     if(PrintFlag) call flush(fidout)
     if (iStatus < 0) close(fidout)
     ! if(iturb==1) print*, 'DISCON: ',iStatus, avrSWAP(13), Vobs

@@ -12,13 +12,14 @@ integer                         :: nc
 integer                         :: iT
 integer                         :: nT
 real                            :: SC_DT       ! timestep for the supercontroller (FAST.farm)
-integer                         :: UseSC
+integer                         :: UseSC        
 integer                         :: Mod_AmbWind
 character(256)                  :: MPIinit_filename
 logical, parameter              :: verbose = .true.
 logical, parameter              :: textout = .true.
 integer                         :: output_unit_eff
-character(255), save            :: dir_ctrl, dir_fast           
+character(255), save            :: dir_ctrl, dir_fast  
+logical                         :: ReadSC = .true.      ! false: bypass reading SC_input.dat and force UseSC=0 (for single-turbine use)
 
 public                          :: SC_MPI, TSC, get_TSC
 
@@ -71,7 +72,7 @@ subroutine SC_MPI(status, avrSWAP, lfilename, SCinit_filename, ierror)
     
     select case (status) 
     case(0) !Initialize
-        call SC_init(lfilename, SCinit_filename, ierror)
+        call SC_init(lfilename, SCinit_filename, avrSWAP(3), ierror)
         ! print*, iT
         if (UseSC==0) goto 10
         nc=size(avrSWAP)
@@ -107,10 +108,11 @@ end subroutine SC_MPI
 
 !-------------------------------------------------------------------------
 ! Read SC input parameters
-subroutine SC_init(lfilename,SCinit_filename_C,ierror)
+subroutine SC_init(lfilename,SCinit_filename_C,DT,ierror)
 
     integer, intent(in)                     :: lfilename
-    character(kind=c_char), intent(in)      :: SCinit_filename_C(lfilename)       ! The name of the parameter input .IN file
+    character(kind=c_char), intent(in)      :: SCinit_filename_C(lfilename)         ! The name of the parameter input .IN file
+    real(C_FLOAT), intent(in)               :: DT                                   !Turbine-level timestep, uses if ReadSC=false
     integer, intent(inout)                  :: ierror
     character(lfilename-1)                  :: SCinit_filename
     character(255)                          :: temp
@@ -132,8 +134,13 @@ subroutine SC_init(lfilename,SCinit_filename_C,ierror)
     do while(.true.)
         ind=max(index(dir_fast,"/",back=.true.),index(dir_fast,"\",back=.true.))
         temp = dir_fast(ind+1:) ! stripped directory name
-        dir_fast = dir_fast(1:ind-1) ! path of root directory
-        if (count==1) dir_ctrl=dir_fast
+        dir_fast = dir_fast(1:ind-1) ! path to root directory
+        if (count==1) dir_ctrl=dir_fast ! control directory is the root directory of controller input file (given by SCinit_filename)
+        if (count==2 .and. .not. ReadSC) then ! one turbine. assume simulation directory is root directory of control directory
+            it=1
+            exit 
+        endif
+
         ! print*, 'dir_fast=',trim(adjustl(dir_fast)), 'temp=', trim(adjustl(temp))
         if(temp(1:1)=="T") then
             read(temp(2:),*,IOSTAT=e) iT
@@ -157,19 +164,23 @@ subroutine SC_init(lfilename,SCinit_filename_C,ierror)
     ! print*, 'dir_fast=',trim(adjustl(dir_fast)), ', temp=', trim(adjustl(temp))
 
     ! Read from SC_input.dat, located in the same root directory as the turbine-specific T*it* folders
-    nunit=40
-    open(unit=nunit,file=trim(adjustl(dir_fast))//"/SC_input.dat",action='read')
-        read(nunit,*) UseSC    ! 0: do not use SC, 1: use SC
-        read(nunit,*) nT       ! Number of turbines
-        read(nunit,*) SC_DT    ! Farm-level timestep
-        read(nunit,*) MPIinit_filename ! path of input file for MPI connection
-        read(nunit,*) Mod_AmbWind ! Ambient wind mode in FAST.farm
-    close(nunit)
-
-    if(it>nT) then
-        print*, "DISCON: The control file should have a turbine-specific directory of name T*turbine number* in its path tree"
-        stop
+    if (ReadSC) then
+        nunit=40
+        open(unit=nunit,file=trim(adjustl(dir_fast))//"/SC_input.dat",action='read')
+            read(nunit,*) UseSC    ! 0: do not use SC, 1: use SC
+            read(nunit,*) nT       ! Number of turbines
+            read(nunit,*) SC_DT    ! Farm-level timestep
+            read(nunit,*) MPIinit_filename ! path of input file for MPI connection
+            read(nunit,*) Mod_AmbWind ! Ambient wind mode in FAST.farm
+        close(nunit)
+    else
+        UseSC=0
+        nT=1
+        SC_DT=DT
+        MPIinit_filename="dummy"
+        Mod_AmbWind=3
     endif
+
 
     ! print*, iT, dir_fast
     ! print*, iT, dir_ctrl

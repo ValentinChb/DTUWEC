@@ -279,13 +279,13 @@ subroutine derate_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
       ! VC edit: derating strategies:
          !1. full-load operation, pitch control tracking constant rotor speed corresponding to normal operation for initial (fixed) power setpoint
          !2. full-load operation, pitch control tracking rated rotor speed
-         !3. partial-load operation, adjusting pitch angle and derated tracking factor K to provide desired power at a TSR that minimizes thrust coefficient
-         !4. full-load operation, pitch control tracking quasi-constant rotation corresponding to normal operation for actual (potentially varying) power setpoint 
+         !3. full-load operation, pitch control tracking quasi-constant rotation corresponding to normal operation for actual (potentially varying) power setpoint. Saturating to min rotor speed as lower bound, and not trying to reproduce normal operation in transition region from partial to full load.
+         !4. partial-load operation, adjusting pitch angle and derated tracking factor K to provide desired power at a TSR that minimizes thrust coefficient
          !5. partial-load operation, generalization of 3., adjusting pitch angle and derated tracking factor K to provide desired power at a selected TSR (for instance normal operation-equivalent)
 
       case(1) 
          GenSpeedDerate = ((Deratevar%dr0*PeRated)/Kopt)**(1.0_mk/3.0_mk) ! Derated Rotor Speed: Remark: this is not completely right ! VC edit: fixed to initial value (mode=1: constant speed)
-      case(3) 
+      case(3)
          GenSpeedDerate = ((drfilt*PeRated)/Kopt)**(1.0_mk/3.0_mk)
       case(4:5)
 

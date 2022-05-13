@@ -1192,13 +1192,12 @@ function GradDesc(estQ, GenSpeed, PitchMean, WindEstvar,Cptable,WSPfilt)
          dCpdlambda = (look_up_Cp(Cptable,lambda,PitchMean) - look_up_Cp(Cptable,lambda-0.1_mk,PitchMean)) /0.1_mk
          f_deriv =  -(dCpdlambda/lambda**3.0_mk  - 3.0_mk*Cp/lambda**4.0_mk)
          ! Show warning if looping
-         i = i +1
+         i = i+1
          if (i > 10) then
-            write(6,*) "Turbine ",iturb, ": Divergence in wind speed estimator!! Lambda = " , lambda ! VC edit: add info about turbine number
-            ! VC edit: use filtered anemometer wind speed and exit for numerical stability
+            lambda=GenSpeed*r/WSPfilt ! VC edit: use filtered anemometer wind speed and exit for numerical stability
+            write(6,*) "Turbine ",iturb, ": Divergence in wind speed estimator. Using lambda = " , lambda ! VC edit: add info about turbine number
             ! lambda = lambda + 5.0_mk ! add a random number to break the loop
             ! i = 0
-            lambda=GenSpeed*r/WSPfilt
             exit
          endif
       
