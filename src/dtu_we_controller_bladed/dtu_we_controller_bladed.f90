@@ -6,9 +6,11 @@ subroutine DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG) bind(c,name=
 
     use, intrinsic :: ISO_C_Binding
     use misc_mod
-    use dtu_we_controller
+    use dtu_we_controller 
     use SCClientSubs ! VC edit
+#if ROSCO
     use rosco ! VC edit
+#endif
 
     implicit none
 
@@ -49,7 +51,6 @@ subroutine DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG) bind(c,name=
     ! VC edit
     real(c_float)                      :: avrSWAP_temp(84)
     real(c_float), save                :: Vobs ! Effective wind speed
-    logical                            :: ROSCO_flag = .false.
     integer(c_size_t)                  :: ROSCO_IN_LEN
     character(Kind=c_char)             :: ROSCO_IN(nint(avrSWAP(50))) ! ROSCO_DISCON.IN//C_NULL_CHAR should be shorter that the controller input file's name (typically controller_input.dat) 
     logical                            :: PrintFlag
@@ -77,18 +78,18 @@ subroutine DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG) bind(c,name=
 
     ! Call ROSCO if actual
     avrSWAP_temp=avrSWAP(1:84)
-    if (ROSCO_flag) then
-        i = max(index(cInFile,"/",back=.true.),index(cInFile,"\",back=.true.)) ! Get working directory as the root folder of the specified controller input file
-        ROSCO_IN=c_null_char
-        ROSCO_IN_LEN=i+len("ROSCO.IN")+1 ! Append a c_null_char at the end
-        ROSCO_IN(1:ROSCO_IN_LEN)=transfer(cInFile(1:i)//"ROSCO.IN"//c_null_char,ROSCO_IN(1:ROSCO_IN_LEN))
-        print*, ROSCO_IN_LEN, ROSCO_IN
-        avrSWAP_temp(50)=real(ROSCO_IN_LEN,c_float)
-        avrSWAP_temp(65) = merge(1.0,0.0,PrintFlag)
-        call ROSCO_DISCON(avrSWAP_temp,aviFAIL,ROSCO_IN(1:ROSCO_IN_LEN),avcOUTNAME,avcMSG)
-        ! Update wind speed
-        ! avrSWAP(27) = avrSWAP_temp(27) ! Override anemometer wind speed. If using this, make sure array1(36) is 0 in controller input file to make low-pass filters on wind speed ineffective
-    endif
+#if ROSCO
+    i = max(index(cInFile,"/",back=.true.),index(cInFile,"\",back=.true.)) ! Get working directory as the root folder of the specified controller input file
+    ROSCO_IN=c_null_char
+    ROSCO_IN_LEN=i+len("ROSCO.IN")+1 ! Append a c_null_char at the end
+    ROSCO_IN(1:ROSCO_IN_LEN)=transfer(cInFile(1:i)//"ROSCO.IN"//c_null_char,ROSCO_IN(1:ROSCO_IN_LEN))
+    print*, ROSCO_IN_LEN, ROSCO_IN
+    avrSWAP_temp(50)=real(ROSCO_IN_LEN,c_float)
+    avrSWAP_temp(65) = merge(1.0,0.0,PrintFlag)
+    call ROSCO_DISCON(avrSWAP_temp,aviFAIL,ROSCO_IN(1:ROSCO_IN_LEN),avcOUTNAME,avcMSG)
+    ! Update wind speed
+    ! avrSWAP(27) = avrSWAP_temp(27) ! Override anemometer wind speed. If using this, make sure array1(36) is 0 in controller input file to make low-pass filters on wind speed ineffective
+#endif
     if(WindEstvar%J == 0.0 .or. array2(44)==0.0) Vobs = avrSWAP_temp(27) ! Update effective wind speed by either nacelle wind speed or ROSCO's estimator in case DTUWEC's estimator is deactivated.
     ! print*, 'Vobs', Vobs, EstSpeed_flag, avrSWAP_temp(27), avrSWAP(27), array2(44), callno
     ! Call supercontroller routine. If useSC=0, MPI communication will not be used.

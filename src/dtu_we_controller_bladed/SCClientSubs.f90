@@ -1,6 +1,8 @@
 module SCClientSubs
 
-use mpi
+#if MPI
+    use mpi
+#endif
 use, intrinsic          :: ISO_C_Binding
 use, intrinsic          :: ISO_FORTRAN_ENV, only : stdout=>output_unit ! get output unit for stdout, see https://stackoverflow.com/questions/8508590/standard-input-and-output-units-in-fortran-90
 
@@ -69,15 +71,19 @@ subroutine SC_MPI(status, avrSWAP, lfilename, SCinit_filename, ierror)
     ! print*, taskID, ntasks
 
     if(verbose .and. status/=0) write(output_unit_eff,*) 'Client Main: turbine nr:', iT, '     status:', status, 'timestep:', nint(avrSWAP(2)/avrSWAP(3))
+
+#if MPI
     
     select case (status) 
     case(0) !Initialize
+        
         call SC_init(lfilename, SCinit_filename, avrSWAP(3), ierror)
         ! print*, iT
         if (UseSC==0) goto 10
         nc=size(avrSWAP)
         server_comm=0
         if(iT==1) call MPIClient_init(ierror)
+
     case(1:) !Step
         ! IF(status==1) call MPIClient_send(avrSWAP,ierror) ! Send to server at each farm-level timestep
         ! IF(status==2) call MPIClient_receive(avrSWAP,ierror) ! Receive command from server at each farm-level timestep, with one turbine-level timestep delay to let the supercontroller gather and process info from all turbines
@@ -98,6 +104,14 @@ subroutine SC_MPI(status, avrSWAP, lfilename, SCinit_filename, ierror)
         call cleanup()
     case default !Cycle
     endselect
+
+#else
+
+    ReadSC=.false.
+    call SC_init(lfilename, SCinit_filename, avrSWAP(3), ierror)
+        
+#endif
+
     10 continue
     if (Mod_AmbWind==1) call VTKSync(status,avrSWAP(2))
     ! print*, iT
@@ -402,6 +416,8 @@ subroutine VTKSync(status,time)
 
 end subroutine VTKSync
 
+#if MPI
+
 !-------------------------------------------------------------------------
 ! Sets up MPI communication
 subroutine MPIClient_init(ierror)
@@ -526,6 +542,7 @@ subroutine MPIClient_stop(ierror)
 
 endsubroutine MPIClient_stop
 !-------------------------------------------------------------------------
+#endif
 
 !-------------------------------------------------------------------------
 ! Terminates module 

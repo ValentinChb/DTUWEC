@@ -14,7 +14,6 @@ set(FLAPCYC_SRC_DIR   ${CMAKE_CURRENT_SOURCE_DIR}/src/flap_controller_cyclic)
 set(BUILD_TYPE SHARED)
 set(LIB static)
 
-
 message("Configuring DTU WEC source files: " ${DTUWEC_SRC_DIR})
 add_subdirectory(${DTUWEC_SRC_DIR})
 

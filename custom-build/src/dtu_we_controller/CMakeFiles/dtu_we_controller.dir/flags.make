@@ -3,7 +3,7 @@
 
 # compile Fortran with C:/Users/valentinc/msys2/mingw64/bin/gfortran.exe
 # compile RC with C:/Users/valentinc/msys2/mingw64/bin/windres.exe
-Fortran_FLAGS = -O3 -march=native -static -fcheck=bounds   -cpp -ffree-form -ffree-line-length-none -fPIC -fcray-pointer
+Fortran_FLAGS = -DROSCO -DMPI -O3 -march=native -static -fcheck=bounds   -cpp -ffree-form -ffree-line-length-none -fPIC -fcray-pointer
 
 Fortran_DEFINES = -D_WIN32 -D_WIN64 -Ddtu_we_controller_EXPORTS
 
