@@ -1,5 +1,9 @@
 # Set the project name
-project(DTUWEC_for_OpenFAST LANGUAGES Fortran)
+if (CMAKE_LINK2MPI) # VC edit
+	project(DTUWEC_for_FASTfarm LANGUAGES Fortran)
+else()
+	project(DTUWEC_for_OpenFAST LANGUAGES Fortran)
+endif()
 
 message("Configuring Subproject: " ${PROJECT_NAME})
 message("Root Directory is: " ${ROOT_DIR})

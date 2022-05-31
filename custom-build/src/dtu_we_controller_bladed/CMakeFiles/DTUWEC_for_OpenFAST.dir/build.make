@@ -358,9 +358,6 @@ src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_b
 src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/dfwin_gfortran.f90.obj
 src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj
 src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/build.make
-src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/libmsmpi.a
-src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/libROSCO.a
-src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/linklibs.rsp
 src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/objects1.rsp
 src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Linking Fortran shared library DTUWEC_for_OpenFAST_64.dll"

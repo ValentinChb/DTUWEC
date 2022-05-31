@@ -217,10 +217,16 @@ DTUWEC_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/D
 DTUWEC_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi
 
 //Value Computed by CMake
-DTUWEC_for_OpenFAST_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed
+DTUWEC_for_FASTfarm_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed
 
 //Dependencies for the target
-DTUWEC_for_OpenFAST_LIB_DEPENDS:STATIC=general;C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed/libmsmpi.a;general;C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed/libROSCO.a;
+DTUWEC_for_FASTfarm_LIB_DEPENDS:STATIC=general;C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed/libmsmpi.a;general;C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed/libROSCO.a;
+
+//Value Computed by CMake
+DTUWEC_for_FASTfarm_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/dtu_we_controller_bladed
+
+//Value Computed by CMake
+DTUWEC_for_OpenFAST_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed
 
 //Value Computed by CMake
 DTUWEC_for_OpenFAST_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/dtu_we_controller_bladed
