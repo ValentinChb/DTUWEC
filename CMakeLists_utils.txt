@@ -149,21 +149,18 @@ if(CMAKE_Fortran_COMPILER)
             -fPIC;
             -fcray-pointer;
         )
-    if (${PLATFORM} STREQUAL "Linux64")
-        target_compile_definitions(${PROJECT_NAME} PRIVATE 
-          _LINUX
-        )
-    else()
-        target_compile_definitions(${PROJECT_NAME} PRIVATE 
-          _WIN32
-        )
-    endif()
+		if (${PLATFORM} STREQUAL "Linux64")
+			target_compile_definitions(${PROJECT_NAME} PRIVATE 
+			  _LINUX
+			)
+		else()
+			target_compile_definitions(${PROJECT_NAME} PRIVATE 
+			  _WIN32
+			)
+		endif()
 
         set(CMAKE_Fortran_FLAGS_DEBUG   "-O0 -g3 -fcheck=bounds")
         set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -march=native -static -fcheck=bounds")
-
-        #VC edit: add flag to fix error "invalid register for .seh_savexmm"
-        set(CMAKE_Fortran_FLAGS_RELEASE "${CMAKE_Fortran_FLAGS_RELEASE} -fno-asynchronous-unwind-tables")
         
     elseif (${CMAKE_Fortran_COMPILER_ID} STREQUAL "Intel")
         # message ("Using Intel fortran")
@@ -230,6 +227,16 @@ if(CMAKE_Fortran_COMPILER)
             string(REPLACE "/INCREMENTAL" "" CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG}")
         endif()     
     endif()
+	
+	# VC edit: add define variables for MPI and ROSCO
+	if (CMAKE_LINK2MPI)
+		 SET(CMAKE_Fortran_FLAGS_DEBUG "-DMPI ${CMAKE_Fortran_FLAGS_DEBUG}")
+		 SET(CMAKE_Fortran_FLAGS_RELEASE "-DMPI ${CMAKE_Fortran_FLAGS_RELEASE}")
+	endif()
+	if (CMAKE_LINK2ROSCO)
+		 SET(CMAKE_Fortran_FLAGS_DEBUG "-DROSCO ${CMAKE_Fortran_FLAGS_DEBUG}")
+		 SET(CMAKE_Fortran_FLAGS_RELEASE "-DROSCO ${CMAKE_Fortran_FLAGS_RELEASE}")
+	endif()	
     
 
     message("Fortran: " ${CMAKE_Fortran_COMPILER_ID})
@@ -274,12 +281,16 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 )
 
 #VC edit: link to mpi library 
-target_link_libraries(${PROJECT_NAME} ${ROOT_DIR}/custom-build/src/dtu_we_controller_bladed/libmsmpi.a)
-message("Linking to MPI library")	
+if (CMAKE_LINK2MPI)
+	target_link_libraries(${PROJECT_NAME} ${ROOT_DIR}/custom-build/src/dtu_we_controller_bladed/libmsmpi.a)
+	message("Linking to MPI library")	
+endif()
 
 #VC edit: link to rosco library 
-target_link_libraries(${PROJECT_NAME} ${ROOT_DIR}/custom-build/src/dtu_we_controller_bladed/libROSCO.a)
-message("Linking to ROSCO library")				
+if (CMAKE_LINK2ROSCO)
+	target_link_libraries(${PROJECT_NAME} ${ROOT_DIR}/custom-build/src/dtu_we_controller_bladed/libROSCO.a)
+	message("Linking to ROSCO library")				
+endif()
 
 if ((${CMAKE_GENERATOR} MATCHES "Visual Studio") AND (NOT TARGET NUM_LIB))
     add_custom_command(TARGET ${PROJECT_NAME}
