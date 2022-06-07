@@ -99,7 +99,7 @@
 		constant  	77 3.55; Frequency of notch filter [Hz] applied on the rotor speed before computing torque above rated (constant power), if zero no notch filter used
 		constant 	78 0.0; Damping of notch filter [-] applied on the rotor speed before computing torque above rated (constant power), (Default 0.01 used if zero)
 ;     De-rating strategies
-		constant 	79 0; 	Derate strategy. 0 = No Derating, 1 = constant rotation, 2 = max rotation  3 = min ct
+		constant 	79 0; 	De-rating strategy (0: normal operation, 1: constant rotor speed, 2: maximum rotor speed, 3: quasi-constant (power command-dependent) rotor speed (VC edit), 4: minimum Ct, 5: partial-load operation adjusting fixed pitch and tracking factor K (generalization of minimum Ct, VC edit)
 		constant  	80 100; 	Derate percentage (eg. 70 means 70% of nominal power
 ;     Rotor effective wind speed estimator
      	constant  		81 1.55e8; 	Rotor inertia (use 0 to deactivate estimator) 
