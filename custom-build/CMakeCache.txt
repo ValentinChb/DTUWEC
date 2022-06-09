@@ -45,9 +45,6 @@ CMAKE_EXE_LINKER_FLAGS_RELEASE:STRING=
 //Flags used by the linker during RELWITHDEBINFO builds.
 CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 
-//No help, variable specified on the command line.
-CMAKE_Fortran_COMPILER:UNINITIALIZED=gfortran
-
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
 CMAKE_Fortran_COMPILER_AR:FILEPATH=C:/Users/valentinc/msys2/mingw64/bin/gcc-ar.exe
@@ -78,10 +75,10 @@ CMAKE_GNUtoMS:BOOL=OFF
 CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/DTUWEC
 
 //Link to MPI library?
-CMAKE_LINK2MPI:BOOL=ON
+CMAKE_LINK2MPI:BOOL=OFF
 
 //Link to ROSCO controller?
-CMAKE_LINK2ROSCO:BOOL=ON
+CMAKE_LINK2ROSCO:BOOL=OFF
 
 //Path to ld program
 CMAKE_LINKER:FILEPATH=C:/Users/valentinc/msys2/mingw64/x86_64-w64-mingw32/bin/ld.exe
@@ -234,17 +231,11 @@ DTUWEC_for_OpenFAST_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/Supe
 //Value Computed by CMake
 cyclic_pitch_controller_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/individual_pitch_controller
 
-//Dependencies for the target
-cyclic_pitch_controller_LIB_DEPENDS:STATIC=general;C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed/libmsmpi.a;general;C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed/libROSCO.a;
-
 //Value Computed by CMake
 cyclic_pitch_controller_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/individual_pitch_controller
 
 //Value Computed by CMake
 dtu_we_controller_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller
-
-//Dependencies for the target
-dtu_we_controller_LIB_DEPENDS:STATIC=general;C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed/libmsmpi.a;general;C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed/libROSCO.a;
 
 //Value Computed by CMake
 dtu_we_controller_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/dtu_we_controller
@@ -252,17 +243,11 @@ dtu_we_controller_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperC
 //Value Computed by CMake
 flap_controller_cyclic_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/flap_controller_cyclic
 
-//Dependencies for the target
-flap_controller_cyclic_LIB_DEPENDS:STATIC=general;C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed/libmsmpi.a;general;C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed/libROSCO.a;
-
 //Value Computed by CMake
 flap_controller_cyclic_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/flap_controller_cyclic
 
 //Value Computed by CMake
 individual_flap_controller_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/flap_controller_individual_aep_u_f
-
-//Dependencies for the target
-individual_flap_controller_LIB_DEPENDS:STATIC=general;C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed/libmsmpi.a;general;C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed/libROSCO.a;
 
 //Value Computed by CMake
 individual_flap_controller_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/flap_controller_individual_aep_u_f
