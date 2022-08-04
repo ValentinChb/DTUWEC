@@ -83,7 +83,7 @@ subroutine DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG) bind(c,name=
     ROSCO_IN=c_null_char
     ROSCO_IN_LEN=i+len("ROSCO.IN")+1 ! Append a c_null_char at the end
     ROSCO_IN(1:ROSCO_IN_LEN)=transfer(cInFile(1:i)//"ROSCO.IN"//c_null_char,ROSCO_IN(1:ROSCO_IN_LEN))
-    print*, ROSCO_IN_LEN, ROSCO_IN
+    ! print*, ROSCO_IN_LEN, ROSCO_IN
     avrSWAP_temp(50)=real(ROSCO_IN_LEN,c_float)
     avrSWAP_temp(65) = merge(1.0,0.0,PrintFlag)
     call ROSCO_DISCON(avrSWAP_temp,aviFAIL,ROSCO_IN(1:ROSCO_IN_LEN),avcOUTNAME,avcMSG)
