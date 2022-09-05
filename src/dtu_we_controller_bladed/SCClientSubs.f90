@@ -259,6 +259,7 @@ subroutine VTKSync(status,time)
     integer                             :: error
     logical, parameter                  :: OutputTiming = .false.
     character(255), save                :: winddir_src_t, winddir_src_f, winddir_dst ! path to high-resolution domain source files, path to low-resolution domain source files and wind data directory for the simulation (WindFilePath in .fstf file)
+    character(2)                        :: seednr_str
     character(*), parameter             :: RootOut= &              ! Root path name for wind files if Out=2
    "C:\Users\valentinc\Workspace\OpenFAST\Simulations\Demo_TCWPP_SEWTC_HPC\NREL5MW\10mps_Debug\RemoteDrive" 
 
@@ -275,6 +276,10 @@ subroutine VTKSync(status,time)
             winddir_dst=winddir_src_f
         else
             winddir_dst=adjustl(trim(RootOut)//"\WindData")
+        endif
+        if (Nseeds/=1) then
+            write(seednr_str,'(i2)') Iseed
+            winddir_dst= trim(adjustl(winddir_dst))//"_"//trim(adjustl(seednr_str))
         endif
     endif
 
@@ -342,12 +347,8 @@ subroutine VTKSync(status,time)
 
 
         if (status==0) then
-            if (Nseeds/=1) then
-                write(Filename,'(i2)') Iseed
-                Filename=FolderName//"\Timestep_"//trim(adjustl(Filename))//".dat"
-            else
-                Filename=FolderName//"\Timestep.dat"
-            endif
+
+            Filename=FolderName//"\Timestep.dat"
             open (unit=fid,file=Filename,action='write',status='replace')
             ! print*, Filename
         endif
