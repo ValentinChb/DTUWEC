@@ -278,9 +278,6 @@ src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_p
 src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/portability/dfwin_gfortran.f90.obj
 src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj
 src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/build.make
-src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/dtu_we_controller_bladed/libmsmpi.a
-src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/dtu_we_controller_bladed/libROSCO.a
-src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/linklibs.rsp
 src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/objects1.rsp
 src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking Fortran shared library cyclic_pitch_controller_64.dll"

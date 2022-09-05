@@ -16,11 +16,12 @@ integer                         :: nT
 real                            :: SC_DT       ! timestep for the supercontroller (FAST.farm)
 integer                         :: UseSC        
 integer                         :: Mod_AmbWind
+integer                         :: Nseeds, Iseed
 character(256)                  :: MPIinit_filename
 logical, parameter              :: verbose = .true.
 logical, parameter              :: textout = .true.
 integer                         :: output_unit_eff
-character(255), save            :: dir_ctrl, dir_fast  
+character(255), save            :: dir_ctrl, dir_fast, dir_farm  
 logical                         :: ReadSC = .true.      ! false: bypass reading SC_input.dat and force UseSC=0 (for single-turbine use)
 
 public                          :: SC_MPI, TSC, get_TSC
@@ -162,7 +163,7 @@ subroutine SC_init(lfilename,SCinit_filename_C,DT,ierror)
         endif
         
         if(trim(adjustl(temp))=="") then
-            print*, "DISCON: The control file should have a turbine-specific directory of name T*turbine number* in its path tree"
+            print*, "DISCON: Did not manage to identify turbine number. The control file location must fulfill the architecture <Farm root folder>/<Farm root folder>_<Seed number>/OpenFAST/T<Turbine number>/ControlData "
             stop
         endif
         count=count+1
@@ -186,6 +187,7 @@ subroutine SC_init(lfilename,SCinit_filename_C,DT,ierror)
             read(nunit,*) SC_DT    ! Farm-level timestep
             read(nunit,*) MPIinit_filename ! path of input file for MPI connection
             read(nunit,*) Mod_AmbWind ! Ambient wind mode in FAST.farm
+            read(nunit,*) Nseeds  ! Number of parallel simulations
         close(nunit)
     else
         UseSC=0
@@ -193,11 +195,35 @@ subroutine SC_init(lfilename,SCinit_filename_C,DT,ierror)
         SC_DT=DT
         MPIinit_filename="dummy"
         Mod_AmbWind=3
+        Nseeds=1
+    endif
+
+    ! Identify which seed we are
+    if (Nseeds==1) then
+        Iseed=1
+    else 
+        if (.NOT. ReadSC) then
+            dir_farm = dir_fast
+        else
+            ind=max(index(dir_fast,"/",back=.true.),index(dir_fast,"\",back=.true.))
+            if (dir_fast(ind+1:)/="OpenFAST") then
+                print*, "DISCON: Did not manage to identify OpenFAST folder. The control file location must fulfill the architecture <Farm root folder>/<Farm root folder>_<Seed number>/OpenFAST/T<Turbine number>/ControlData "
+                stop
+            endif
+            dir_farm = dir_fast(1:ind-1) ! path to  farm root directory
+            ind=index(dir_farm,"_",back=.true.)
+            read(dir_farm(ind+1:),*,IOSTAT=e) Iseed
+            if (e/=0) then
+                print*, "DISCON: Did not manage to identify seed number. The control file location must fulfill the architecture <Farm root folder>/<Farm root folder>_<Seed number>/OpenFAST/T<Turbine number>/ControlData "
+                stop
+            endif         
+        endif
     endif
 
 
     ! print*, iT, dir_fast
     ! print*, iT, dir_ctrl
+    ! print*, iT, dir_farm
 
 
 end subroutine SC_init
@@ -312,8 +338,19 @@ subroutine VTKSync(status,time)
         character(*), intent(in)            :: FolderName
         integer, intent(in)                 :: fid
         real, intent(out)                   :: tcmp
-        if (status==0) open (unit=fid,file=FolderName//"\Timestep.dat",action='write',status='replace')
-        ! if (status==0) print*, FolderName//"\Timestep.dat"
+        character(255)                      :: Filename
+
+
+        if (status==0) then
+            if (Nseeds/=1) then
+                write(Filename,'(i2)') Iseed
+                Filename=FolderName//"\Timestep_"//trim(adjustl(Filename))//".dat"
+            else
+                Filename=FolderName//"\Timestep.dat"
+            endif
+            open (unit=fid,file=Filename,action='write',status='replace')
+            ! print*, Filename
+        endif
         rewind(fid)
         if (status<0) then
             write(fid,'(i6)') 0 ! reset to 0 at end of simulation

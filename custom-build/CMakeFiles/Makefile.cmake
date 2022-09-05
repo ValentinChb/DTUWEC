@@ -57,7 +57,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/DependInfo.cmake"
-  "src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_FASTfarm.dir/DependInfo.cmake"
+  "src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/DependInfo.cmake"
   "src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/DependInfo.cmake"
   "src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/DependInfo.cmake"
   "src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/DependInfo.cmake"

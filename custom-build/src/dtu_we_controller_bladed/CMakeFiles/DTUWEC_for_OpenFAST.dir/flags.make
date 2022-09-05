@@ -3,7 +3,7 @@
 
 # compile Fortran with C:/Users/valentinc/msys2/mingw64/bin/gfortran.exe
 # compile RC with C:/Users/valentinc/msys2/mingw64/bin/windres.exe
-Fortran_FLAGS = -O3 -march=native -static -fcheck=bounds   -cpp -ffree-form -ffree-line-length-none -fPIC -fcray-pointer
+Fortran_FLAGS = -O3 -march=native -static -fcheck=bounds -fno-asynchronous-unwind-tables   -cpp -ffree-form -ffree-line-length-none -fPIC -fcray-pointer
 
 Fortran_DEFINES = -DDTUWEC_for_OpenFAST_EXPORTS -D_WIN32 -D_WIN64
 

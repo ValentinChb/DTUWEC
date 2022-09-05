@@ -278,9 +278,6 @@ src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cy
 src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/portability/dfwin_gfortran.f90.obj
 src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj
 src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/build.make
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/dtu_we_controller_bladed/libmsmpi.a
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/dtu_we_controller_bladed/libROSCO.a
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/linklibs.rsp
 src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/objects1.rsp
 src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking Fortran shared library flap_controller_cyclic_64.dll"

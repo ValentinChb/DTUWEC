@@ -100,7 +100,7 @@ src/dtu_we_controller/clean: src/dtu_we_controller/CMakeFiles/dtu_we_controller.
 # Directory level rules for directory src/dtu_we_controller_bladed
 
 # Recursive "all" directory target.
-src/dtu_we_controller_bladed/all: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_FASTfarm.dir/all
+src/dtu_we_controller_bladed/all: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/all
 
 .PHONY : src/dtu_we_controller_bladed/all
 
@@ -110,7 +110,7 @@ src/dtu_we_controller_bladed/preinstall:
 .PHONY : src/dtu_we_controller_bladed/preinstall
 
 # Recursive "clean" directory target.
-src/dtu_we_controller_bladed/clean: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_FASTfarm.dir/clean
+src/dtu_we_controller_bladed/clean: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/clean
 
 .PHONY : src/dtu_we_controller_bladed/clean
 
@@ -196,31 +196,31 @@ src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/clean:
 .PHONY : src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/clean
 
 #=============================================================================
-# Target rules for target src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_FASTfarm.dir
+# Target rules for target src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir
 
 # All Build rule for target.
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_FASTfarm.dir/all:
-	$(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_FASTfarm.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_FASTfarm.dir/depend
-	$(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_FASTfarm.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_FASTfarm.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 "Built target DTUWEC_for_FASTfarm"
-.PHONY : src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_FASTfarm.dir/all
+src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/all:
+	$(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/depend
+	$(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 "Built target DTUWEC_for_OpenFAST"
+.PHONY : src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/all
 
 # Build rule for subdir invocation for target.
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_FASTfarm.dir/rule: cmake_check_build_system
+src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles 20
-	$(MAKE) -f CMakeFiles\Makefile2 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_FASTfarm.dir/all
+	$(MAKE) -f CMakeFiles\Makefile2 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles 0
-.PHONY : src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_FASTfarm.dir/rule
+.PHONY : src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/rule
 
 # Convenience name for target.
-DTUWEC_for_FASTfarm: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_FASTfarm.dir/rule
+DTUWEC_for_OpenFAST: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/rule
 
-.PHONY : DTUWEC_for_FASTfarm
+.PHONY : DTUWEC_for_OpenFAST
 
 # clean rule for target.
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_FASTfarm.dir/clean:
-	$(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_FASTfarm.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_FASTfarm.dir/clean
-.PHONY : src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_FASTfarm.dir/clean
+src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/clean:
+	$(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/clean
+.PHONY : src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/clean
 
 #=============================================================================
 # Target rules for target src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir

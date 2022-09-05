@@ -326,9 +326,6 @@ src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles
 src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/portability/dfwin_gfortran.f90.obj
 src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj
 src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/build.make
-src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller_bladed/libmsmpi.a
-src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller_bladed/libROSCO.a
-src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/linklibs.rsp
 src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/objects1.rsp
 src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking Fortran shared library dtu_we_controller_64.dll"
