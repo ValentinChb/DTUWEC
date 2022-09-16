@@ -277,7 +277,7 @@ subroutine VTKSync(status,time)
         else
             winddir_dst=adjustl(trim(RootOut)//"\WindData")
         endif
-        if (Nseeds/=1) then
+        if (Nseeds/=1 .or. Out==2) then
             write(seednr_str,'(i2)') Iseed
             winddir_dst= trim(adjustl(winddir_dst))//"_"//trim(adjustl(seednr_str))
         endif
@@ -362,6 +362,7 @@ subroutine VTKSync(status,time)
             do while(.true.)
                 write(fid,'(i6)',iostat=error) tstpnr
                 if(error==0) exit
+                print*, "Error writing to file ",trim(adjustl(Filename))
             enddo
             if (OutputTiming) then
                 call cpu_time(toc)
