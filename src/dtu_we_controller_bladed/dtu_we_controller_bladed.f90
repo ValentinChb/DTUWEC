@@ -90,13 +90,13 @@ subroutine DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG) bind(c,name=
     ! Update wind speed
     ! avrSWAP(27) = avrSWAP_temp(27) ! Override anemometer wind speed. If using this, make sure array1(36) is 0 in controller input file to make low-pass filters on wind speed ineffective
 #endif
-    if(WindEstvar%J == 0.0 .or. array2(44)==0.0) Vobs = avrSWAP_temp(27) ! Update effective wind speed by either nacelle wind speed or ROSCO's estimator in case DTUWEC's estimator is deactivated.
+    if(WindEstvar%J == 0.0 .or. Vobs==0.0) Vobs = avrSWAP_temp(27) ! Update effective wind speed by either nacelle wind speed or ROSCO's estimator in case DTUWEC's estimator is deactivated.
     ! print*, 'Vobs', Vobs, EstSpeed_flag, avrSWAP_temp(27), avrSWAP(27), array2(44), callno
     ! Call supercontroller routine. If useSC=0, MPI communication will not be used.
     avrSWAP_temp = avrSWAP(1:84)
-    avrSWAP_temp(27) = Vobs ! Override with effective wind speed
+    avrSWAP_temp(27) = Vobs ! Override with load-equivalent observed wind speed
     call SC_MPI(iStatus, avrSWAP_temp(1:84), nint(avrSWAP_temp(50)), avcINFILE , aviFAIL)
-    avrSWAP_temp(27) = avrSWAP(27)
+    avrSWAP_temp(27) = avrSWAP(27) ! Restore to anemometer wind speed
     if(iStatus>=1) avrSWAP(1:84)=avrSWAP_temp
     !---------------------------------------------------------------------------------
     
