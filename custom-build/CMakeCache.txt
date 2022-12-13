@@ -22,7 +22,7 @@ CMAKE_AR:FILEPATH=C:/Users/valentinc/msys2/mingw64/x86_64-w64-mingw32/bin/ar.exe
 
 //Choose the type of build, options are: None Debug Release RelWithDebInfo
 // MinSizeRel ...
-CMAKE_BUILD_TYPE:STRING=release
+CMAKE_BUILD_TYPE:STRING=RELEASE
 
 //Enable/Disable color output during build.
 CMAKE_COLOR_MAKEFILE:BOOL=ON
@@ -45,8 +45,8 @@ CMAKE_EXE_LINKER_FLAGS_RELEASE:STRING=
 //Flags used by the linker during RELWITHDEBINFO builds.
 CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 
-//No help, variable specified on the command line.
-CMAKE_Fortran_COMPILER:UNINITIALIZED=gfortran
+//Fortran compiler
+CMAKE_Fortran_COMPILER:FILEPATH=C:/Users/valentinc/msys2/mingw64/bin/gfortran.exe
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -76,12 +76,6 @@ CMAKE_GNUtoMS:BOOL=OFF
 
 //Install path prefix, prepended onto install directories.
 CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/DTUWEC
-
-//Link to MPI library?
-CMAKE_LINK2MPI:BOOL=OFF
-
-//Link to ROSCO controller?
-CMAKE_LINK2ROSCO:BOOL=OFF
 
 //Path to ld program
 CMAKE_LINKER:FILEPATH=C:/Users/valentinc/msys2/mingw64/x86_64-w64-mingw32/bin/ld.exe
@@ -211,19 +205,16 @@ CMAKE_STRIP:FILEPATH=C:/Users/valentinc/msys2/mingw64/x86_64-w64-mingw32/bin/str
 CMAKE_VERBOSE_MAKEFILE:BOOL=OFF
 
 //Value Computed by CMake
+DTUWEC4SC_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed
+
+//Value Computed by CMake
+DTUWEC4SC_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/dtu_we_controller_bladed
+
+//Value Computed by CMake
 DTUWEC_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build
 
 //Value Computed by CMake
 DTUWEC_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi
-
-//Value Computed by CMake
-DTUWEC_for_FASTfarm_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed
-
-//Dependencies for the target
-DTUWEC_for_FASTfarm_LIB_DEPENDS:STATIC=general;C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed/libmsmpi.a;general;C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed/libROSCO.a;
-
-//Value Computed by CMake
-DTUWEC_for_FASTfarm_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/dtu_we_controller_bladed
 
 //Value Computed by CMake
 DTUWEC_for_OpenFAST_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed
@@ -298,6 +289,8 @@ CMAKE_EXE_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //Name of external makefile project generator.
 CMAKE_EXTRA_GENERATOR:INTERNAL=
+//ADVANCED property for variable: CMAKE_Fortran_COMPILER
+CMAKE_Fortran_COMPILER-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_Fortran_COMPILER_AR
 CMAKE_Fortran_COMPILER_AR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_Fortran_COMPILER_RANLIB

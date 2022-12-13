@@ -217,9 +217,9 @@ subroutine init_regulation(array1, array2) bind(c, name='init_regulation')
      OPdatavar%wpdata(2,2) = minimum_pitch_angle
    else
      write(text32,'(i3)') int(minimum_pitch_angle*raddeg)
-     inquire(file=trim(control_dir)//'/wpdata.'//trim(adjustl(text32)),exist=findes)
+     inquire(file=trim(adjustl(control_dir))//'/wpdata.'//trim(adjustl(text32)),exist=findes)
      if (findes) then
-       open(88,file=trim(control_dir)//'/wpdata.'//trim(adjustl(text32)))
+       open(88,file=trim(adjustl(control_dir))//'/wpdata.'//trim(adjustl(text32)))
        read(88,*,iostat=ifejl) OPdatavar%lines
        if (ifejl.eq.0) then
          do i=1,OPdatavar%lines
@@ -458,7 +458,7 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
        ! Get the filename from the subroution initstring() called by the HAWC2 type2_dll interface ! VC edit: I can't see that initstring is called anywhere, perhaps init_string in .htc files? Anyway, let's use a harcoded filename in working directory
       !  additionalCtrlParamFile%name = additionalCtrlParamFilename 
 
-       additionalCtrlParamFile%name = trim(control_dir)//'\additional_control_parameters.txt'
+       additionalCtrlParamFile%name = trim(adjustl(control_dir))//'\additional_control_parameters.txt'
        ! Get a free file unit id for additional control parameter input file
        call getFreeFileUnit(additionalCtrlParamFile%fileID)
 

@@ -3,14 +3,6 @@
 
 # Note that incremental build could trigger a call to cmake_copy_f90_mod on each re-build
 
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.obj: src/dtu_we_controller_bladed/mpi.mod
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.obj.provides.build: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/scclientsubs.mod.stamp
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/scclientsubs.mod.stamp: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.obj
-	$(CMAKE_COMMAND) -E cmake_copy_f90_mod src\dtu_we_controller_bladed\scclientsubs.mod src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\scclientsubs.mod.stamp GNU
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.obj.provides.build:
-	$(CMAKE_COMMAND) -E touch src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.obj.provides.build
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/build: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.obj.provides.build
-
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/dll_utils.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dfwin.mod.stamp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/dll_utils.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/filesystem_tools.mod.stamp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/dll_utils.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/logging.mod.stamp
@@ -158,8 +150,6 @@ src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/build: src/dtu_w
 
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller.mod.stamp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/misc_mod.mod.stamp
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.obj: src/dtu_we_controller_bladed/rosco.mod
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/scclientsubs.mod.stamp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.obj.provides.build: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.mod.stamp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.mod.stamp: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.obj
 	$(CMAKE_COMMAND) -E cmake_copy_f90_mod src\dtu_we_controller_bladed\dtu_we_controller_bladed.mod src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\dtu_we_controller_bladed.mod.stamp GNU

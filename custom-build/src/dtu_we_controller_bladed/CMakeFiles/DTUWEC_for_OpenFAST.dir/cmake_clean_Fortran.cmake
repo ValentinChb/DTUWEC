@@ -56,10 +56,6 @@ FILE(REMOVE
   "SAFETY_SYSTEM_MOD.mod"
   "CMakeFiles/DTUWEC_for_OpenFAST.dir/safety_system_mod.mod.stamp"
 
-  "scclientsubs.mod"
-  "SCCLIENTSUBS.mod"
-  "CMakeFiles/DTUWEC_for_OpenFAST.dir/scclientsubs.mod.stamp"
-
   "stringutils.mod"
   "STRINGUTILS.mod"
   "CMakeFiles/DTUWEC_for_OpenFAST.dir/stringutils.mod.stamp"

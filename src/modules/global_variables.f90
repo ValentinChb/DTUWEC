@@ -94,12 +94,11 @@ module global_variables
     Type (Tdll),          save :: external_dll
 
     ! VC edit
-    character(255),       save :: control_dir  ! local directory (instead of the original ./control)
-    logical, parameter         :: verbose = .false. 
-    integer                    :: iturb     ! turbine number (used for debug)
+    logical, parameter         :: verbose = .false.
     logical, parameter         :: EstSpeed_flag = .false. ! Use estimated wind speed instead of nacelle measurement (anemometer)?
-    real(mk)                   :: EstSpeed
-    real(mk)                   :: global_time 
+    character(255),       save :: control_dir  ! local directory (instead of the original ./control)
+    integer                    :: iturb     ! turbine number (used for debug)
+    
 
 !**************************************************************************************************
 end module global_variables

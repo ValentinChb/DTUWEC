@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "..\\SC_MPIClient"
 		}
 	],
 	"settings": {}

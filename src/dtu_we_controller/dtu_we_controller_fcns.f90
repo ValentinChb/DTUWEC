@@ -763,7 +763,7 @@ subroutine readTable(controlDataFile,outTable,err,errMsg,errCode)
         case ('')
             continue
         case ('file')
-           filename = adjustl(trim(control_dir)//'\'//trim(words%wordArray(2))) ! VC edit: the path is now given relative to working directory
+           filename = trim(adjustl(control_dir))//'\'//trim(words%wordArray(2)) ! VC edit: the path is now given relative to working directory
            controlDataFile%includedFileName = filename
            call readDataAtMinCt(filename,nRow,nCol,outTable,err,errCode)
            ! errCode = 1: file does not exist 
@@ -1023,7 +1023,7 @@ subroutine readCpTable(controlDataFile,outTable,err,errMsg,errCode)
         case ('')
             continue
         case ('file')
-           filename = adjustl(trim(control_dir)//'\'//trim(words%wordArray(2))) ! VC edit: the path is now given relative to working directory
+           filename = trim(adjustl(control_dir))//'\'//trim(words%wordArray(2)) ! VC edit: the path is now given relative to working directory
            controlDataFile%includedFileName = filename
            call readDataCp(filename,nRow,nCol,outTable,err,errCode)
            ! errCode = 1: file does not exist 

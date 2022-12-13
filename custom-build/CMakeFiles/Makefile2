@@ -100,7 +100,7 @@ src/dtu_we_controller/clean: src/dtu_we_controller/CMakeFiles/dtu_we_controller.
 # Directory level rules for directory src/dtu_we_controller_bladed
 
 # Recursive "all" directory target.
-src/dtu_we_controller_bladed/all: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/all
+src/dtu_we_controller_bladed/all: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/all
 
 .PHONY : src/dtu_we_controller_bladed/all
 
@@ -110,7 +110,7 @@ src/dtu_we_controller_bladed/preinstall:
 .PHONY : src/dtu_we_controller_bladed/preinstall
 
 # Recursive "clean" directory target.
-src/dtu_we_controller_bladed/clean: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/clean
+src/dtu_we_controller_bladed/clean: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/clean
 
 .PHONY : src/dtu_we_controller_bladed/clean
 
@@ -175,7 +175,7 @@ src/individual_pitch_controller/clean: src/individual_pitch_controller/CMakeFile
 src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/all:
 	$(MAKE) -f src\dtu_we_controller\CMakeFiles\dtu_we_controller.dir\build.make src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/depend
 	$(MAKE) -f src\dtu_we_controller\CMakeFiles\dtu_we_controller.dir\build.make src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53 "Built target dtu_we_controller"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52 "Built target dtu_we_controller"
 .PHONY : src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/all
 
 # Build rule for subdir invocation for target.
@@ -196,31 +196,31 @@ src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/clean:
 .PHONY : src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/clean
 
 #=============================================================================
-# Target rules for target src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir
+# Target rules for target src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir
 
 # All Build rule for target.
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/all:
-	$(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/depend
-	$(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 "Built target DTUWEC_for_OpenFAST"
-.PHONY : src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/all
+src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/all:
+	$(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/depend
+	$(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19 "Built target DTUWEC4SC"
+.PHONY : src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/all
 
 # Build rule for subdir invocation for target.
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles 20
-	$(MAKE) -f CMakeFiles\Makefile2 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/all
+src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles 19
+	$(MAKE) -f CMakeFiles\Makefile2 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles 0
-.PHONY : src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/rule
+.PHONY : src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/rule
 
 # Convenience name for target.
-DTUWEC_for_OpenFAST: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/rule
+DTUWEC4SC: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/rule
 
-.PHONY : DTUWEC_for_OpenFAST
+.PHONY : DTUWEC4SC
 
 # clean rule for target.
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/clean:
-	$(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/clean
-.PHONY : src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/clean
+src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/clean:
+	$(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/clean
+.PHONY : src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/clean
 
 #=============================================================================
 # Target rules for target src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir
@@ -229,7 +229,7 @@ src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/clean:
 src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/all:
 	$(MAKE) -f src\individual_pitch_controller\CMakeFiles\cyclic_pitch_controller.dir\build.make src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/depend
 	$(MAKE) -f src\individual_pitch_controller\CMakeFiles\cyclic_pitch_controller.dir\build.make src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=21,22,23,24,25,26,27,28,29,30,31,32,33,34,35 "Built target cyclic_pitch_controller"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=20,21,22,23,24,25,26,27,28,29,30,31,32,33,34 "Built target cyclic_pitch_controller"
 .PHONY : src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/all
 
 # Build rule for subdir invocation for target.
@@ -256,7 +256,7 @@ src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/clean:
 src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/all:
 	$(MAKE) -f src\flap_controller_individual_aep_u_f\CMakeFiles\individual_flap_controller.dir\build.make src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/depend
 	$(MAKE) -f src\flap_controller_individual_aep_u_f\CMakeFiles\individual_flap_controller.dir\build.make src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=69,70,71,72,73,74,75,76,77,78,79,80,81,82 "Built target individual_flap_controller"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=68,69,70,71,72,73,74,75,76,77,78,79,80,81 "Built target individual_flap_controller"
 .PHONY : src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/all
 
 # Build rule for subdir invocation for target.
@@ -283,7 +283,7 @@ src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir
 src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/all:
 	$(MAKE) -f src\flap_controller_cyclic\CMakeFiles\flap_controller_cyclic.dir\build.make src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/depend
 	$(MAKE) -f src\flap_controller_cyclic\CMakeFiles\flap_controller_cyclic.dir\build.make src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=54,55,56,57,58,59,60,61,62,63,64,65,66,67,68 "Built target flap_controller_cyclic"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=53,54,55,56,57,58,59,60,61,62,63,64,65,66,67 "Built target flap_controller_cyclic"
 .PHONY : src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/all
 
 # Build rule for subdir invocation for target.

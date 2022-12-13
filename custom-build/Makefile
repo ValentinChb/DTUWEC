@@ -123,17 +123,17 @@ dtu_we_controller/fast:
 .PHONY : dtu_we_controller/fast
 
 #=============================================================================
-# Target rules for targets named DTUWEC_for_OpenFAST
+# Target rules for targets named DTUWEC4SC
 
 # Build rule for target.
-DTUWEC_for_OpenFAST: cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 DTUWEC_for_OpenFAST
-.PHONY : DTUWEC_for_OpenFAST
+DTUWEC4SC: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 DTUWEC4SC
+.PHONY : DTUWEC4SC
 
 # fast build rule for target.
-DTUWEC_for_OpenFAST/fast:
-	$(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/build
-.PHONY : DTUWEC_for_OpenFAST/fast
+DTUWEC4SC/fast:
+	$(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/build
+.PHONY : DTUWEC4SC/fast
 
 #=============================================================================
 # Target rules for targets named cyclic_pitch_controller
@@ -183,7 +183,7 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... dtu_we_controller
-	@echo ... DTUWEC_for_OpenFAST
+	@echo ... DTUWEC4SC
 	@echo ... cyclic_pitch_controller
 	@echo ... individual_flap_controller
 	@echo ... flap_controller_cyclic

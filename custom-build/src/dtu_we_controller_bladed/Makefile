@@ -55,17 +55,6 @@ CMAKE_BINARY_DIR = C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	"C:\Program Files\CMake\bin\cmake-gui.exe" -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -76,6 +65,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	"C:\Program Files\CMake\bin\cmake-gui.exe" -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -110,46 +110,19 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/rule:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f CMakeFiles\Makefile2 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/rule
-.PHONY : src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/rule
+src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/rule:
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f CMakeFiles\Makefile2 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/rule
+.PHONY : src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/rule
 
 # Convenience name for target.
-DTUWEC_for_OpenFAST: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/rule
+DTUWEC4SC: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/rule
 
-.PHONY : DTUWEC_for_OpenFAST
+.PHONY : DTUWEC4SC
 
 # fast build rule for target.
-DTUWEC_for_OpenFAST/fast:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/build
-.PHONY : DTUWEC_for_OpenFAST/fast
-
-SCClientSubs.obj: SCClientSubs.f90.obj
-
-.PHONY : SCClientSubs.obj
-
-# target to build an object file
-SCClientSubs.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.obj
-.PHONY : SCClientSubs.f90.obj
-
-SCClientSubs.i: SCClientSubs.f90.i
-
-.PHONY : SCClientSubs.i
-
-# target to preprocess a source file
-SCClientSubs.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.i
-.PHONY : SCClientSubs.f90.i
-
-SCClientSubs.s: SCClientSubs.f90.s
-
-.PHONY : SCClientSubs.s
-
-# target to generate assembly for a file
-SCClientSubs.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.s
-.PHONY : SCClientSubs.f90.s
+DTUWEC4SC/fast:
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/build
+.PHONY : DTUWEC4SC/fast
 
 __/__/utils/io/dll_utils.obj: __/__/utils/io/dll_utils.f90.obj
 
@@ -157,7 +130,7 @@ __/__/utils/io/dll_utils.obj: __/__/utils/io/dll_utils.f90.obj
 
 # target to build an object file
 __/__/utils/io/dll_utils.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/dll_utils.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/io/dll_utils.f90.obj
 .PHONY : __/__/utils/io/dll_utils.f90.obj
 
 __/__/utils/io/dll_utils.i: __/__/utils/io/dll_utils.f90.i
@@ -166,7 +139,7 @@ __/__/utils/io/dll_utils.i: __/__/utils/io/dll_utils.f90.i
 
 # target to preprocess a source file
 __/__/utils/io/dll_utils.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/dll_utils.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/io/dll_utils.f90.i
 .PHONY : __/__/utils/io/dll_utils.f90.i
 
 __/__/utils/io/dll_utils.s: __/__/utils/io/dll_utils.f90.s
@@ -175,7 +148,7 @@ __/__/utils/io/dll_utils.s: __/__/utils/io/dll_utils.f90.s
 
 # target to generate assembly for a file
 __/__/utils/io/dll_utils.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/dll_utils.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/io/dll_utils.f90.s
 .PHONY : __/__/utils/io/dll_utils.f90.s
 
 __/__/utils/io/logging.obj: __/__/utils/io/logging.f90.obj
@@ -184,7 +157,7 @@ __/__/utils/io/logging.obj: __/__/utils/io/logging.f90.obj
 
 # target to build an object file
 __/__/utils/io/logging.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/logging.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/io/logging.f90.obj
 .PHONY : __/__/utils/io/logging.f90.obj
 
 __/__/utils/io/logging.i: __/__/utils/io/logging.f90.i
@@ -193,7 +166,7 @@ __/__/utils/io/logging.i: __/__/utils/io/logging.f90.i
 
 # target to preprocess a source file
 __/__/utils/io/logging.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/logging.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/io/logging.f90.i
 .PHONY : __/__/utils/io/logging.f90.i
 
 __/__/utils/io/logging.s: __/__/utils/io/logging.f90.s
@@ -202,7 +175,7 @@ __/__/utils/io/logging.s: __/__/utils/io/logging.f90.s
 
 # target to generate assembly for a file
 __/__/utils/io/logging.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/logging.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/io/logging.f90.s
 .PHONY : __/__/utils/io/logging.f90.s
 
 __/__/utils/io/path_utils.obj: __/__/utils/io/path_utils.f90.obj
@@ -211,7 +184,7 @@ __/__/utils/io/path_utils.obj: __/__/utils/io/path_utils.f90.obj
 
 # target to build an object file
 __/__/utils/io/path_utils.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/path_utils.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/io/path_utils.f90.obj
 .PHONY : __/__/utils/io/path_utils.f90.obj
 
 __/__/utils/io/path_utils.i: __/__/utils/io/path_utils.f90.i
@@ -220,7 +193,7 @@ __/__/utils/io/path_utils.i: __/__/utils/io/path_utils.f90.i
 
 # target to preprocess a source file
 __/__/utils/io/path_utils.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/path_utils.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/io/path_utils.f90.i
 .PHONY : __/__/utils/io/path_utils.f90.i
 
 __/__/utils/io/path_utils.s: __/__/utils/io/path_utils.f90.s
@@ -229,7 +202,7 @@ __/__/utils/io/path_utils.s: __/__/utils/io/path_utils.f90.s
 
 # target to generate assembly for a file
 __/__/utils/io/path_utils.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/path_utils.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/io/path_utils.f90.s
 .PHONY : __/__/utils/io/path_utils.f90.s
 
 __/__/utils/portability/dfwin_gfortran.obj: __/__/utils/portability/dfwin_gfortran.f90.obj
@@ -238,7 +211,7 @@ __/__/utils/portability/dfwin_gfortran.obj: __/__/utils/portability/dfwin_gfortr
 
 # target to build an object file
 __/__/utils/portability/dfwin_gfortran.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/dfwin_gfortran.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/portability/dfwin_gfortran.f90.obj
 .PHONY : __/__/utils/portability/dfwin_gfortran.f90.obj
 
 __/__/utils/portability/dfwin_gfortran.i: __/__/utils/portability/dfwin_gfortran.f90.i
@@ -247,7 +220,7 @@ __/__/utils/portability/dfwin_gfortran.i: __/__/utils/portability/dfwin_gfortran
 
 # target to preprocess a source file
 __/__/utils/portability/dfwin_gfortran.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/dfwin_gfortran.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/portability/dfwin_gfortran.f90.i
 .PHONY : __/__/utils/portability/dfwin_gfortran.f90.i
 
 __/__/utils/portability/dfwin_gfortran.s: __/__/utils/portability/dfwin_gfortran.f90.s
@@ -256,7 +229,7 @@ __/__/utils/portability/dfwin_gfortran.s: __/__/utils/portability/dfwin_gfortran
 
 # target to generate assembly for a file
 __/__/utils/portability/dfwin_gfortran.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/dfwin_gfortran.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/portability/dfwin_gfortran.f90.s
 .PHONY : __/__/utils/portability/dfwin_gfortran.f90.s
 
 __/__/utils/portability/filesystem_tools_gfortran.obj: __/__/utils/portability/filesystem_tools_gfortran.f90.obj
@@ -265,7 +238,7 @@ __/__/utils/portability/filesystem_tools_gfortran.obj: __/__/utils/portability/f
 
 # target to build an object file
 __/__/utils/portability/filesystem_tools_gfortran.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj
 .PHONY : __/__/utils/portability/filesystem_tools_gfortran.f90.obj
 
 __/__/utils/portability/filesystem_tools_gfortran.i: __/__/utils/portability/filesystem_tools_gfortran.f90.i
@@ -274,7 +247,7 @@ __/__/utils/portability/filesystem_tools_gfortran.i: __/__/utils/portability/fil
 
 # target to preprocess a source file
 __/__/utils/portability/filesystem_tools_gfortran.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.i
 .PHONY : __/__/utils/portability/filesystem_tools_gfortran.f90.i
 
 __/__/utils/portability/filesystem_tools_gfortran.s: __/__/utils/portability/filesystem_tools_gfortran.f90.s
@@ -283,7 +256,7 @@ __/__/utils/portability/filesystem_tools_gfortran.s: __/__/utils/portability/fil
 
 # target to generate assembly for a file
 __/__/utils/portability/filesystem_tools_gfortran.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.s
 .PHONY : __/__/utils/portability/filesystem_tools_gfortran.f90.s
 
 __/__/utils/utils/string_utils.obj: __/__/utils/utils/string_utils.f90.obj
@@ -292,7 +265,7 @@ __/__/utils/utils/string_utils.obj: __/__/utils/utils/string_utils.f90.obj
 
 # target to build an object file
 __/__/utils/utils/string_utils.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/utils/string_utils.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/utils/string_utils.f90.obj
 .PHONY : __/__/utils/utils/string_utils.f90.obj
 
 __/__/utils/utils/string_utils.i: __/__/utils/utils/string_utils.f90.i
@@ -301,7 +274,7 @@ __/__/utils/utils/string_utils.i: __/__/utils/utils/string_utils.f90.i
 
 # target to preprocess a source file
 __/__/utils/utils/string_utils.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/utils/string_utils.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/utils/string_utils.f90.i
 .PHONY : __/__/utils/utils/string_utils.f90.i
 
 __/__/utils/utils/string_utils.s: __/__/utils/utils/string_utils.f90.s
@@ -310,7 +283,7 @@ __/__/utils/utils/string_utils.s: __/__/utils/utils/string_utils.f90.s
 
 # target to generate assembly for a file
 __/__/utils/utils/string_utils.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/utils/string_utils.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/utils/string_utils.f90.s
 .PHONY : __/__/utils/utils/string_utils.f90.s
 
 __/__/utils/version/BuildInfo.obj: __/__/utils/version/BuildInfo.f90.obj
@@ -319,7 +292,7 @@ __/__/utils/version/BuildInfo.obj: __/__/utils/version/BuildInfo.f90.obj
 
 # target to build an object file
 __/__/utils/version/BuildInfo.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/BuildInfo.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/version/BuildInfo.f90.obj
 .PHONY : __/__/utils/version/BuildInfo.f90.obj
 
 __/__/utils/version/BuildInfo.i: __/__/utils/version/BuildInfo.f90.i
@@ -328,7 +301,7 @@ __/__/utils/version/BuildInfo.i: __/__/utils/version/BuildInfo.f90.i
 
 # target to preprocess a source file
 __/__/utils/version/BuildInfo.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/BuildInfo.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/version/BuildInfo.f90.i
 .PHONY : __/__/utils/version/BuildInfo.f90.i
 
 __/__/utils/version/BuildInfo.s: __/__/utils/version/BuildInfo.f90.s
@@ -337,7 +310,7 @@ __/__/utils/version/BuildInfo.s: __/__/utils/version/BuildInfo.f90.s
 
 # target to generate assembly for a file
 __/__/utils/version/BuildInfo.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/BuildInfo.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/version/BuildInfo.f90.s
 .PHONY : __/__/utils/version/BuildInfo.f90.s
 
 __/__/utils/version/version.obj: __/__/utils/version/version.rc.obj
@@ -346,7 +319,7 @@ __/__/utils/version/version.obj: __/__/utils/version/version.rc.obj
 
 # target to build an object file
 __/__/utils/version/version.rc.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/version.rc.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/version/version.rc.obj
 .PHONY : __/__/utils/version/version.rc.obj
 
 __/dtu_we_controller/dtu_we_controller.obj: __/dtu_we_controller/dtu_we_controller.f90.obj
@@ -355,7 +328,7 @@ __/dtu_we_controller/dtu_we_controller.obj: __/dtu_we_controller/dtu_we_controll
 
 # target to build an object file
 __/dtu_we_controller/dtu_we_controller.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/dtu_we_controller.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/dtu_we_controller.f90.obj
 .PHONY : __/dtu_we_controller/dtu_we_controller.f90.obj
 
 __/dtu_we_controller/dtu_we_controller.i: __/dtu_we_controller/dtu_we_controller.f90.i
@@ -364,7 +337,7 @@ __/dtu_we_controller/dtu_we_controller.i: __/dtu_we_controller/dtu_we_controller
 
 # target to preprocess a source file
 __/dtu_we_controller/dtu_we_controller.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/dtu_we_controller.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/dtu_we_controller.f90.i
 .PHONY : __/dtu_we_controller/dtu_we_controller.f90.i
 
 __/dtu_we_controller/dtu_we_controller.s: __/dtu_we_controller/dtu_we_controller.f90.s
@@ -373,7 +346,7 @@ __/dtu_we_controller/dtu_we_controller.s: __/dtu_we_controller/dtu_we_controller
 
 # target to generate assembly for a file
 __/dtu_we_controller/dtu_we_controller.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/dtu_we_controller.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/dtu_we_controller.f90.s
 .PHONY : __/dtu_we_controller/dtu_we_controller.f90.s
 
 __/dtu_we_controller/dtu_we_controller_fcns.obj: __/dtu_we_controller/dtu_we_controller_fcns.f90.obj
@@ -382,7 +355,7 @@ __/dtu_we_controller/dtu_we_controller_fcns.obj: __/dtu_we_controller/dtu_we_con
 
 # target to build an object file
 __/dtu_we_controller/dtu_we_controller_fcns.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/dtu_we_controller_fcns.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/dtu_we_controller_fcns.f90.obj
 .PHONY : __/dtu_we_controller/dtu_we_controller_fcns.f90.obj
 
 __/dtu_we_controller/dtu_we_controller_fcns.i: __/dtu_we_controller/dtu_we_controller_fcns.f90.i
@@ -391,7 +364,7 @@ __/dtu_we_controller/dtu_we_controller_fcns.i: __/dtu_we_controller/dtu_we_contr
 
 # target to preprocess a source file
 __/dtu_we_controller/dtu_we_controller_fcns.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/dtu_we_controller_fcns.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/dtu_we_controller_fcns.f90.i
 .PHONY : __/dtu_we_controller/dtu_we_controller_fcns.f90.i
 
 __/dtu_we_controller/dtu_we_controller_fcns.s: __/dtu_we_controller/dtu_we_controller_fcns.f90.s
@@ -400,7 +373,7 @@ __/dtu_we_controller/dtu_we_controller_fcns.s: __/dtu_we_controller/dtu_we_contr
 
 # target to generate assembly for a file
 __/dtu_we_controller/dtu_we_controller_fcns.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/dtu_we_controller_fcns.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/dtu_we_controller_fcns.f90.s
 .PHONY : __/dtu_we_controller/dtu_we_controller_fcns.f90.s
 
 __/dtu_we_controller/floating_controller.obj: __/dtu_we_controller/floating_controller.f90.obj
@@ -409,7 +382,7 @@ __/dtu_we_controller/floating_controller.obj: __/dtu_we_controller/floating_cont
 
 # target to build an object file
 __/dtu_we_controller/floating_controller.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/floating_controller.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/floating_controller.f90.obj
 .PHONY : __/dtu_we_controller/floating_controller.f90.obj
 
 __/dtu_we_controller/floating_controller.i: __/dtu_we_controller/floating_controller.f90.i
@@ -418,7 +391,7 @@ __/dtu_we_controller/floating_controller.i: __/dtu_we_controller/floating_contro
 
 # target to preprocess a source file
 __/dtu_we_controller/floating_controller.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/floating_controller.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/floating_controller.f90.i
 .PHONY : __/dtu_we_controller/floating_controller.f90.i
 
 __/dtu_we_controller/floating_controller.s: __/dtu_we_controller/floating_controller.f90.s
@@ -427,7 +400,7 @@ __/dtu_we_controller/floating_controller.s: __/dtu_we_controller/floating_contro
 
 # target to generate assembly for a file
 __/dtu_we_controller/floating_controller.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/floating_controller.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/floating_controller.f90.s
 .PHONY : __/dtu_we_controller/floating_controller.f90.s
 
 __/dtu_we_controller/safety_system.obj: __/dtu_we_controller/safety_system.f90.obj
@@ -436,7 +409,7 @@ __/dtu_we_controller/safety_system.obj: __/dtu_we_controller/safety_system.f90.o
 
 # target to build an object file
 __/dtu_we_controller/safety_system.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/safety_system.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/safety_system.f90.obj
 .PHONY : __/dtu_we_controller/safety_system.f90.obj
 
 __/dtu_we_controller/safety_system.i: __/dtu_we_controller/safety_system.f90.i
@@ -445,7 +418,7 @@ __/dtu_we_controller/safety_system.i: __/dtu_we_controller/safety_system.f90.i
 
 # target to preprocess a source file
 __/dtu_we_controller/safety_system.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/safety_system.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/safety_system.f90.i
 .PHONY : __/dtu_we_controller/safety_system.f90.i
 
 __/dtu_we_controller/safety_system.s: __/dtu_we_controller/safety_system.f90.s
@@ -454,7 +427,7 @@ __/dtu_we_controller/safety_system.s: __/dtu_we_controller/safety_system.f90.s
 
 # target to generate assembly for a file
 __/dtu_we_controller/safety_system.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/safety_system.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/safety_system.f90.s
 .PHONY : __/dtu_we_controller/safety_system.f90.s
 
 __/dtu_we_controller/turbine_controller.obj: __/dtu_we_controller/turbine_controller.f90.obj
@@ -463,7 +436,7 @@ __/dtu_we_controller/turbine_controller.obj: __/dtu_we_controller/turbine_contro
 
 # target to build an object file
 __/dtu_we_controller/turbine_controller.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/turbine_controller.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/turbine_controller.f90.obj
 .PHONY : __/dtu_we_controller/turbine_controller.f90.obj
 
 __/dtu_we_controller/turbine_controller.i: __/dtu_we_controller/turbine_controller.f90.i
@@ -472,7 +445,7 @@ __/dtu_we_controller/turbine_controller.i: __/dtu_we_controller/turbine_controll
 
 # target to preprocess a source file
 __/dtu_we_controller/turbine_controller.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/turbine_controller.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/turbine_controller.f90.i
 .PHONY : __/dtu_we_controller/turbine_controller.f90.i
 
 __/dtu_we_controller/turbine_controller.s: __/dtu_we_controller/turbine_controller.f90.s
@@ -481,7 +454,7 @@ __/dtu_we_controller/turbine_controller.s: __/dtu_we_controller/turbine_controll
 
 # target to generate assembly for a file
 __/dtu_we_controller/turbine_controller.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/turbine_controller.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/turbine_controller.f90.s
 .PHONY : __/dtu_we_controller/turbine_controller.f90.s
 
 __/modules/global_constants.obj: __/modules/global_constants.f90.obj
@@ -490,7 +463,7 @@ __/modules/global_constants.obj: __/modules/global_constants.f90.obj
 
 # target to build an object file
 __/modules/global_constants.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_constants.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/global_constants.f90.obj
 .PHONY : __/modules/global_constants.f90.obj
 
 __/modules/global_constants.i: __/modules/global_constants.f90.i
@@ -499,7 +472,7 @@ __/modules/global_constants.i: __/modules/global_constants.f90.i
 
 # target to preprocess a source file
 __/modules/global_constants.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_constants.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/global_constants.f90.i
 .PHONY : __/modules/global_constants.f90.i
 
 __/modules/global_constants.s: __/modules/global_constants.f90.s
@@ -508,7 +481,7 @@ __/modules/global_constants.s: __/modules/global_constants.f90.s
 
 # target to generate assembly for a file
 __/modules/global_constants.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_constants.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/global_constants.f90.s
 .PHONY : __/modules/global_constants.f90.s
 
 __/modules/global_variables.obj: __/modules/global_variables.f90.obj
@@ -517,7 +490,7 @@ __/modules/global_variables.obj: __/modules/global_variables.f90.obj
 
 # target to build an object file
 __/modules/global_variables.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_variables.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/global_variables.f90.obj
 .PHONY : __/modules/global_variables.f90.obj
 
 __/modules/global_variables.i: __/modules/global_variables.f90.i
@@ -526,7 +499,7 @@ __/modules/global_variables.i: __/modules/global_variables.f90.i
 
 # target to preprocess a source file
 __/modules/global_variables.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_variables.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/global_variables.f90.i
 .PHONY : __/modules/global_variables.f90.i
 
 __/modules/global_variables.s: __/modules/global_variables.f90.s
@@ -535,7 +508,7 @@ __/modules/global_variables.s: __/modules/global_variables.f90.s
 
 # target to generate assembly for a file
 __/modules/global_variables.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_variables.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/global_variables.f90.s
 .PHONY : __/modules/global_variables.f90.s
 
 __/modules/misc_mod.obj: __/modules/misc_mod.f90.obj
@@ -544,7 +517,7 @@ __/modules/misc_mod.obj: __/modules/misc_mod.f90.obj
 
 # target to build an object file
 __/modules/misc_mod.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/misc_mod.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/misc_mod.f90.obj
 .PHONY : __/modules/misc_mod.f90.obj
 
 __/modules/misc_mod.i: __/modules/misc_mod.f90.i
@@ -553,7 +526,7 @@ __/modules/misc_mod.i: __/modules/misc_mod.f90.i
 
 # target to preprocess a source file
 __/modules/misc_mod.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/misc_mod.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/misc_mod.f90.i
 .PHONY : __/modules/misc_mod.f90.i
 
 __/modules/misc_mod.s: __/modules/misc_mod.f90.s
@@ -562,7 +535,7 @@ __/modules/misc_mod.s: __/modules/misc_mod.f90.s
 
 # target to generate assembly for a file
 __/modules/misc_mod.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/misc_mod.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/misc_mod.f90.s
 .PHONY : __/modules/misc_mod.f90.s
 
 __/modules/user_defined_types.obj: __/modules/user_defined_types.f90.obj
@@ -571,7 +544,7 @@ __/modules/user_defined_types.obj: __/modules/user_defined_types.f90.obj
 
 # target to build an object file
 __/modules/user_defined_types.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/user_defined_types.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/user_defined_types.f90.obj
 .PHONY : __/modules/user_defined_types.f90.obj
 
 __/modules/user_defined_types.i: __/modules/user_defined_types.f90.i
@@ -580,7 +553,7 @@ __/modules/user_defined_types.i: __/modules/user_defined_types.f90.i
 
 # target to preprocess a source file
 __/modules/user_defined_types.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/user_defined_types.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/user_defined_types.f90.i
 .PHONY : __/modules/user_defined_types.f90.i
 
 __/modules/user_defined_types.s: __/modules/user_defined_types.f90.s
@@ -589,7 +562,7 @@ __/modules/user_defined_types.s: __/modules/user_defined_types.f90.s
 
 # target to generate assembly for a file
 __/modules/user_defined_types.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/user_defined_types.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/user_defined_types.f90.s
 .PHONY : __/modules/user_defined_types.f90.s
 
 dtu_we_controller_bladed.obj: dtu_we_controller_bladed.f90.obj
@@ -598,7 +571,7 @@ dtu_we_controller_bladed.obj: dtu_we_controller_bladed.f90.obj
 
 # target to build an object file
 dtu_we_controller_bladed.f90.obj:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.obj
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/dtu_we_controller_bladed.f90.obj
 .PHONY : dtu_we_controller_bladed.f90.obj
 
 dtu_we_controller_bladed.i: dtu_we_controller_bladed.f90.i
@@ -607,7 +580,7 @@ dtu_we_controller_bladed.i: dtu_we_controller_bladed.f90.i
 
 # target to preprocess a source file
 dtu_we_controller_bladed.f90.i:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.i
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/dtu_we_controller_bladed.f90.i
 .PHONY : dtu_we_controller_bladed.f90.i
 
 dtu_we_controller_bladed.s: dtu_we_controller_bladed.f90.s
@@ -616,7 +589,7 @@ dtu_we_controller_bladed.s: dtu_we_controller_bladed.f90.s
 
 # target to generate assembly for a file
 dtu_we_controller_bladed.f90.s:
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC_for_OpenFAST.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.s
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build && $(MAKE) -f src\dtu_we_controller_bladed\CMakeFiles\DTUWEC4SC.dir\build.make src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/dtu_we_controller_bladed.f90.s
 .PHONY : dtu_we_controller_bladed.f90.s
 
 # Help Target
@@ -625,12 +598,9 @@ help:
 	@echo ... all (the default if no target is provided)
 	@echo ... clean
 	@echo ... depend
-	@echo ... edit_cache
-	@echo ... DTUWEC_for_OpenFAST
 	@echo ... rebuild_cache
-	@echo ... SCClientSubs.obj
-	@echo ... SCClientSubs.i
-	@echo ... SCClientSubs.s
+	@echo ... DTUWEC4SC
+	@echo ... edit_cache
 	@echo ... __/__/utils/io/dll_utils.obj
 	@echo ... __/__/utils/io/dll_utils.i
 	@echo ... __/__/utils/io/dll_utils.s

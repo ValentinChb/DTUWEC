@@ -1,5 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.obj"
   "CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/dll_utils.f90.obj"
   "CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/logging.f90.obj"
   "CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/path_utils.f90.obj"

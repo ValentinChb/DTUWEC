@@ -126,24 +126,10 @@ src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_contro
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/turbine_controller.f90.s"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\src\dtu_we_controller\turbine_controller.f90 -o CMakeFiles\DTUWEC_for_OpenFAST.dir\__\dtu_we_controller\turbine_controller.f90.s
 
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/flags.make
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/includes_Fortran.rsp
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.obj: ../src/dtu_we_controller_bladed/SCClientSubs.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.obj"
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\src\dtu_we_controller_bladed\SCClientSubs.f90 -o CMakeFiles\DTUWEC_for_OpenFAST.dir\SCClientSubs.f90.obj
-
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing Fortran source to CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.i"
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -E C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\src\dtu_we_controller_bladed\SCClientSubs.f90 > CMakeFiles\DTUWEC_for_OpenFAST.dir\SCClientSubs.f90.i
-
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling Fortran source to assembly CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.s"
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -S C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\src\dtu_we_controller_bladed\SCClientSubs.f90 -o CMakeFiles\DTUWEC_for_OpenFAST.dir\SCClientSubs.f90.s
-
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/flags.make
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/includes_Fortran.rsp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.obj: ../src/dtu_we_controller_bladed/dtu_we_controller_bladed.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.obj"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\src\dtu_we_controller_bladed\dtu_we_controller_bladed.f90 -o CMakeFiles\DTUWEC_for_OpenFAST.dir\dtu_we_controller_bladed.f90.obj
 
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.i: cmake_force
@@ -157,7 +143,7 @@ src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controlle
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_constants.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/flags.make
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_constants.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/includes_Fortran.rsp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_constants.f90.obj: ../src/modules/global_constants.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_constants.f90.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_constants.f90.obj"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\src\modules\global_constants.f90 -o CMakeFiles\DTUWEC_for_OpenFAST.dir\__\modules\global_constants.f90.obj
 
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_constants.f90.i: cmake_force
@@ -171,7 +157,7 @@ src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/globa
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_variables.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/flags.make
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_variables.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/includes_Fortran.rsp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_variables.f90.obj: ../src/modules/global_variables.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_variables.f90.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_variables.f90.obj"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\src\modules\global_variables.f90 -o CMakeFiles\DTUWEC_for_OpenFAST.dir\__\modules\global_variables.f90.obj
 
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_variables.f90.i: cmake_force
@@ -185,7 +171,7 @@ src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/globa
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/misc_mod.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/flags.make
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/misc_mod.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/includes_Fortran.rsp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/misc_mod.f90.obj: ../src/modules/misc_mod.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/misc_mod.f90.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/misc_mod.f90.obj"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\src\modules\misc_mod.f90 -o CMakeFiles\DTUWEC_for_OpenFAST.dir\__\modules\misc_mod.f90.obj
 
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/misc_mod.f90.i: cmake_force
@@ -199,7 +185,7 @@ src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/misc_
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/user_defined_types.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/flags.make
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/user_defined_types.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/includes_Fortran.rsp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/user_defined_types.f90.obj: ../src/modules/user_defined_types.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/user_defined_types.f90.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/user_defined_types.f90.obj"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\src\modules\user_defined_types.f90 -o CMakeFiles\DTUWEC_for_OpenFAST.dir\__\modules\user_defined_types.f90.obj
 
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/user_defined_types.f90.i: cmake_force
@@ -213,7 +199,7 @@ src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/user_
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/dll_utils.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/flags.make
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/dll_utils.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/includes_Fortran.rsp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/dll_utils.f90.obj: ../utils/io/dll_utils.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/dll_utils.f90.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/dll_utils.f90.obj"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\utils\io\dll_utils.f90 -o CMakeFiles\DTUWEC_for_OpenFAST.dir\__\__\utils\io\dll_utils.f90.obj
 
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/dll_utils.f90.i: cmake_force
@@ -227,7 +213,7 @@ src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/d
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/logging.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/flags.make
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/logging.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/includes_Fortran.rsp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/logging.f90.obj: ../utils/io/logging.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/logging.f90.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/logging.f90.obj"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\utils\io\logging.f90 -o CMakeFiles\DTUWEC_for_OpenFAST.dir\__\__\utils\io\logging.f90.obj
 
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/logging.f90.i: cmake_force
@@ -241,7 +227,7 @@ src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/l
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/path_utils.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/flags.make
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/path_utils.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/includes_Fortran.rsp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/path_utils.f90.obj: ../utils/io/path_utils.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/path_utils.f90.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/path_utils.f90.obj"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\utils\io\path_utils.f90 -o CMakeFiles\DTUWEC_for_OpenFAST.dir\__\__\utils\io\path_utils.f90.obj
 
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/path_utils.f90.i: cmake_force
@@ -255,7 +241,7 @@ src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/io/p
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/utils/string_utils.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/flags.make
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/utils/string_utils.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/includes_Fortran.rsp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/utils/string_utils.f90.obj: ../utils/utils/string_utils.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/utils/string_utils.f90.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/utils/string_utils.f90.obj"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\utils\utils\string_utils.f90 -o CMakeFiles\DTUWEC_for_OpenFAST.dir\__\__\utils\utils\string_utils.f90.obj
 
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/utils/string_utils.f90.i: cmake_force
@@ -269,7 +255,7 @@ src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/util
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/BuildInfo.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/flags.make
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/BuildInfo.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/includes_Fortran.rsp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/BuildInfo.f90.obj: ../utils/version/BuildInfo.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/BuildInfo.f90.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/BuildInfo.f90.obj"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\utils\version\BuildInfo.f90 -o CMakeFiles\DTUWEC_for_OpenFAST.dir\__\__\utils\version\BuildInfo.f90.obj
 
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/BuildInfo.f90.i: cmake_force
@@ -282,13 +268,13 @@ src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/vers
 
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/version.rc.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/flags.make
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/version.rc.obj: ../utils/version/version.rc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building RC object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/version.rc.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building RC object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/version/version.rc.obj"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\windres.exe -O coff $(RC_DEFINES) $(RC_INCLUDES) $(RC_FLAGS) C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\utils\version\version.rc CMakeFiles\DTUWEC_for_OpenFAST.dir\__\__\utils\version\version.rc.obj
 
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/dfwin_gfortran.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/flags.make
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/dfwin_gfortran.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/includes_Fortran.rsp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/dfwin_gfortran.f90.obj: ../utils/portability/dfwin_gfortran.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/dfwin_gfortran.f90.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/dfwin_gfortran.f90.obj"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\utils\portability\dfwin_gfortran.f90 -o CMakeFiles\DTUWEC_for_OpenFAST.dir\__\__\utils\portability\dfwin_gfortran.f90.obj
 
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/dfwin_gfortran.f90.i: cmake_force
@@ -302,7 +288,7 @@ src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/port
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/flags.make
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/includes_Fortran.rsp
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj: ../utils/portability/filesystem_tools_gfortran.f90
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building Fortran object src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && C:\Users\valentinc\msys2\mingw64\bin\gfortran.exe $(Fortran_DEFINES) $(Fortran_INCLUDES) $(Fortran_FLAGS) -c C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\utils\portability\filesystem_tools_gfortran.f90 -o CMakeFiles\DTUWEC_for_OpenFAST.dir\__\__\utils\portability\filesystem_tools_gfortran.f90.obj
 
 src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.i: cmake_force
@@ -320,7 +306,6 @@ DTUWEC_for_OpenFAST_OBJECTS = \
 "CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/floating_controller.f90.obj" \
 "CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/safety_system.f90.obj" \
 "CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/turbine_controller.f90.obj" \
-"CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.obj" \
 "CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.obj" \
 "CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_constants.f90.obj" \
 "CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_variables.f90.obj" \
@@ -343,7 +328,6 @@ src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_b
 src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/floating_controller.f90.obj
 src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/safety_system.f90.obj
 src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/dtu_we_controller/turbine_controller.f90.obj
-src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/SCClientSubs.f90.obj
 src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/dtu_we_controller_bladed.f90.obj
 src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_constants.f90.obj
 src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/__/modules/global_variables.f90.obj
@@ -360,7 +344,7 @@ src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_b
 src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/build.make
 src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/objects1.rsp
 src/dtu_we_controller_bladed/DTUWEC_for_OpenFAST_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC_for_OpenFAST.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Linking Fortran shared library DTUWEC_for_OpenFAST_64.dll"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Linking Fortran shared library DTUWEC_for_OpenFAST_64.dll"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\DTUWEC_for_OpenFAST.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
