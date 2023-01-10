@@ -13,10 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/flap_controller_cyclic.dir/__/modules/user_defined_types.f90.obj"
   "CMakeFiles/flap_controller_cyclic.dir/flap_controller_cyclic.f90.obj"
   "CMakeFiles/flap_controller_cyclic.dir/flap_controller_cyclic_fcns.f90.obj"
-  "flap_controller_cyclic.pdb"
-  "flap_controller_cyclic_64.dll"
-  "flap_controller_cyclic_64.dll.manifest"
-  "libflap_controller_cyclic.dll.a"
+  "libflap_controller_cyclic.a"
+  "libflap_controller_cyclic.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

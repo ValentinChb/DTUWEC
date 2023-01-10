@@ -248,27 +248,27 @@ individual_flap_controller_OBJECTS = \
 # External object files for target individual_flap_controller
 individual_flap_controller_EXTERNAL_OBJECTS =
 
-src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/flap_controller_individual_aep_u_f.f90.obj
-src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/modules/global_constants.f90.obj
-src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/modules/global_variables.f90.obj
-src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/modules/misc_mod.f90.obj
-src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/modules/user_defined_types.f90.obj
-src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/__/utils/io/dll_utils.f90.obj
-src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/__/utils/io/logging.f90.obj
-src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/__/utils/io/path_utils.f90.obj
-src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/__/utils/utils/string_utils.f90.obj
-src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/__/utils/version/BuildInfo.f90.obj
-src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/__/utils/version/version.rc.obj
-src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/__/utils/portability/dfwin_gfortran.f90.obj
-src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj
-src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/build.make
-src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/objects1.rsp
-src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking Fortran shared library individual_flap_controller_64.dll"
+src/flap_controller_individual_aep_u_f/libindividual_flap_controller.a: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/flap_controller_individual_aep_u_f.f90.obj
+src/flap_controller_individual_aep_u_f/libindividual_flap_controller.a: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/modules/global_constants.f90.obj
+src/flap_controller_individual_aep_u_f/libindividual_flap_controller.a: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/modules/global_variables.f90.obj
+src/flap_controller_individual_aep_u_f/libindividual_flap_controller.a: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/modules/misc_mod.f90.obj
+src/flap_controller_individual_aep_u_f/libindividual_flap_controller.a: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/modules/user_defined_types.f90.obj
+src/flap_controller_individual_aep_u_f/libindividual_flap_controller.a: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/__/utils/io/dll_utils.f90.obj
+src/flap_controller_individual_aep_u_f/libindividual_flap_controller.a: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/__/utils/io/logging.f90.obj
+src/flap_controller_individual_aep_u_f/libindividual_flap_controller.a: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/__/utils/io/path_utils.f90.obj
+src/flap_controller_individual_aep_u_f/libindividual_flap_controller.a: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/__/utils/utils/string_utils.f90.obj
+src/flap_controller_individual_aep_u_f/libindividual_flap_controller.a: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/__/utils/version/BuildInfo.f90.obj
+src/flap_controller_individual_aep_u_f/libindividual_flap_controller.a: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/__/utils/version/version.rc.obj
+src/flap_controller_individual_aep_u_f/libindividual_flap_controller.a: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/__/utils/portability/dfwin_gfortran.f90.obj
+src/flap_controller_individual_aep_u_f/libindividual_flap_controller.a: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj
+src/flap_controller_individual_aep_u_f/libindividual_flap_controller.a: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/build.make
+src/flap_controller_individual_aep_u_f/libindividual_flap_controller.a: src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking Fortran static library libindividual_flap_controller.a"
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\flap_controller_individual_aep_u_f && $(CMAKE_COMMAND) -P CMakeFiles\individual_flap_controller.dir\cmake_clean_target.cmake
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\flap_controller_individual_aep_u_f && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\individual_flap_controller.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/build: src/flap_controller_individual_aep_u_f/individual_flap_controller_64.dll
+src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/build: src/flap_controller_individual_aep_u_f/libindividual_flap_controller.a
 
 .PHONY : src/flap_controller_individual_aep_u_f/CMakeFiles/individual_flap_controller.dir/build
 

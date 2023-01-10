@@ -1,0 +1,3 @@
+file(REMOVE_RECURSE
+  "libDTUWEC4SC.a"
+)

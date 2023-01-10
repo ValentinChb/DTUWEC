@@ -12,10 +12,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/individual_flap_controller.dir/__/modules/misc_mod.f90.obj"
   "CMakeFiles/individual_flap_controller.dir/__/modules/user_defined_types.f90.obj"
   "CMakeFiles/individual_flap_controller.dir/flap_controller_individual_aep_u_f.f90.obj"
-  "individual_flap_controller.pdb"
-  "individual_flap_controller_64.dll"
-  "individual_flap_controller_64.dll.manifest"
-  "libindividual_flap_controller.dll.a"
+  "libindividual_flap_controller.a"
+  "libindividual_flap_controller.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

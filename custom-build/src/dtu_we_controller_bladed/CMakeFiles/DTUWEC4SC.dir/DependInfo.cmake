@@ -29,7 +29,6 @@ set(CMAKE_Fortran_SUBMODULE_EXT ".smod")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_Fortran
-  "DTUWEC4SC_EXPORTS"
   "_WIN32"
   "_WIN64"
   )
@@ -46,7 +45,6 @@ set(CMAKE_DEPENDS_CHECK_RC
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_RC
-  "DTUWEC4SC_EXPORTS"
   "_WIN32"
   "_WIN64"
   )

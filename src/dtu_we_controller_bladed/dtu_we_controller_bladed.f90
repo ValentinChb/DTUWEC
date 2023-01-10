@@ -171,7 +171,12 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
 
     endif 
     
-    if(WindEstvar%J /= 0.0) avrSWAP(87) = array2(44) ! VC edit: update effective wind speed
+    ! VC edit: update effective wind speed
+    if(WindEstvar%J /= 0.0) then 
+        avrSWAP(87) = array2(44) 
+    else
+        avrSWAP(87) = avrSWAP(27)
+    endif
 
     callno=callno+1 ! VC edit: had incrementation been omitted originally?
     

@@ -30,7 +30,6 @@ set(CMAKE_Fortran_SUBMODULE_EXT ".smod")
 set(CMAKE_TARGET_DEFINITIONS_Fortran
   "_WIN32"
   "_WIN64"
-  "dtu_we_controller_EXPORTS"
   )
 
 # The include file search paths:
@@ -47,7 +46,6 @@ set(CMAKE_DEPENDS_CHECK_RC
 set(CMAKE_TARGET_DEFINITIONS_RC
   "_WIN32"
   "_WIN64"
-  "dtu_we_controller_EXPORTS"
   )
 
 # The include file search paths:

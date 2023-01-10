@@ -323,32 +323,32 @@ DTUWEC4SC_OBJECTS = \
 # External object files for target DTUWEC4SC
 DTUWEC4SC_EXTERNAL_OBJECTS =
 
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/dtu_we_controller.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/dtu_we_controller_fcns.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/floating_controller.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/safety_system.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/turbine_controller.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/dtu_we_controller_bladed.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/global_constants.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/global_variables.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/misc_mod.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/user_defined_types.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/io/dll_utils.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/io/logging.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/io/path_utils.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/utils/string_utils.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/version/BuildInfo.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/version/version.rc.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/portability/dfwin_gfortran.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/build.make
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/objects1.rsp
-src/dtu_we_controller_bladed/DTUWEC4SC_64.dll: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Linking Fortran shared library DTUWEC4SC_64.dll"
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/dtu_we_controller.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/dtu_we_controller_fcns.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/floating_controller.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/safety_system.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/dtu_we_controller/turbine_controller.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/dtu_we_controller_bladed.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/global_constants.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/global_variables.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/misc_mod.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/modules/user_defined_types.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/io/dll_utils.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/io/logging.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/io/path_utils.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/utils/string_utils.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/version/BuildInfo.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/version/version.rc.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/portability/dfwin_gfortran.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/build.make
+src/dtu_we_controller_bladed/libDTUWEC4SC.a: src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Linking Fortran static library libDTUWEC4SC.a"
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && $(CMAKE_COMMAND) -P CMakeFiles\DTUWEC4SC.dir\cmake_clean_target.cmake
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\DTUWEC4SC.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/build: src/dtu_we_controller_bladed/DTUWEC4SC_64.dll
+src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/build: src/dtu_we_controller_bladed/libDTUWEC4SC.a
 
 .PHONY : src/dtu_we_controller_bladed/CMakeFiles/DTUWEC4SC.dir/build
 
