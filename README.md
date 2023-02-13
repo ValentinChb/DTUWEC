@@ -10,6 +10,6 @@ The main modifications are:
 # Installation
 - Make sure BLAS and LAPACK dependencies are in PATH
 - Binaries for Windows 64 bits with and without static link for use in supercontroller/wrapper (.a or .dll) are provided. Recompiling (recommended) should be done using CMake and a fortran compiler. The MinGW/GNU suite has been used in this project. Intel fortran compiler and linux environments have not been tested.
-- Set cmake variable LINK2SC to FALSE to deactivate link to wrapper/supercontroller for direct use in OpenFAST
+- Set cmake variable CMAKE_LINK2SC to FALSE to deactivate link to wrapper/supercontroller for direct use in OpenFAST
 - The utils submodule is not included in this repository. It is recommended to clone the two repositories separately instead of using git clone --recurse-submodules or similar. Make sure a valid version is defined by using the git tag command appropriately. Then, update The cmake config file CMakeLists.txt in utils/cmake by copying and renaming the file CMakeList_utils.txt from this repository (it implements the necessary adaptations in fortran compiler and linker flags).
 
