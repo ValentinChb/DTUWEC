@@ -4,7 +4,7 @@ This is a branch of the Basic DTU Wind Energy Controller:
 https://gitlab.windenergy.dtu.dk/OpenLAC/BasicDTUController
 
 The main modifications are:
-- Adaptation for linking with a supercontroller featuring a MPI bridge (https://github.com/ValentinChb/SC_MPIClient) exchanging the controller data array (avrSWAP) to a parallel simulation environment, which may be used to connect and sync with a farm controller (or even bypass the entire turbine controller) in a distinct environment (e.g. Simulink) in FAST.Farm simulations
+- Adaptation for linking with a wrapper featuring an MPI bridge (https://github.com/ValentinChb/SC_MPIClient) exchanging the controller data array (avrSWAP) to a parallel simulation environment, which may be used to connect and sync with a farm controller (or even bypass the entire turbine controller) in a distinct environment (e.g. Simulink) in FAST.Farm simulations
 - Improved derating functionality providing tracking of power commands sent by the farm controller (the original implementation only supports fixed open-loop derating from input file)
 
 # Installation
