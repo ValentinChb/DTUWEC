@@ -13,10 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/cyclic_pitch_controller.dir/__/modules/user_defined_types.f90.obj"
   "CMakeFiles/cyclic_pitch_controller.dir/cyclic_pitch_controller.f90.obj"
   "CMakeFiles/cyclic_pitch_controller.dir/cyclic_pitch_controller_fcns.f90.obj"
-  "cyclic_pitch_controller.pdb"
-  "cyclic_pitch_controller_64.dll"
-  "cyclic_pitch_controller_64.dll.manifest"
-  "libcyclic_pitch_controller.dll.a"
+  "libcyclic_pitch_controller.a"
+  "libcyclic_pitch_controller.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

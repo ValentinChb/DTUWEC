@@ -77,6 +77,9 @@ CMAKE_GNUtoMS:BOOL=OFF
 //Install path prefix, prepended onto install directories.
 CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/DTUWEC
 
+//Set to FALSE for standalone use (shared library, not static)
+CMAKE_LINK2SC:BOOL=ON
+
 //Path to ld program
 CMAKE_LINKER:FILEPATH=C:/Users/valentinc/msys2/mingw64/x86_64-w64-mingw32/bin/ld.exe
 
@@ -221,9 +224,6 @@ DTUWEC_for_OpenFAST_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/Supe
 
 //Value Computed by CMake
 DTUWEC_for_OpenFAST_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/dtu_we_controller_bladed
-
-//Link to supercontroller. If TRUE, a static library is generated.
-LINK2SC:BOOL=OFF
 
 //Value Computed by CMake
 cyclic_pitch_controller_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/individual_pitch_controller

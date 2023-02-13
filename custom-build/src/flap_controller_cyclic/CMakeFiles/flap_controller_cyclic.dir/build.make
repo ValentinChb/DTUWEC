@@ -263,28 +263,28 @@ flap_controller_cyclic_OBJECTS = \
 # External object files for target flap_controller_cyclic
 flap_controller_cyclic_EXTERNAL_OBJECTS =
 
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/flap_controller_cyclic.f90.obj
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/flap_controller_cyclic_fcns.f90.obj
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/modules/global_constants.f90.obj
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/modules/global_variables.f90.obj
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/modules/misc_mod.f90.obj
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/modules/user_defined_types.f90.obj
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/io/dll_utils.f90.obj
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/io/logging.f90.obj
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/io/path_utils.f90.obj
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/utils/string_utils.f90.obj
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/version/BuildInfo.f90.obj
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/version/version.rc.obj
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/portability/dfwin_gfortran.f90.obj
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/build.make
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/objects1.rsp
-src/flap_controller_cyclic/flap_controller_cyclic_64.dll: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking Fortran shared library flap_controller_cyclic_64.dll"
+src/flap_controller_cyclic/libflap_controller_cyclic.a: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/flap_controller_cyclic.f90.obj
+src/flap_controller_cyclic/libflap_controller_cyclic.a: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/flap_controller_cyclic_fcns.f90.obj
+src/flap_controller_cyclic/libflap_controller_cyclic.a: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/modules/global_constants.f90.obj
+src/flap_controller_cyclic/libflap_controller_cyclic.a: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/modules/global_variables.f90.obj
+src/flap_controller_cyclic/libflap_controller_cyclic.a: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/modules/misc_mod.f90.obj
+src/flap_controller_cyclic/libflap_controller_cyclic.a: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/modules/user_defined_types.f90.obj
+src/flap_controller_cyclic/libflap_controller_cyclic.a: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/io/dll_utils.f90.obj
+src/flap_controller_cyclic/libflap_controller_cyclic.a: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/io/logging.f90.obj
+src/flap_controller_cyclic/libflap_controller_cyclic.a: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/io/path_utils.f90.obj
+src/flap_controller_cyclic/libflap_controller_cyclic.a: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/utils/string_utils.f90.obj
+src/flap_controller_cyclic/libflap_controller_cyclic.a: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/version/BuildInfo.f90.obj
+src/flap_controller_cyclic/libflap_controller_cyclic.a: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/version/version.rc.obj
+src/flap_controller_cyclic/libflap_controller_cyclic.a: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/portability/dfwin_gfortran.f90.obj
+src/flap_controller_cyclic/libflap_controller_cyclic.a: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj
+src/flap_controller_cyclic/libflap_controller_cyclic.a: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/build.make
+src/flap_controller_cyclic/libflap_controller_cyclic.a: src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking Fortran static library libflap_controller_cyclic.a"
+	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\flap_controller_cyclic && $(CMAKE_COMMAND) -P CMakeFiles\flap_controller_cyclic.dir\cmake_clean_target.cmake
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\flap_controller_cyclic && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\flap_controller_cyclic.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/build: src/flap_controller_cyclic/flap_controller_cyclic_64.dll
+src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/build: src/flap_controller_cyclic/libflap_controller_cyclic.a
 
 .PHONY : src/flap_controller_cyclic/CMakeFiles/flap_controller_cyclic.dir/build
 

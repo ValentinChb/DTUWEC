@@ -1,4 +1,4 @@
-#define GIT_ID "0.5-39-gd6784c3-dirty" 
+#define GIT_ID "0.5-44-gdc52db7-dirty" 
 #define GIT_VERSION 0,5,-1 
 #define GIT_BRANCH "master" 
 #define USERNAME "valentinc" 

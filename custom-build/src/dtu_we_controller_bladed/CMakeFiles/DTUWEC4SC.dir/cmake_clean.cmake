@@ -17,10 +17,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/DTUWEC4SC.dir/__/modules/misc_mod.f90.obj"
   "CMakeFiles/DTUWEC4SC.dir/__/modules/user_defined_types.f90.obj"
   "CMakeFiles/DTUWEC4SC.dir/dtu_we_controller_bladed.f90.obj"
-  "DTUWEC4SC.pdb"
-  "DTUWEC4SC_64.dll"
-  "DTUWEC4SC_64.dll.manifest"
-  "libDTUWEC4SC.dll.a"
+  "libDTUWEC4SC.a"
+  "libDTUWEC4SC.pdb"
 )
 
 # Per-language clean rules from dependency scanning.
