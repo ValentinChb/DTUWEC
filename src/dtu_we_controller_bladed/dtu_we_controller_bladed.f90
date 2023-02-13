@@ -38,7 +38,7 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
                                                                                 ! including path without extension.
 
     ! VC edit
-    character(Kind=c_char), intent(in   )  :: control_dir_in(nint(avrSWAP(86)))           ! local directory path (instead of the original ./control)
+    character(Kind=c_char), intent(in   ), optional  :: control_dir_in(nint(avrSWAP(86)))           ! local directory path (instead of the original ./control), unused if directly called from OpenFAST and not through supercontroller
     
     ! Define local Variables
     real(c_double) array1(100), array2(100)
@@ -76,9 +76,14 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
 
         ! VC edit : Get control input directory and turbine number and broadcast to global variables
         iturb=nint(avrSWAP(85))
+
+#if SC
         control_dir=""
         control_dir(1:nint(avrSWAP(86))-1) = transfer(control_dir_in(1:nint(avrSWAP(86))-1),control_dir(1:nint(avrSWAP(86))-1))
-        
+#else
+        control_dir=".\control"
+#endif      
+
         pCtrlInputFile=>null()
         if(.not. associated(pCtrlInputFile)) then
             allocate(pCtrlInputFile)

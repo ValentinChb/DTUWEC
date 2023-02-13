@@ -231,15 +231,12 @@ if(CMAKE_Fortran_COMPILER)
         endif()     
     endif()
 	
-	# VC edit: add define variables for MPI and ROSCO
-	if (CMAKE_LINK2MPI)
-		 SET(CMAKE_Fortran_FLAGS_DEBUG "-DMPI ${CMAKE_Fortran_FLAGS_DEBUG}")
-		 SET(CMAKE_Fortran_FLAGS_RELEASE "-DMPI ${CMAKE_Fortran_FLAGS_RELEASE}")
+	# VC edit: add define variables for supercontroller
+	if (CMAKE_LINK2SC)
+		 SET(CMAKE_Fortran_FLAGS_DEBUG "-DSC ${CMAKE_Fortran_FLAGS_DEBUG}")
+		 SET(CMAKE_Fortran_FLAGS_RELEASE "-DSC ${CMAKE_Fortran_FLAGS_RELEASE}")
 	endif()
-	if (CMAKE_LINK2ROSCO)
-		 SET(CMAKE_Fortran_FLAGS_DEBUG "-DROSCO ${CMAKE_Fortran_FLAGS_DEBUG}")
-		 SET(CMAKE_Fortran_FLAGS_RELEASE "-DROSCO ${CMAKE_Fortran_FLAGS_RELEASE}")
-	endif()	
+
     
 
     message("Fortran: " ${CMAKE_Fortran_COMPILER_ID})

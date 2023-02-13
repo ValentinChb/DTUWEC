@@ -222,6 +222,9 @@ DTUWEC_for_OpenFAST_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/Supe
 //Value Computed by CMake
 DTUWEC_for_OpenFAST_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/dtu_we_controller_bladed
 
+//Link to supercontroller. If TRUE, a static library is generated.
+LINK2SC:BOOL=OFF
+
 //Value Computed by CMake
 cyclic_pitch_controller_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/individual_pitch_controller
 

@@ -5,13 +5,13 @@
 # compile RC with C:/Users/valentinc/msys2/mingw64/bin/windres.exe
 Fortran_FLAGS = -O3 -march=native -static -fcheck=bounds -fno-asynchronous-unwind-tables   -cpp -ffree-form -ffree-line-length-none -fPIC -fcray-pointer
 
-Fortran_DEFINES = -D_WIN32 -D_WIN64
+Fortran_DEFINES = -DDTUWEC4SC_EXPORTS -D_WIN32 -D_WIN64
 
 Fortran_INCLUDES = @CMakeFiles/DTUWEC4SC.dir/includes_Fortran.rsp
 
 RC_FLAGS =  
 
-RC_DEFINES = -D_WIN32 -D_WIN64
+RC_DEFINES = -DDTUWEC4SC_EXPORTS -D_WIN32 -D_WIN64
 
 RC_INCLUDES = -IC:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\src\dtu_we_controller_bladed -IC:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller_bladed -IC:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\utils\portability 
 

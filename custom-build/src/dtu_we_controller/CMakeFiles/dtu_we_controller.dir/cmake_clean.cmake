@@ -16,8 +16,10 @@ file(REMOVE_RECURSE
   "CMakeFiles/dtu_we_controller.dir/floating_controller.f90.obj"
   "CMakeFiles/dtu_we_controller.dir/safety_system.f90.obj"
   "CMakeFiles/dtu_we_controller.dir/turbine_controller.f90.obj"
-  "libdtu_we_controller.a"
-  "libdtu_we_controller.pdb"
+  "dtu_we_controller.pdb"
+  "dtu_we_controller_64.dll"
+  "dtu_we_controller_64.dll.manifest"
+  "libdtu_we_controller.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -11,7 +11,14 @@ set(DTUWEC_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/dtu_we_controller)
 set(BLADED_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/dtu_we_controller_bladed)
 set(FLAP_SRC_DIR   ${CMAKE_CURRENT_SOURCE_DIR}/src/flap_controller_individual_aep_u_f)
 set(FLAPCYC_SRC_DIR   ${CMAKE_CURRENT_SOURCE_DIR}/src/flap_controller_cyclic)
-set(BUILD_TYPE STATIC) 
+
+# ----VC edit-----
+if (CMAKE_LINK2SC)
+    set(BUILD_TYPE STATIC) 
+else()
+    set(BUILD_TYPE SHARED) 
+endif()
+# ----------------
 set(LIB static)
 
 message("Configuring DTU WEC source files: " ${DTUWEC_SRC_DIR})
