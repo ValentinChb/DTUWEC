@@ -77,19 +77,21 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
         ! VC edit : Get control input directory and turbine number and broadcast to global variables
         iturb=nint(avrSWAP(85))
 
-#if SC
-        control_dir=""
-        control_dir(1:nint(avrSWAP(86))-1) = transfer(control_dir_in(1:nint(avrSWAP(86))-1),control_dir(1:nint(avrSWAP(86))-1))
-#else
-        control_dir=".\control"
-#endif      
-
         pCtrlInputFile=>null()
         if(.not. associated(pCtrlInputFile)) then
             allocate(pCtrlInputFile)
         endif
 
         pCtrlInputFile%name = trim(cInFile) 
+
+#if SC
+        control_dir=""
+        control_dir(1:nint(avrSWAP(86))-1) = transfer(control_dir_in(1:nint(avrSWAP(86))-1),control_dir(1:nint(avrSWAP(86))-1))
+#else
+        i=max(index(pCtrlInputFile%name,"/",back=.true.),index(pCtrlInputFile%name,"\",back=.true.))
+        control_dir = pCtrlInputFile%name(1:i-1) ! path to root directory
+        ! control_dir=".\control"
+#endif      
 
         ! Get a free file unit id for additional control parameter input file
         call GetFreeFileUnitDllCall(pCtrlInputFile%fileID) 

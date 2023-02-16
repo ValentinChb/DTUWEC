@@ -238,7 +238,6 @@ if(CMAKE_Fortran_COMPILER)
 	endif()
 
     
-
     message("Fortran: " ${CMAKE_Fortran_COMPILER_ID})
     message("Fortran compiler: " ${CMAKE_Fortran_COMPILER})
     message("FLAGS_DEGUG: " ${CMAKE_Fortran_FLAGS_DEBUG})
@@ -280,17 +279,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE
           ${ROOT_DIR}/utils/portability
 )
 
-#VC edit: link to mpi library 
-if (CMAKE_LINK2MPI)
-	target_link_libraries(${PROJECT_NAME} ${ROOT_DIR}/custom-build/src/dtu_we_controller_bladed/libmsmpi.a)
-	message("Linking to MPI library")	
-endif()
-
-#VC edit: link to rosco library 
-if (CMAKE_LINK2ROSCO)
-	target_link_libraries(${PROJECT_NAME} ${ROOT_DIR}/custom-build/src/dtu_we_controller_bladed/libROSCO.a)
-	message("Linking to ROSCO library")				
-endif()
 
 if ((${CMAKE_GENERATOR} MATCHES "Visual Studio") AND (NOT TARGET NUM_LIB))
     add_custom_command(TARGET ${PROJECT_NAME}
