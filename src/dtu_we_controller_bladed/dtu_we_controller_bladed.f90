@@ -56,6 +56,7 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
     real(c_float)                      :: Vobs
     real(c_float), parameter           :: GenEff=0.94 ! Generator efficiency. Should match value in ServoDyn input file. Hardcoded here, but should be read in. 
     logical, parameter                 :: powerramp=.false.
+    logical                            :: SC_flag
 
 
     iStatus = nint(avrSWAP(1))
@@ -87,10 +88,12 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
 #if SC
         control_dir=""
         control_dir(1:nint(avrSWAP(86))-1) = transfer(control_dir_in(1:nint(avrSWAP(86))-1),control_dir(1:nint(avrSWAP(86))-1))
+        SC_flag=true
 #else
         i=max(index(pCtrlInputFile%name,"/",back=.true.),index(pCtrlInputFile%name,"\",back=.true.))
-        control_dir = pCtrlInputFile%name(1:i-1) ! path to root directory
-        ! control_dir=".\control"
+        control_dir = pCtrlInputFile%name(1:i-1) ! path to root directory of the specified input file
+        ! control_dir=".\control" ! Original hard-coded location
+        SC_flag=false
 #endif      
 
         ! Get a free file unit id for additional control parameter input file
@@ -126,8 +129,9 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
     endif
 
     !------------------------------ VC edit ----------------------------------------
+    avrSWAP(13)=-1.0 ! Set a negative value
     if(callno==0) Deratevar%dr0=Deratevar%dr ! Obtained from input file, derived from available power (if updated)
-    if (avrSWAP(13)<0) avrSWAP(13) = Deratevar%dr0*PeRated ! A negative power command is used as flag for using constant value from input file
+    if (avrSWAP(13)<0 .or. .not. SC_flag) avrSWAP(13) = Deratevar%dr0*PeRated ! Using constant value from input file if no supercontroller or negative power command is used
     if(powerramp) avrSWAP(13) = max(PeRated-ABS((FLOOR(avrSWAP(2)/100.0)+1)*PeRated/10.0-PeRated),PeRated/10.0)  ! Power ramp
     Deratevar%dr = avrSWAP(13)/PeRated
     !-------------------------------------------------------------------------------

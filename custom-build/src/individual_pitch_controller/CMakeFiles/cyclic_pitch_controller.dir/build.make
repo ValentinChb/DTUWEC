@@ -263,28 +263,28 @@ cyclic_pitch_controller_OBJECTS = \
 # External object files for target cyclic_pitch_controller
 cyclic_pitch_controller_EXTERNAL_OBJECTS =
 
-src/individual_pitch_controller/libcyclic_pitch_controller.a: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/cyclic_pitch_controller.f90.obj
-src/individual_pitch_controller/libcyclic_pitch_controller.a: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/cyclic_pitch_controller_fcns.f90.obj
-src/individual_pitch_controller/libcyclic_pitch_controller.a: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/modules/global_constants.f90.obj
-src/individual_pitch_controller/libcyclic_pitch_controller.a: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/modules/global_variables.f90.obj
-src/individual_pitch_controller/libcyclic_pitch_controller.a: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/modules/misc_mod.f90.obj
-src/individual_pitch_controller/libcyclic_pitch_controller.a: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/modules/user_defined_types.f90.obj
-src/individual_pitch_controller/libcyclic_pitch_controller.a: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/io/dll_utils.f90.obj
-src/individual_pitch_controller/libcyclic_pitch_controller.a: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/io/logging.f90.obj
-src/individual_pitch_controller/libcyclic_pitch_controller.a: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/io/path_utils.f90.obj
-src/individual_pitch_controller/libcyclic_pitch_controller.a: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/utils/string_utils.f90.obj
-src/individual_pitch_controller/libcyclic_pitch_controller.a: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/version/BuildInfo.f90.obj
-src/individual_pitch_controller/libcyclic_pitch_controller.a: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/version/version.rc.obj
-src/individual_pitch_controller/libcyclic_pitch_controller.a: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/portability/dfwin_gfortran.f90.obj
-src/individual_pitch_controller/libcyclic_pitch_controller.a: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj
-src/individual_pitch_controller/libcyclic_pitch_controller.a: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/build.make
-src/individual_pitch_controller/libcyclic_pitch_controller.a: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking Fortran static library libcyclic_pitch_controller.a"
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\individual_pitch_controller && $(CMAKE_COMMAND) -P CMakeFiles\cyclic_pitch_controller.dir\cmake_clean_target.cmake
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/cyclic_pitch_controller.f90.obj
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/cyclic_pitch_controller_fcns.f90.obj
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/modules/global_constants.f90.obj
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/modules/global_variables.f90.obj
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/modules/misc_mod.f90.obj
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/modules/user_defined_types.f90.obj
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/io/dll_utils.f90.obj
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/io/logging.f90.obj
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/io/path_utils.f90.obj
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/utils/string_utils.f90.obj
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/version/BuildInfo.f90.obj
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/version/version.rc.obj
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/portability/dfwin_gfortran.f90.obj
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/build.make
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/objects1.rsp
+src/individual_pitch_controller/cyclic_pitch_controller_64.dll: src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking Fortran shared library cyclic_pitch_controller_64.dll"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\individual_pitch_controller && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\cyclic_pitch_controller.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/build: src/individual_pitch_controller/libcyclic_pitch_controller.a
+src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/build: src/individual_pitch_controller/cyclic_pitch_controller_64.dll
 
 .PHONY : src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/build
 

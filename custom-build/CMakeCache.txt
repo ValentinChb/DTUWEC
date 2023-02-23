@@ -78,7 +78,7 @@ CMAKE_GNUtoMS:BOOL=OFF
 CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/DTUWEC
 
 //Set to FALSE for standalone use (shared library, not static)
-CMAKE_LINK2SC:BOOL=ON
+CMAKE_LINK2SC:BOOL=OFF
 
 //Path to ld program
 CMAKE_LINKER:FILEPATH=C:/Users/valentinc/msys2/mingw64/x86_64-w64-mingw32/bin/ld.exe

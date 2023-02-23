@@ -308,31 +308,31 @@ dtu_we_controller_OBJECTS = \
 # External object files for target dtu_we_controller
 dtu_we_controller_EXTERNAL_OBJECTS =
 
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/dtu_we_controller.f90.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/dtu_we_controller_fcns.f90.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/floating_controller.f90.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/safety_system.f90.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/turbine_controller.f90.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/modules/global_constants.f90.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/modules/global_variables.f90.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/modules/misc_mod.f90.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/modules/user_defined_types.f90.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/io/dll_utils.f90.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/io/logging.f90.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/io/path_utils.f90.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/utils/string_utils.f90.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/version/BuildInfo.f90.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/version/version.rc.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/portability/dfwin_gfortran.f90.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/build.make
-src/dtu_we_controller/libdtu_we_controller.a: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking Fortran static library libdtu_we_controller.a"
-	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller && $(CMAKE_COMMAND) -P CMakeFiles\dtu_we_controller.dir\cmake_clean_target.cmake
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/dtu_we_controller.f90.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/dtu_we_controller_fcns.f90.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/floating_controller.f90.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/safety_system.f90.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/turbine_controller.f90.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/modules/global_constants.f90.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/modules/global_variables.f90.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/modules/misc_mod.f90.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/modules/user_defined_types.f90.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/io/dll_utils.f90.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/io/logging.f90.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/io/path_utils.f90.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/utils/string_utils.f90.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/version/BuildInfo.f90.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/version/version.rc.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/portability/dfwin_gfortran.f90.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/portability/filesystem_tools_gfortran.f90.obj
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/build.make
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/objects1.rsp
+src/dtu_we_controller/dtu_we_controller_64.dll: src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking Fortran shared library dtu_we_controller_64.dll"
 	cd /d C:\Users\valentinc\Workspace\OpenFAST\SuperController\DTUWEC-SC-mpi\custom-build\src\dtu_we_controller && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\dtu_we_controller.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/build: src/dtu_we_controller/libdtu_we_controller.a
+src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/build: src/dtu_we_controller/dtu_we_controller_64.dll
 
 .PHONY : src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/build
 
