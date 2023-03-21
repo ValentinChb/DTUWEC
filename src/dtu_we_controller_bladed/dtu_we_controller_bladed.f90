@@ -93,7 +93,7 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
         i=max(index(pCtrlInputFile%name,"/",back=.true.),index(pCtrlInputFile%name,"\",back=.true.))
         control_dir = pCtrlInputFile%name(1:i-1) ! path to root directory of the specified input file
         ! control_dir=".\control" ! Original hard-coded location
-        SC_flag=false
+        SC_flag=.false.
 #endif      
 
         ! Get a free file unit id for additional control parameter input file
