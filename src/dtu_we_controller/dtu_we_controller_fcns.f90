@@ -142,10 +142,9 @@ function PID(stepno, dt, kgain, PIDvar, error)
    return
 end function PID
 !**************************************************************************************************
-function PID2(stepno,dt,kgain,PIDvar,error,added_term,init)
+function PID2(stepno,dt,kgain,PIDvar,error,added_term,init) ! VC edit: added argument for initialisation value
    ! PID controller with two inputs. Used for the pitch angle with feebacks from generator speed
    ! and power errors.
-   ! VC edit: added initialisation value for integral term
    integer stepno
    real(mk) PID2, dt, kgain(3, 2), error(2), added_term, init
    type(Tpid2var) PIDvar
@@ -154,11 +153,11 @@ function PID2(stepno,dt,kgain,PIDvar,error,added_term,init)
    parameter(eps=0.000001_mk)
    ! Initiate
    if (stepno .eq. 1) then
-      PIDvar%outset1 = 0.0_mk
-      PIDvar%outres1 = 0.0_mk
+      PIDvar%outset1 = init ! VC edit: initialise integral term with initial value
+      PIDvar%outres1 = init
       PIDvar%error1 = 0.0_mk
       PIDvar%error1_old = 0.0_mk
-      PIDvar%outset1_old = init ! VC edit: initialise integral term with initial value
+      PIDvar%outset1_old = 0.0_mk 
       PIDvar%outres1_old = 0.0_mk
    endif
    ! Save previous values

@@ -43,7 +43,7 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
     ! Define local Variables
     real(c_double) array1(100), array2(100)
     real(c_double),save :: gearboxRatio = 1.0
-    real(c_double),save :: beta0 = 0.0 ! VC edit: initial pitch angle
+    real(c_double),save :: initpitch = 0.0 ! VC edit: initial pitch angle
     integer(4) :: i, iostat 
     integer(4), save :: callno = 0 ! VC edit: added save attribute (don't get what this variable was for if not incrementing the call number?)
     integer(c_int) :: iStatus
@@ -128,7 +128,9 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
         ! callno = 1 
         ! array1 = 0.0_mk 
 
-        beta0 = avrSWAP(4)
+        ! VC edit: get initial pitch and initialise command to this value
+        initpitch = avrSWAP(4)
+        avrSWAP(42:45) = initpitch 
 
     endif
 
@@ -147,12 +149,12 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
     if (( iStatus > 0 ) .and. ( aviFAIL >= 0 ) )  then
 
         array1( 1) = dble(nint(avrSWAP( 2)*1000.0_mk)/1000.0_mk)   !    1: general time
-        
         array1( 2) = dble(avrSWAP(20))/gearboxRatio   !    2: For Bladed/OpenFAST: convert Generator speed to rotor speed; For HAWC2: constraint bearing1 shaft_rot 1 only 2
         ! array1( 2) = dble(avrSWAP(21))            !    2: constraint bearing1 shaft_rot 1 only 2 
         array1( 3) = dble(avrSWAP( 4))             !    3: constraint bearing2 pitch1 1 only 1
         array1( 4) = dble(avrSWAP(33))             !    4: constraint bearing2 pitch2 1 only 1
         array1( 5) = dble(avrSWAP(34))             !    5: constraint bearing2 pitch3 1 only 1
+        ! if (callno==1) array1( 3:5) = initpitch  ! VC edit: repeat initial pitch angle at second time step to make it available in update_regulation
         array1( 7) = 0.0_mk                        !  6-8: wind free_wind 1 0.0 0.0 hub height
         array1( 6) = dble(merge(Vobs,avrSWAP(27),EstSpeed_flag))             !  VC edit: use estimated wind speed if actual; VC edit: swap 6 and 7, the x component should well come first??? that has no strong impact in update_regulation as total horizontal speed is used
         array1( 8) = 0.0_mk
@@ -165,7 +167,7 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
         array1(15) = 0.0_mk                        !   15: reserved variable for blade 3 pitch angle used by IPC
         
         call update_regulation(array1, array2)
-        
+
         avrSWAP(35) = 1.0e0          ! Generator contactor status: 1=main (high speed) variable-speed generator
         avrSWAP(36) = array2(25)     ! Shaft brake status: 0=off
         avrSWAP(41) = 0.0e0          ! Demanded yaw actuator torque
