@@ -1,3 +1,7 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
   "Fortran"
@@ -35,9 +39,9 @@ set(CMAKE_TARGET_DEFINITIONS_Fortran
 
 # The include file search paths:
 set(CMAKE_Fortran_TARGET_INCLUDE_PATH
-  "../src/dtu_we_controller"
+  "C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/dtu_we_controller"
   "src/dtu_we_controller"
-  "../utils/portability"
+  "C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/utils/portability"
   )
 set(CMAKE_DEPENDS_CHECK_RC
   "C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/utils/version/version.rc" "C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller/CMakeFiles/dtu_we_controller.dir/__/__/utils/version/version.rc.obj"
@@ -52,13 +56,17 @@ set(CMAKE_TARGET_DEFINITIONS_RC
 
 # The include file search paths:
 set(CMAKE_RC_TARGET_INCLUDE_PATH
-  "../src/dtu_we_controller"
+  "C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/dtu_we_controller"
   "src/dtu_we_controller"
-  "../utils/portability"
+  "C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/utils/portability"
   )
 
-# Targets to which this target links.
-set(CMAKE_TARGET_LINKED_INFO_FILES
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
   )
 
 # Fortran module output directory.

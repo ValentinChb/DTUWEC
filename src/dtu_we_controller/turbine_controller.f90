@@ -517,7 +517,7 @@ subroutine start_up(CtrlStatus, GenSpeed, PitchVect, wsp, GenTorqueRef, PitchCol
       ! Wind-up integral term of PID2 controller
       PID_pit_var%outmin = PitchColRef
       kgain_pitch = 1.0_mk
-      dummy = PID2(stepno, deltat, kgain_pitch, PID_pit_var, err_pitch, AddedPitchRate)
+      dummy = PID2(stepno, deltat, kgain_pitch, PID_pit_var, err_pitch, AddedPitchRate,0.0_mk) ! VC edit: added argument init=0 in PID2
       ! Generator is still cut-out
       GenTorqueRef = 0.0_mk
       ! Timer generator cut-in
@@ -538,7 +538,7 @@ subroutine start_up(CtrlStatus, GenSpeed, PitchVect, wsp, GenTorqueRef, PitchCol
                            (PitchMin - 0.5_mk*PitchColRef0)*TimerStartup/CutinVar%delay
       ! Let pitch PID2 control the speed while the torque is increased
       kgain_pitch = 1.0_mk
-      PitchColRef = PID2(stepno, deltat, kgain_pitch, PID_pit_var, err_pitch, AddedPitchRate)
+      PitchColRef = PID2(stepno, deltat, kgain_pitch, PID_pit_var, err_pitch, AddedPitchRate,0.0_mk) ! VC edit: added argument init=0 in PID2
       ! Linearly increase the torque reference
       GenTorqueRef = min(GenTorqueRef0, GenTorqueRef0*TimerStartup/CutinVar%delay)
       ! Windup the integral term of PID controller
@@ -791,7 +791,7 @@ subroutine torquecontroller(GenSpeed, GenSpeedFilt, dGenSpeed_dtFilt, PitchMean,
    GenSpeedErr = GenSpeed - GenSpeedRef
    GenSpeedFiltErr = GenSpeedFilt - GenSpeedRef
    !-----------------------------------------------------------------------------------------------
-   ! Filter generator speed if drive train damping is actived
+   ! Filter generator speed if drivetrain damping is actived
    !-----------------------------------------------------------------------------------------------
    if (DT_mode_filt_torque%f0 .gt. 0.0_mk) then
       GenSpeedFiltTorque=notch2orderfilt(deltat, stepno, DT_mode_filt_torque, GenSpeed)
@@ -939,7 +939,7 @@ subroutine pitchcontroller(GenSpeedFilt, dGenSpeed_dtFilt, PitchMeanFilt, PeFilt
      err_pitch(2) = PeFilt - PeRated*Deratevar%dr
    endif
    
-   PitchColRef = PID2(stepno, deltat, kgain, PID_pit_var, err_pitch, AddedPitchRate)
+   PitchColRef = PID2(stepno, deltat, kgain, PID_pit_var, err_pitch, AddedPitchRate, PitchMeanFilt) ! VC edit: added argument init=PitchMeanFilt in PID2
 
    ! Write into dump array
    dump_array(11) = GenSpeedFiltErr
@@ -999,7 +999,7 @@ subroutine individualpitchcontroller(GenSpeedFilt, dGenSpeed_dtFilt, PitchMeanFi
      err_pitch(1) = GenSpeedFiltErr
      err_pitch(2) = PeFilt - PeRated*Deratevar%dr
    endif
-   PitchColRef = PID2(stepno, deltat, kgain, PID_pit_var, err_pitch, AddedPitchRate)
+   PitchColRef = PID2(stepno, deltat, kgain, PID_pit_var, err_pitch, AddedPitchRate,0.0_mk) ! VC edit: added argument init=0 in PID2
    ! Write into dump array
    dump_array(11) = GenSpeedFiltErr
    dump_array(12) = err_pitch(2)

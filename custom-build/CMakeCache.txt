@@ -22,7 +22,7 @@ CMAKE_AR:FILEPATH=C:/Users/valentinc/msys2/mingw64/x86_64-w64-mingw32/bin/ar.exe
 
 //Choose the type of build, options are: None Debug Release RelWithDebInfo
 // MinSizeRel ...
-CMAKE_BUILD_TYPE:STRING=RELEASE
+CMAKE_BUILD_TYPE:STRING=release
 
 //Enable/Disable color output during build.
 CMAKE_COLOR_MAKEFILE:BOOL=ON
@@ -45,8 +45,11 @@ CMAKE_EXE_LINKER_FLAGS_RELEASE:STRING=
 //Flags used by the linker during RELWITHDEBINFO builds.
 CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 
-//Fortran compiler
-CMAKE_Fortran_COMPILER:FILEPATH=C:/Users/valentinc/msys2/mingw64/bin/gfortran.exe
+//Value Computed by CMake.
+CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/CMakeFiles/pkgRedirects
+
+//No help, variable specified on the command line.
+CMAKE_Fortran_COMPILER:UNINITIALIZED=gfortran
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -211,10 +214,16 @@ CMAKE_VERBOSE_MAKEFILE:BOOL=OFF
 DTUWEC4SC_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller_bladed
 
 //Value Computed by CMake
+DTUWEC4SC_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
 DTUWEC4SC_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/dtu_we_controller_bladed
 
 //Value Computed by CMake
 DTUWEC_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build
+
+//Value Computed by CMake
+DTUWEC_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 DTUWEC_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi
@@ -229,10 +238,16 @@ DTUWEC_for_OpenFAST_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/Supe
 cyclic_pitch_controller_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/individual_pitch_controller
 
 //Value Computed by CMake
+cyclic_pitch_controller_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
 cyclic_pitch_controller_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/individual_pitch_controller
 
 //Value Computed by CMake
 dtu_we_controller_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/dtu_we_controller
+
+//Value Computed by CMake
+dtu_we_controller_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
 dtu_we_controller_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/dtu_we_controller
@@ -241,10 +256,16 @@ dtu_we_controller_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperC
 flap_controller_cyclic_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/flap_controller_cyclic
 
 //Value Computed by CMake
+flap_controller_cyclic_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
 flap_controller_cyclic_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/flap_controller_cyclic
 
 //Value Computed by CMake
 individual_flap_controller_BINARY_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/flap_controller_individual_aep_u_f
+
+//Value Computed by CMake
+individual_flap_controller_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
 individual_flap_controller_SOURCE_DIR:STATIC=C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/flap_controller_individual_aep_u_f
@@ -263,9 +284,9 @@ CMAKE_CACHEFILE_DIR:INTERNAL=c:/Users/valentinc/Workspace/OpenFAST/SuperControll
 //Major version of cmake used to create the current loaded cache
 CMAKE_CACHE_MAJOR_VERSION:INTERNAL=3
 //Minor version of cmake used to create the current loaded cache
-CMAKE_CACHE_MINOR_VERSION:INTERNAL=16
+CMAKE_CACHE_MINOR_VERSION:INTERNAL=26
 //Patch version of cmake used to create the current loaded cache
-CMAKE_CACHE_PATCH_VERSION:INTERNAL=0
+CMAKE_CACHE_PATCH_VERSION:INTERNAL=2
 //ADVANCED property for variable: CMAKE_COLOR_MAKEFILE
 CMAKE_COLOR_MAKEFILE-ADVANCED:INTERNAL=1
 //Path to CMake executable.
@@ -361,7 +382,7 @@ CMAKE_RC_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_READELF
 CMAKE_READELF-ADVANCED:INTERNAL=1
 //Path to CMake installation.
-CMAKE_ROOT:INTERNAL=C:/Program Files/CMake/share/cmake-3.16
+CMAKE_ROOT:INTERNAL=C:/Program Files/CMake/share/cmake-3.26
 //ADVANCED property for variable: CMAKE_SH
 CMAKE_SH-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS
@@ -392,4 +413,6 @@ CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 CMAKE_STRIP-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//linker supports push/pop state
+_CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED:INTERNAL=TRUE
 

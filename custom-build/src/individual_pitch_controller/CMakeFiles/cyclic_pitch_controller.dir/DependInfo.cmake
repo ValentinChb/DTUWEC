@@ -1,3 +1,7 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
   "Fortran"
@@ -32,9 +36,9 @@ set(CMAKE_TARGET_DEFINITIONS_Fortran
 
 # The include file search paths:
 set(CMAKE_Fortran_TARGET_INCLUDE_PATH
-  "../src/individual_pitch_controller"
+  "C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/individual_pitch_controller"
   "src/individual_pitch_controller"
-  "../utils/portability"
+  "C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/utils/portability"
   )
 set(CMAKE_DEPENDS_CHECK_RC
   "C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/utils/version/version.rc" "C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/custom-build/src/individual_pitch_controller/CMakeFiles/cyclic_pitch_controller.dir/__/__/utils/version/version.rc.obj"
@@ -49,13 +53,17 @@ set(CMAKE_TARGET_DEFINITIONS_RC
 
 # The include file search paths:
 set(CMAKE_RC_TARGET_INCLUDE_PATH
-  "../src/individual_pitch_controller"
+  "C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/src/individual_pitch_controller"
   "src/individual_pitch_controller"
-  "../utils/portability"
+  "C:/Users/valentinc/Workspace/OpenFAST/SuperController/DTUWEC-SC-mpi/utils/portability"
   )
 
-# Targets to which this target links.
-set(CMAKE_TARGET_LINKED_INFO_FILES
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
   )
 
 # Fortran module output directory.

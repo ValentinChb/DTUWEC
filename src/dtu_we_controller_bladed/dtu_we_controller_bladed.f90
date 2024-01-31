@@ -43,6 +43,7 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
     ! Define local Variables
     real(c_double) array1(100), array2(100)
     real(c_double),save :: gearboxRatio = 1.0
+    real(c_double),save :: beta0 = 0.0 ! VC edit: initial pitch angle
     integer(4) :: i, iostat 
     integer(4), save :: callno = 0 ! VC edit: added save attribute (don't get what this variable was for if not incrementing the call number?)
     integer(c_int) :: iStatus
@@ -54,7 +55,7 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
 
     ! VC edit
     real(c_float)                      :: Vobs
-    real(c_float), parameter           :: GenEff=0.94 ! Generator efficiency. Should match value in ServoDyn input file. Hardcoded here, but should be read in. 
+    real(c_float)                      :: GenEff=0.94           ! Generator efficiency. Should match value in ServoDyn input file. Hardcoded here, but should be read in. 
     logical, parameter                 :: powerramp=.false.
     logical                            :: SC_flag
 
@@ -118,6 +119,7 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
 
         ! gearboxRatio = array1(82)
         gearboxRatio=1 ! VC edit: gear ratio should be 1 here, using gearboxRatio=GearRatio would lead to a double count in update_regulation. Don't understand the original (commented out) statement: array1(82) refers to "Rated wind speed used as reference in min Ct de-rating strategy" in input file.
+        GenEff = array1(82) ! VC edit: array1(82) was originally described as gear box ratio, now replaced by powertrain efficiency
 
         if(verbose .or. iturb==1) write(*,*) 'Controller input parameters read successfully!' ! VC edit: print only if asked
         if(verbose) write(*,*) 'Current time: ',dble(avrSWAP( 2)) ! VC edit: print only if asked
@@ -125,6 +127,8 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
         ! Controller initialization is done and set callno to 1 ! VC edit: commented this out (obsolete)
         ! callno = 1 
         ! array1 = 0.0_mk 
+
+        beta0 = avrSWAP(4)
 
     endif
 

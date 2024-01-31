@@ -230,14 +230,14 @@ if(CMAKE_Fortran_COMPILER)
             string(REPLACE "/INCREMENTAL" "" CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG}")
         endif()     
     endif()
-	
-	# VC edit: add define variables for supercontroller
-	if (CMAKE_LINK2SC)
-		 SET(CMAKE_Fortran_FLAGS_DEBUG "-DSC ${CMAKE_Fortran_FLAGS_DEBUG}")
-		 SET(CMAKE_Fortran_FLAGS_RELEASE "-DSC ${CMAKE_Fortran_FLAGS_RELEASE}")
-	endif()
 
-    
+    # VC edit: add define variables for supercontroller
+	if (CMAKE_LINK2SC)
+        SET(CMAKE_Fortran_FLAGS_DEBUG "-DSC ${CMAKE_Fortran_FLAGS_DEBUG}")
+        SET(CMAKE_Fortran_FLAGS_RELEASE "-DSC ${CMAKE_Fortran_FLAGS_RELEASE}")
+    endif()
+	   
+
     message("Fortran: " ${CMAKE_Fortran_COMPILER_ID})
     message("Fortran compiler: " ${CMAKE_Fortran_COMPILER})
     message("FLAGS_DEGUG: " ${CMAKE_Fortran_FLAGS_DEBUG})
