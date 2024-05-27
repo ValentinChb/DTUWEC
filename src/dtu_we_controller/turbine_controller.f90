@@ -38,21 +38,29 @@ subroutine turbine_controller(CtrlStatus, GridFlag, GenSpeed, PitchVect, wsp, Pe
    call monitoring(CtrlStatus, GridFlag, GenSpeed, TTAcc, PitchVect, PitchColRefOld, dump_array)
    !***********************************************************************************************
    ! Control Status CtrlStatus = 0
-   !-----------------------------------------------------------------------------------------------
-   ! Normal operation
-   !-----------------------------------------------------------------------------------------------
-   
-   if (CtrlStatus .eq. 0 .and. Deratevar%strat .eq. 0) then
-
+   ! VC edit: embedded derating in normal_operation
+   if (CtrlStatus .eq. 0) then
       call normal_operation(GenSpeed, PitchVect, wsp, Pe, TTAccVect(2), GenTorqueRef, PitchColRef,&
                             dump_array)
-    !-----------------------------------------------------------------------------------------------
-    ! Derate operation
-    !-----------------------------------------------------------------------------------------------
-   elseif (CtrlStatus .eq. 0 .and. Deratevar%strat .gt. 0) then
-       call derate_operation(GenSpeed, PitchVect, wsp, Pe, TTAccVect(2), GenTorqueRef, PitchColRef,&
-                             dump_array)
    endif
+
+   ! !-----------------------------------------------------------------------------------------------
+   ! ! Normal operation
+   ! !-----------------------------------------------------------------------------------------------
+   
+   ! if (CtrlStatus .eq. 0 .and. Deratevar%strat .eq. 0) then
+
+   !    call normal_operation(GenSpeed, PitchVect, wsp, Pe, TTAccVect(2), GenTorqueRef, PitchColRef,&
+   !                          dump_array)
+
+   !  !-----------------------------------------------------------------------------------------------
+   !  ! Derate operation
+   !  !-----------------------------------------------------------------------------------------------
+   ! elseif (CtrlStatus .eq. 0 .and. Deratevar%strat .gt. 0) then
+   !     call derate_operation(GenSpeed, PitchVect, wsp, Pe, TTAccVect(2), GenTorqueRef, PitchColRef,&
+   !                           dump_array)
+   ! endif
+
    !***********************************************************************************************
    ! Cut-in procedure for control status CtrlStatus = -1
    !***********************************************************************************************
@@ -122,6 +130,12 @@ subroutine normal_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
    endif
    GenSpeedRef_full = max(min(GenSpeedRef_full, GenSpeedRefMax), GenSpeedRefMin)
    !***********************************************************************************************
+   ! Update reference speed and torque for downregulation if actual (VC edit)
+   !***********************************************************************************************
+   if (Deratevar%strat.ne.0) then
+      call derate()
+   endif
+   !***********************************************************************************************
    ! PID regulation of generator torque
    !***********************************************************************************************
    call torquecontroller(GenSpeed, GenSpeedFilt, dGenSpeed_dtFilt, PitchMean, WSPfilt, PitchMin, &
@@ -166,6 +180,187 @@ subroutine normal_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
    dump_array(20) = PitchMeanFilt
  
    return
+
+   contains
+
+   subroutine derate()
+      ! Fixed parameter variables
+      logical, save        :: firstStep   = .true.
+      logical, parameter   :: filt_derate = .false.
+      real(mk), save       :: Rated_wsp   = 11.5_mk ! Use a default value in case not specified as input
+      real(mk), save       :: KoptDerating = 1.0_mk, Kopt_normal = 1.0_mk
+      real(mk), save       :: GenSpeedRefMax_normal ! Max generator speed in normal operation
+      real(mk), save       :: Cpmax ! Max power coefficient in input downregulation data
+      real(mk), save       :: TSRmin, drrelmin ! Min TSR and derating factor in input downregulation data
+      ! Operating point variables
+      real(mk)             :: GenSpeedDerate ! Rotor speed setpoint to be tracked
+      real(mk)             :: Cpderate, lambdaDerate ! Desired power coefficient and TSR 
+      real(mk), save       :: PitchMinDerate ! Pitch angle yielding Cpderate and lambdaderate based on performance curves
+      ! Local variables
+      logical              :: update_derate
+      integer              :: i
+      real(mk)             :: drabs, drrel ! Filtered derating factor
+      real(mk)             :: GenSpeedfiltDerate, WSPfiltDerate, PitchfiltDerate ! Slowly-varying operating point used to update fixed pitch for partial load derating strategy
+      real(mk)             :: GenSpeedOptLimit2 ! Generator speed upper limit yielding lambdaDerate, ideal (unsaturated) value of GenSpeedDerate
+      real(mk)             :: Pea ! Available power
+      ! Debug variables
+      character(1)         :: str
+      logical              :: debugFlag = .false.
+
+      !***********************************************************************************************
+      ! Inputs and their filtering
+      !***********************************************************************************************
+      if(filt_derate) then 
+         if(firstStep) then
+            Deratevar%dr2ordervar%f0   = 0.1 ! 10s period. that will leed to an update every 2s. Make sure this does not lead to inconsistent downsampling of rotor dynamics/effective wind speed.
+            Deratevar%dr2ordervar%zeta = sqrt(2.0) 
+         endif
+         y = lowpass2orderfilt(deltat, stepno, Deratevar%dr2ordervar, Deratevar%dr)
+         drabs = y(1)
+      else
+         drabs = Deratevar%dr
+      endif
+
+      if (firstStep) then
+         Deratevar%Nsteps_update = nint(1/Deratevar%dr2ordervar%f0/deltat/4) ! update frequency is set well under (4 times) cut-off frequency to avoid aliasing
+         GenSpeedRefMax_normal   = GenSpeedRefMax
+      endif
+      update_derate = .not. filt_derate .or. mod(stepno-1,Deratevar%Nsteps_update)==0 ! update every call or Nsteps_update (includes init)
+      
+      if (Deratevar%strat.ge.4) then
+         if (firstStep) then
+            Kopt_normal = Kopt ! save the generator constant for normal optimal Cp tracking
+            PitchMinDerate=PitchMin
+            Cpmax = maxval(downRegulationData%Cp(1:downRegulationData%NumLines,1))
+            TSRmin = minval(downRegulationData%Lambda(1:downRegulationData%NumLines))
+            drrelmin = minval(downRegulationData%dCp(1:downRegulationData%NumLines))
+            ! Keep the rated wind speed during derating
+            if(RatedWindSpeed .gt. 0.0) then
+               Rated_wsp = RatedWindSpeed
+            endif
+         endif
+
+         if(filt_derate) then ! use much slower dynamics
+            if (firstStep) then
+               Deratevar%omega2ordervar%f0   = 0.005_mk ! 200s period
+               Deratevar%omega2ordervar%zeta = sqrt(2.0_mk)    
+               Deratevar%wspfirstordervar%tau = 1.0_mk/Deratevar%omega2ordervar%f0*2.0_mk*pi/GenSpeedRefMax
+               Deratevar%Pitch2ordervar = Deratevar%omega2ordervar
+            endif
+            y = lowpass2orderfilt(deltat, stepno, Deratevar%omega2ordervar, GenSpeed)
+            GenSpeedfiltDerate = y(1)
+            y = lowpass1orderfilt(deltat, stepno, Deratevar%wspfirstordervar, wsp)
+            WSPfiltDerate = y(1)
+            Pea = min(Cpmax*0.5*rho*pi*R**2*WSPfiltDerate**3,PeRated)
+            y = lowpass2orderfilt(deltat, stepno, Deratevar%Pitch2ordervar, PitchColRefOld)
+            PitchfiltDerate = y(1)
+         else ! use original filtering
+            GenSpeedfiltDerate = GenSpeedfilt
+            WSPFiltDerate = WSPfilt
+            PitchfiltDerate = PitchMeanfilt
+         endif
+      endif
+
+      !****************************************************************************************************
+      ! Apply derating strategy to update reference generator speed and torque 
+      !****************************************************************************************************      
+      if (update_derate) then
+
+         select case (Deratevar%strat)
+         ! Derating strategies:
+         !1. full-load operation, pitch control tracking constant rotor speed corresponding to normal operation for initial (fixed) power setpoint
+         !2. full-load operation, pitch control tracking rated rotor speed
+         !3. Same as 1. but using time-varying power setpoint to get ref rotor speed
+         !4. partial-load operation, adjusting pitch angle and derated tracking factor K to provide desired power at a TSR that minimizes thrust coefficient
+         !5. partial-load operation, generalization of 4., adjusting pitch angle and derated tracking factor K to provide desired power at a selected TSR (for instance normal operation-equivalent)
+         case(1) 
+            GenSpeedDerate = ((Deratevar%dr0*PeRated)/Kopt)**(1.0_mk/3.0_mk) ! Derated Rotor Speed: Remark: this is not completely right ! VC edit: fixed to initial value (mode=1: constant speed)
+         case(2)
+            GenSpeedDerate = GenSpeedRefMax
+         case(3)
+            GenSpeedDerate = ((drabs*PeRated)/Kopt)**(1.0_mk/3.0_mk)
+         case(4:5)
+            drrel = drabs*PeRated/Pea ! dCp relates to derating factor wrt available power, not rated power
+            if(Deratevar%strat==4 .and. drrel >= drrelmin) then  ! minimum Ct only if within interpolation bounds
+               ! Calculate the tip-speed-ratio and pitch angle through the dCp-Lambda and dCp-beta relation table
+               do i = 1,(downRegulationData%NumLines - 1)
+                     if (drrel<=downRegulationData%dCp(i) .and. drrel >= downRegulationData%dCp(i+1)) then
+                        lambdaAtMinCt = interpolate(drrel, downRegulationData%dCp(i),downRegulationData%dCp(i+1), downRegulationData%Lambda(i), downRegulationData%Lambda(i+1))
+                        pitchAtMinCt = interpolate(drrel, downRegulationData%dCp(i),downRegulationData%dCp(i+1), downRegulationData%Pitch(i), downRegulationData%Pitch(i+1))
+                        pitchAtMinCt = pitchAtMinCt*degrad  ! convert to rads
+                        minCt = interpolate(drrel, downRegulationData%dCp(i),downRegulationData%dCp(i+1), downRegulationData%Ct(i,1), downRegulationData%Ct(i+1,1))
+                     endif
+               enddo
+               ! get the Cp at the derating level
+               CpAtMinCt = Cpmax*drrel
+
+               ! Output operating point yielding minimum Ct at desired Cp
+               lambdaDerate = lambdaAtMinCt
+               Cpderate = CpAtMinCt
+               PitchMinDerate = pitchAtMinCt
+
+            else ! if Deratevar%strat==5 or outside interpolation bounds (high wind speeds, low power setpoints)
+               ! Operating point yielding desired TSR at desired Cp
+               lambdaDerate = TSR_opt*Rated_wsp/max(WSPfiltDerate,Rated_wsp) ! desired TSR, equal that in normal operation at current wind speed
+               Cpderate = drabs*PeRated/(0.5*rho*pi*R**2*WSPfiltDerate**3) ! desired Cp
+               PitchMinDerate = GetOptiPitchDerate(Cpderate,lambdaDerate,PitchMinDerate,PitchMin,Cpdata) 
+            endif
+
+            ! compute generator constant for operating point tracking (generalized minCt)
+            KoptDerating = 0.5_mk*rho*pi*R**5*(1.0_mk/lambdaDerate)**3*Cpmax*drabs 
+            ! KoptDerating = KoptDerating * (1.0-exp(PitchErrfiltfilt)) ! Make sure KoptDerating decreases when pitch angle is approaching 0 to force fullload operation
+            if(PitchfiltDerate .le. SwitchVar%pitang_upper) then ! When approaching full-load operation, switch back Kopt to full value
+               KoptDerating = Kopt_normal
+            endif
+
+            ! Overwrite Kopt using the value for operating point tracking (that will be used in torque_controller)
+            Kopt = KoptDerating
+
+            GenSpeedOptLimit2 = max(Rated_wsp,WSPfiltDerate) * lambdaDerate / R
+            GenSpeedDerate = GenSpeedOptLimit2/SwitchVar%rel_sp_open_Qg
+
+         endselect
+
+         GenSpeedDerate = max(GenSpeedDerate,GenSpeedRefMin) ! VC edit: apply lower bound here already to get correct GenSpeedRefMax and GenTorqueRated
+         GenSpeedRefMax = min(GenSpeedRefMax_normal,GenSpeedDerate) ! VC edit: do this for all cases in a single statement after select block
+      endif
+      GenTorqueRated = (Deratevar%dr*PeRated)/GenSpeedRefMax ! VC edit: update at every call. do this for all cases in a single statement after select block. 
+      
+      
+      if (Deratevar%strat.ge.4 .and. .not. firstStep) then ! VC edit: Split IF block.
+      
+         ! Minimum pitch angle may vary with the de-rating percentage
+         ! PitchMin = max(PitchMin,PitchMinDerate) ! WARNING: doing this, we introduce a lower bound constraint and loose power tracking ability
+         ! Dump output to array
+         dump_array(30) = Kopt                ! Save generator constant when derating
+         dump_array(31) = lambdaDerate       ! Save tip-speed-ratio at minimum Ct ! VC edit: generalize minCt
+         dump_array(32) = GenSpeedDerate      ! Save rated generator speed when derating
+         dump_array(33) = PitchMinDerate     ! Save required pitch angle when operating at minimum Ct strategy ! VC edit: generalize minCt
+         dump_array(34) = minCt               ! Save the thrust coefficient when derating
+         dump_array(35) = Cpderate           ! Save the power coefficient when derating  ! VC edit: generalize minCt
+         dump_array(36) = GenTorqueRated      ! Save rated generator torque when derating 
+         dump_array(37) = GenSpeedOptLimit2   ! Save generator speed upper limit when follows the Kopt*w^2 relation when derating 
+         dump_array(38) = Kopt*GenSpeedOptLimit2**2  ! Save generator torque upper limit which follows the Kopt*w^2 relation when derating 
+
+         ! output for debug purpose
+         if(debugFlag .eqv. .true.) then
+               write(*,*) "Press 'c' to continue, 'q' to Quit the code."
+               read(*,*) str
+               if(str == 'q') then
+                  stop
+               elseif(str == 'c') then
+                  write(*,*) "simulation continuing...."
+               endif
+         endif
+
+      endif     
+
+      GenSpeedRef_full = max(min(GenSpeedRef_full, GenSpeedRefMax), GenSpeedRefMin)
+
+      firstStep = .false. 
+
+   end subroutine derate
+
 end subroutine normal_operation
 !**************************************************************************************************
 subroutine derate_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef, PitchColRef,dump_array)
@@ -204,20 +399,6 @@ subroutine derate_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
    character(1) str
    logical :: debugFlag = .false. 
 
-   ! VC edit
-   logical, parameter :: filt_derate=.false.
-   logical :: update_derate=.true.
-   real(mk) drfilt, drfilteff
-   real(mk) estAeroTorq, estLambda, estREWS ! Rotor effective wind speed estimator
-   real(mk), save :: GenSpeedRefMax_normal ! Max generator speed in normal operation
-   real(mk) :: GenSpeedfiltfilt, WSPfiltfilt ! Slowly-varying operating point used to update fixed pitch for partial load derating strategy
-   real(mk) :: Cpderate, lambdaDerate ! power coefficient and TSR used to derive fixed pitch for partial load derating strategy
-   real(mk), save :: PitchMinDerate
-   real(mk), save :: Cpmax, TSRmin ! Optimal power coefficient
-   real(mk) :: Pea ! Available power
-   real(mk), save :: PitchColRefRaw ! Unsaturated pitch command
-   real(mk), save :: Pitchfiltfilt 
-
    !***********************************************************************************************
    ! Inputs and their filtering
    !***********************************************************************************************
@@ -237,20 +418,7 @@ subroutine derate_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
    ! Low-pass filtering of the nacelle wind speed
    WSPfilt = lowpass1orderfilt(deltat, stepno, wspfirstordervar, wsp)
    ! Minimum pitch angle may vary with filtered wind speed
-   PitchMin = GetOptiPitch(WSPfilt) 
-
-   ! VC edit: low-pass filtering of de-rating factor
-   if(filt_derate) then 
-      if(firstStep) then
-         Deratevar%dr2ordervar%f0   = 0.1 ! 10s period. that will leed to an update every 2s. Make sure this does not lead to inconsistent downsampling of rotor dynamics/effective wind speed.
-         Deratevar%dr2ordervar%zeta = sqrt(2.0) 
-      endif
-      y = lowpass2orderfilt(deltat, stepno, Deratevar%dr2ordervar, Deratevar%dr)
-      drfilt = y(1)
-   else
-      drfilt = Deratevar%dr
-   endif
-
+   PitchMin = GetOptiPitch(WSPfilt)
    !***********************************************************************************************
    ! Limit reference speed for storm control
    !***********************************************************************************************
@@ -264,155 +432,89 @@ subroutine derate_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
    !***********************************************************************************************
    ! Select Case based on derate strategy
    !***********************************************************************************************
-   ! VC edit: change update pattern
-   ! update=firstStep ! only update at init as in original implementation
-   if (firstStep) then
-      Deratevar%Nsteps_update = nint(1/Deratevar%dr2ordervar%f0/deltat/4) ! update frequency is set well under (4 times) cut-off frequency to avoid aliasing
-      GenSpeedRefMax_normal=GenSpeedRefMax
-   endif
-   update_derate= .not. filt_derate .or. mod(stepno-1,Deratevar%Nsteps_update)==0 ! update every call or Nsteps_update (includes init)
+   select case (Deratevar%strat)
 
-   ! print*, 'stepno: ',stepno,Deratevar%Nsteps_update
-   if (update_derate) then
-      select case (Deratevar%strat)
-
-      ! VC edit: derating strategies:
-         !1. full-load operation, pitch control tracking constant rotor speed corresponding to normal operation for initial (fixed) power setpoint
-         !2. full-load operation, pitch control tracking rated rotor speed
-         !3. full-load operation, pitch control tracking quasi-constant rotation corresponding to normal operation for actual (potentially varying) power setpoint. Saturating to min rotor speed as lower bound, and not trying to reproduce normal operation in transition region from partial to full load.
-         !4. partial-load operation, adjusting pitch angle and derated tracking factor K to provide desired power at a TSR that minimizes thrust coefficient
-         !5. partial-load operation, generalization of 3., adjusting pitch angle and derated tracking factor K to provide desired power at a selected TSR (for instance normal operation-equivalent)
-
-      case(1) 
-         GenSpeedDerate = ((Deratevar%dr0*PeRated)/Kopt)**(1.0_mk/3.0_mk) ! Derated Rotor Speed: Remark: this is not completely right ! VC edit: fixed to initial value (mode=1: constant speed)
-      case(3)
-         GenSpeedDerate = ((drfilt*PeRated)/Kopt)**(1.0_mk/3.0_mk)
-      case(4:5)
-
-         if(firstStep) then
-            Kopt_normal = Kopt ! save the generator constant for normal optimal Cp tracking
-            PitchMinDerate=PitchMin
-            Cpmax = maxval(downRegulationData%Cp(1:downRegulationData%NumLines,1))
-            TSRmin = minval(downRegulationData%Lambda(1:downRegulationData%NumLines))
-            if(filt_derate) then ! used much slower dynamics
-               Deratevar%omega2ordervar%f0   = 0.005_mk ! 200s period
-               Deratevar%omega2ordervar%zeta = sqrt(2.0_mk)    
-               Deratevar%wspfirstordervar%tau = 1.0_mk/Deratevar%omega2ordervar%f0*2.0_mk*pi/GenSpeedRefMax
-            else 
-               Deratevar%omega2ordervar = omega2ordervar
-               Deratevar%wspfirstordervar = wspfirstordervar 
-            endif 
-            Deratevar%Pitch2ordervar = omega2ordervar   
-         endif
-         y = lowpass2orderfilt(deltat, stepno, Deratevar%omega2ordervar, GenSpeed)
-         GenSpeedfiltfilt = y(1)
-         y = lowpass1orderfilt(deltat, stepno, Deratevar%wspfirstordervar, wsp)
-         WSPfiltfilt = y(1)
-         Pea = min(Cpmax*0.5*rho*pi*R**2*WSPfiltfilt**3,PeRated)
-         y = lowpass2orderfilt(deltat, stepno, Deratevar%omega2ordervar, GenSpeed)
-         GenSpeedfiltfilt = y(1)
-         ! y = lowpass2orderfilt(deltat, stepno, Deratevar%Pitch2ordervar, -min(PitchColRefOld-SwitchVar%pitang_upper,0.0))
-         y = lowpass2orderfilt(deltat, stepno, Deratevar%Pitch2ordervar, PitchColRefOld)
-         Pitchfiltfilt = y(1)
-
-         ! Keep the rated wind speed during derating
-         ! FIXME: It should be a better way to define the limits on Generator speed limits for derating case
-         if(RatedWindSpeed .gt. 0.0) then
-            Rated_wsp = RatedWindSpeed
-         endif
-
-         select case (Deratevar%strat)
-         case(4)  ! minimum Ct 
-            ! Calculate the tip-speed-ratio and pitch angle through the dCp-Lambda and dCp-beta relation table
-            drfilteff = drfilt*PeRated/Pea ! VC edit: relate derating factor to available power instead of rated power
-            drfilteff = max(drfilteff,minval(downRegulationData%dCp(1:downRegulationData%NumLines))) ! VC edit: set lower bound for interpolation
-            do i = 1,(downRegulationData%NumLines - 1)
-                  if (drfilteff<=downRegulationData%dCp(i) .and. drfilteff >= downRegulationData%dCp(i+1)) then
-                     lambdaAtMinCt = interpolate(drfilteff, downRegulationData%dCp(i),downRegulationData%dCp(i+1), downRegulationData%Lambda(i), downRegulationData%Lambda(i+1))
-                     pitchAtMinCt = interpolate(drfilteff, downRegulationData%dCp(i),downRegulationData%dCp(i+1), downRegulationData%Pitch(i), downRegulationData%Pitch(i+1))
-                     pitchAtMinCt = pitchAtMinCt*degrad  ! convert to rads
-                     minCt = interpolate(drfilteff, downRegulationData%dCp(i),downRegulationData%dCp(i+1), downRegulationData%Ct(i,1), downRegulationData%Ct(i+1,1))
-                  endif
-            enddo
-
-            ! get the Cp at the derating level
-            CpAtMinCt = Cpmax*drfilt
-
-            ! VC edit: generalize minCt
-            lambdaDerate = lambdaAtMinCt
-            Cpderate = CpAtMinCt
-            PitchMinDerate = pitchAtMinCt
-
-         case(5) ! VC edit: get pitch angle leading to desired Cp given a selected TSR (generalized minCt)
-            
-            lambdaDerate = TSR_opt*Rated_wsp/max(WSPfiltfilt,Rated_wsp)
-            Cpderate = drfilt*PeRated/(0.5*rho*pi*R**2*WSPfiltfilt**3)
-            PitchMinDerate = GetOptiPitchDerate(Cpderate,lambdaDerate,PitchMinDerate,PitchMin,Cpdata) 
-
-         endselect
-
-         ! VC edit: generalize minCt to other possible partial-load derating strategies
-         ! compute generator constant for minimun Ct tracking
-         KoptDerating = 0.5_mk*rho*pi*R**5*(1.0_mk/lambdaDerate)**3*Cpmax*drfilt ! VC edit: generalize minCt. 
-         ! KoptDerating = KoptDerating * (1.0-exp(PitchErrfiltfilt)) ! Make sure KoptDerating decreases when pitch angle is approaching 0 to force fullload operation
-         ! save the generator constant for normal optimal Cp tracking
-         if(firstStep) Kopt_normal = Kopt ! VC edit: do this only at init
-         if(Pitchfiltfilt .le. SwitchVar%pitang_upper) then 
-            KoptDerating = KoptDerating * Kopt_normal
-         endif
-
-         
-         ! Overwrite Kopt using the value calculated by Cp associated with the minimum ct
-         Kopt = KoptDerating
-
-         GenSpeedOptLimit2 = Rated_wsp * lambdaDerate / R ! VC edit: generalize minCt
-         GenSpeedMaxDerate = GenSpeedOptLimit2/SwitchVar%rel_sp_open_Qg
-         GenSpeedDerate = GenSpeedMaxDerate
-
-         ! This is similar as keep the designed rated wind speed
-         !GenTorqueRatio = (2*SwitchVar%rel_sp_open_Qg - 1)**2.0_mk
-         ! GenTorqueOptLimit2 = GenTorqueRatio*Kopt*(GenSpeedRefMax)**2.0_mk
-         !GenTorqueOptLimit2 = GenTorqueRatio*Kopt_normal*(GenSpeedRefMax)**2.0_mk
-         !GenSpeedOptLimit2 = (GenTorqueOptLimit2/Kopt)**(1.0_mk/2.0_mk)
-         !GenSpeedMaxDerate = GenSpeedOptLimit2/(2*SwitchVar%rel_sp_open_Qg - 1)
-         !GenSpeedDerate = GenSpeedMaxDerate
-
-      endselect
-      GenSpeedDerate = max(GenSpeedDerate,GenSpeedRefMin) ! VC edit: apply lower bound here already to get correct GenSpeedRefMax and GenTorqueRated
-      GenSpeedRefMax = min(GenSpeedRefMax_normal,GenSpeedDerate) ! VC edit: do this for all cases in a single statement after select block
-   endif
-   GenTorqueRated = (Deratevar%dr*PeRated)/GenSpeedRefMax ! VC edit: update at every call. do this for all cases in a single statement after select block. 
+   case(1)  ! constant rotation
    
-   if(firstStep) firstStep = .false. ! VC edit
-   if (Deratevar%strat.ge.4 .and. .not. firstStep) then ! VC edit: Split IF block.
-   
-      ! Minimum pitch angle may vary with the de-rating percentage
-      PitchMin = max(PitchMin,PitchMinDerate) ! VC edit: generalize minCt
-      ! Dump output to array
-      dump_array(30) = Kopt                ! Save generator constant when derating
-      dump_array(31) = lambdaDerate       ! Save tip-speed-ratio at minimum Ct ! VC edit: generalize minCt
-      dump_array(32) = GenSpeedDerate      ! Save rated generator speed when derating
-      dump_array(33) = PitchMinDerate     ! Save required pitch angle when operating at minimum Ct strategy ! VC edit: generalize minCt
-      dump_array(34) = minCt               ! Save the thrust coefficient when derating
-      dump_array(35) = Cpderate           ! Save the power coefficient when derating  ! VC edit: generalize minCt
-      dump_array(36) = GenTorqueRated      ! Save rated generator torque when derating 
-      dump_array(37) = GenSpeedOptLimit2   ! Save generator speed upper limit when follows the Kopt*w^2 relation when derating 
-      dump_array(38) = Kopt*GenSpeedOptLimit2**2  ! Save generator torque upper limit which follows the Kopt*w^2 relation when derating 
+     GenSpeedDerate = ((Deratevar%dr*PeRated)/Kopt)**(1.0_mk/3.0_mk) ! Derated Rotor Speed: Remark: this is not completely right
+     GenSpeedRefMax = min(GenSpeedRefMax,GenSpeedDerate)
+     GenTorqueRated = (Deratevar%dr*PeRated)/GenSpeedRefMax
 
-      ! output for debug purpose
-      if(debugFlag .eqv. .true.) then
-            write(*,*) "Press 'c' to continue, 'q' to Quit the code."
-            read(*,*) str
-            if(str == 'q') then
-               stop
-            elseif(str == 'c') then
-               write(*,*) "simulation continuing...."
-            endif
-      endif
+   case(2)  ! maximum rotation
+     GenTorqueRated  =  (Deratevar%dr*PeRated)/GenSpeedRefMax  
+   case(3)  ! minimun CT 
+       ! Calculate the tip-speed-ratio and pitch angle through the dCp-Lambda and dCp-beta relation
+       ! table
+       if(firstStep) then
+           do i = 1,(downRegulationData%NumLines - 1)
+               if (Deratevar%dr<=downRegulationData%dCp(i) .and. Deratevar%dr >= downRegulationData%dCp(i+1)) then
+                   lambdaAtMinCt = interpolate(Deratevar%dr, downRegulationData%dCp(i),downRegulationData%dCp(i+1), downRegulationData%Lambda(i), downRegulationData%Lambda(i+1))
+                   pitchAtMinCt = interpolate(Deratevar%dr, downRegulationData%dCp(i),downRegulationData%dCp(i+1), downRegulationData%Pitch(i), downRegulationData%Pitch(i+1))
+                   pitchAtMinCt = pitchAtMinCt*degrad  ! convert to rads
+                   minCt = interpolate(Deratevar%dr, downRegulationData%dCp(i),downRegulationData%dCp(i+1), downRegulationData%Ct(i,1), downRegulationData%Ct(i+1,1))
+               endif
+           enddo
+           ! compute generator constant for minimun Ct tracking
+           KoptDerating = 0.5_mk*rho*pi*R**5*(1.0_mk/lambdaAtMinCt)**3*downRegulationData%Cp(1,1)*Deratevar%dr
 
-   endif  ! endif firststep
+           ! save the generator constant for normal optimal Cp tracking
+           Kopt_normal = Kopt
+           
+           ! Overwrite Kopt using the value calculated by Cp associated with the minimum ct
+           Kopt = KoptDerating
+
+           ! get the Cp at the derating level
+           CpAtMinCt = downRegulationData%Cp(1,1)*Deratevar%dr
+
+           ! Keep the rated wind speed during derating
+           ! FIXME: It should be a better way to define the limits on Generator speed limits for deratig case
+           if(RatedWindSpeed .gt. 0.0) then
+               Rated_wsp = RatedWindSpeed
+           endif
+           GenSpeedOptLimit2 = Rated_wsp * lambdaAtMinCt / R
+           GenSpeedMaxDerate = GenSpeedOptLimit2/SwitchVar%rel_sp_open_Qg
+           GenSpeedDerate = GenSpeedMaxDerate
+
+           ! This is similar as keep the designed rated wind speed
+           !GenTorqueRatio = (2*SwitchVar%rel_sp_open_Qg - 1)**2.0_mk
+           ! GenTorqueOptLimit2 = GenTorqueRatio*Kopt*(GenSpeedRefMax)**2.0_mk
+           !GenTorqueOptLimit2 = GenTorqueRatio*Kopt_normal*(GenSpeedRefMax)**2.0_mk
+           !GenSpeedOptLimit2 = (GenTorqueOptLimit2/Kopt)**(1.0_mk/2.0_mk)
+           !GenSpeedMaxDerate = GenSpeedOptLimit2/(2*SwitchVar%rel_sp_open_Qg - 1)
+           !GenSpeedDerate = GenSpeedMaxDerate
+
+           GenSpeedRefMax = min(GenSpeedRefMax,GenSpeedDerate)
+           GenTorqueRated = (Deratevar%dr*PeRated)/GenSpeedRefMax
+           firstStep = .false.
+       else
+           ! Minimum pitch angle may vary with the de-rating percentage
+           PitchMin = max(PitchMin,pitchAtMinCt)
+           ! Dump output to array
+           dump_array(30) = Kopt                ! Save generator constant when derating
+           dump_array(31) = lambdaAtMinCt       ! Save tip-speed-ratio at minimum Ct
+           dump_array(32) = GenSpeedDerate      ! Save rated generator speed when derating
+           dump_array(33) = pitchAtMinCt        ! Save required pitch angle when operating at minimum Ct strategy
+           dump_array(34) = minCt               ! Save the thrust coefficient when derating
+           dump_array(35) = CpAtMinCt           ! Save the power coefficient when derating 
+           dump_array(36) = GenTorqueRated      ! Save rated generator torque when derating 
+           dump_array(37) = GenSpeedOptLimit2   ! Save generator speed upper limit when follows the Kopt*w^2 relation when derating 
+           dump_array(38) = Kopt*GenSpeedOptLimit2**2  ! Save generator torque upper limit which follows the Kopt*w^2 relation when derating 
+
+          ! output for debug purpose
+           if(debugFlag .eqv. .true.) then
+               write(*,*) "Press 'c' to continue, 'q' to Quit the code."
+               read(*,*) str
+               if(str == 'q') then
+                   stop
+               elseif(str == 'c') then
+                   write(*,*) "simulation continuing...."
+               endif
+           endif
+
+       endif  ! endif firststep
        
 300    format(1X, A10,F13.3,A18,F6.3,A18,F6.3,A10,F6.3)       
+   end select
 
    GenSpeedRef_full = max(min(GenSpeedRef_full, GenSpeedRefMax), GenSpeedRefMin)
    
@@ -431,32 +533,15 @@ subroutine derate_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
    !***********************************************************************************************
    ! PID regulation of collective pitch angle
    !***********************************************************************************************
-   call pitchcontroller(GenSpeedFilt, dGenSpeed_dtFilt, PitchMeanFilt, PeFilt, 0.0*PitchMin, &
+   call pitchcontroller(GenSpeedFilt, dGenSpeed_dtFilt, PitchMeanFilt, PeFilt, PitchMin, &
                         GenSpeedRef_full, PitchColRef, dump_array)
-   ! print*, 'derate_operation: ', fullload, dump_array(10), Pe, Deratevar%dr*PeRated, PitchErrfiltfilt*180/pi, PitchMinDerate*180/pi, PitchColRefRaw*180/pi, GenSpeedDerate, lambdaDerate, wspfiltfilt
    !***********************************************************************************************
    ! Active Tower damping based on filtered tower top aceleration
    !***********************************************************************************************
    P_filt = lowpass1orderfilt(deltat, stepno, TTfa_PWRfirstordervar, GenTorqueRef*GenSpeedFilt)
    call towerdamper(TTfa_acc, theta_dam_ref, dump_array)
    x = switch_spline(P_filt, TTfa_PWR_lower*PeRated, TTfa_PWR_upper*PeRated)
-   PitchColRefRaw = PitchColRef ! VC edit: save unsaturated value of pitch command as output by pitch controller
    PitchColRef = min(max(PitchColRef + theta_dam_ref*x, PID_pit_var%outmin), PID_pit_var%outmax)
-
-   ! VC edit: Observer not originally included in derated operation, but it should work fine as it 
-   ! consists in finding back aerodynamic torque from rotor dynamics, and then matching Cp(TSR,beta)=Cq*TSR to get TSR and U
-   ! For some reason this is called last, so the effective wind speed will have a one-timestep delay in the supercontroller
-   !***********************************************************************************************
-   ! Calculate the estimated aerodynamic torque and effective wind speed 
-   !***********************************************************************************************
-   if (WindEstvar%J > 0.0_mk) then
-      call windEstimator(GenTorqueRef, GenSpeed, PitchMean, WindEstvar, Cpdata, deltat,estAeroTorq,estLambda,estREWS, WSPfilt )
-      ! Write into dump array 
-      dump_array(29) = estAeroTorq 
-      dump_array(39) = estLambda ! [-]
-      dump_array(40) = estREWS 
-   endif
-
    ! Write into dump array
    dump_array(1) = GenTorqueRef*GenSpeedFilt    ! changed form GenSpeed to GenSpeedFilt
    dump_array(2) = WSPfilt

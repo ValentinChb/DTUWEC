@@ -20,7 +20,7 @@ module global_variables
     real(mk) RatedWindSpeed 
     real(mk) GenSpeedRefMax, GenSpeedRefMin, PeRated, GenTorqueRated, PitchStopAng, GenTorqueMax
     real(mk) TTfa_PWR_lower, TTfa_PWR_upper, TorqueCtrlRatio
-    real(mk) Kopt, Kopt_dot, TSR_opt, R, GearRatio
+    real(mk) Kopt, Kopt_dot, TSR_opt, R, GearRatio, GenEff
     real(mk) Vcutout, Vstorm
     real(mk) Err0, ErrDot0, PitNonLin1, rel_limit
     integer  NAve_Pitch

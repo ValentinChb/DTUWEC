@@ -302,8 +302,9 @@ subroutine init_regulation(array1, array2) bind(c, name='init_regulation')
    ExcluZone%notch%zeta2     = 0.01_mk
    ! -"Rystevagt" monitor for Safety System
    SafetySystemVar%RysteVagtLevel = MoniVar%RysteVagtLevel*1.1_mk
-   ! Gear Ratio
+   ! Gear Ratio and powertrain efficiency (VC edit)
    GearRatio = 1.0_mk
+   GenEff = 1.0_mk
    ! Deactivate the filter on rotor speed for generator torque computation above rated
    DT_mode_filt_torque%f0 = 0.0_mk
    ! Pitch devaiation monitor
@@ -600,7 +601,10 @@ subroutine init_regulation_advanced(array1, array2) bind(c,name='init_regulation
   Floatingvar%KK1_tq = array1(93)
   Floatingvar%KK2_tq = array1(94)
   if (array1(95).gt.0.0_mk) Floatingvar%GSmode = array1(95)
-   return
+
+  ! VC edit: get powetrain efficiency here
+  GenEff = array1(96)
+  return
 end subroutine init_regulation_advanced
 
 !**************************************************************************************************
@@ -825,7 +829,7 @@ subroutine update_regulation(array1, array2) bind(c,name='update_regulation')
    ! Output
    !***********************************************************************************************
 
-   array2( 1) = GenTorqueRef/GearRatio   + GenTorque_addition    !    1: Generator torque reference               [Nm]
+   array2( 1) = (GenTorqueRef/GearRatio   + GenTorque_addition)/GenEff    !    1: Generator torque reference               [Nm] ! VC edit: compensate for drivetrain losses when moving from LSS to HSS
    array2( 2) = PitchColRef + ipc_pitch(1)  + Pitch_addition !    2: Pitch angle reference of blade 1         [rad]
    array2( 3) = PitchColRef + ipc_pitch(2)  + Pitch_addition !    3: Pitch angle reference of blade 2         [rad]
    array2( 4) = PitchColRef + ipc_pitch(3)  + Pitch_addition !    4: Pitch angle reference of blade 3         [rad]

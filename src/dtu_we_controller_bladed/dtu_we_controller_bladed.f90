@@ -42,7 +42,6 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
     
     ! Define local Variables
     real(c_double) array1(100), array2(100)
-    real(c_double),save :: gearboxRatio = 1.0
     real(c_double),save :: initpitch = 0.0 ! VC edit: initial pitch angle
     integer(4) :: i, iostat 
     integer(4), save :: callno = 0 ! VC edit: added save attribute (don't get what this variable was for if not incrementing the call number?)
@@ -55,7 +54,6 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
 
     ! VC edit
     real(c_float)                      :: Vobs
-    real(c_float)                      :: GenEff=0.94           ! Generator efficiency. Should match value in ServoDyn input file. Hardcoded here, but should be read in. 
     logical, parameter                 :: powerramp=.false.
     logical                            :: SC_flag
 
@@ -117,10 +115,6 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
         if (EstSpeed_flag) array1(36) = 0.0 ! VC edit: if estimated wind speed is used instead of measured, it should not be filtered.
         call init_regulation_advanced(array1, array2)
 
-        ! gearboxRatio = array1(82)
-        gearboxRatio=1 ! VC edit: gear ratio should be 1 here, using gearboxRatio=GearRatio would lead to a double count in update_regulation. Don't understand the original (commented out) statement: array1(82) refers to "Rated wind speed used as reference in min Ct de-rating strategy" in input file.
-        GenEff = array1(82) ! VC edit: array1(82) was originally described as gear box ratio, now replaced by powertrain efficiency
-
         if(verbose .or. iturb==1) write(*,*) 'Controller input parameters read successfully!' ! VC edit: print only if asked
         if(verbose) write(*,*) 'Current time: ',dble(avrSWAP( 2)) ! VC edit: print only if asked
 
@@ -149,7 +143,7 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
     if (( iStatus > 0 ) .and. ( aviFAIL >= 0 ) )  then
 
         array1( 1) = dble(nint(avrSWAP( 2)*1000.0_mk)/1000.0_mk)   !    1: general time
-        array1( 2) = dble(avrSWAP(20))/gearboxRatio   !    2: For Bladed/OpenFAST: convert Generator speed to rotor speed; For HAWC2: constraint bearing1 shaft_rot 1 only 2
+        array1( 2) = dble(avrSWAP(20))             !    2: For Bladed/OpenFAST: convert Generator speed to rotor speed; For HAWC2: constraint bearing1 shaft_rot 1 only 2 ! VC edit: no gear conversion here, it's done in update_regulation
         ! array1( 2) = dble(avrSWAP(21))            !    2: constraint bearing1 shaft_rot 1 only 2 
         array1( 3) = dble(avrSWAP( 4))             !    3: constraint bearing2 pitch1 1 only 1
         array1( 4) = dble(avrSWAP(33))             !    4: constraint bearing2 pitch2 1 only 1
@@ -176,7 +170,7 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
         avrSWAP(44) = array2( 4)   ! "
         avrSWAP(45) = array2( 2)   ! Use the command angle of blade 1 if using collective pitch
         avrSWAP(46) = 0.0e0          ! Demanded pitch rate (Collective pitch)
-        avrSWAP(47) = array2( 1)/gearboxRatio/GenEff     ! Demanded generator torque ! VC edit: compensate for drivetrain losses
+        avrSWAP(47) = array2( 1)     ! Demanded generator torque 
         ! avrSWAP(48) = 0.0e0          ! Demanded nacelle yaw rate ! VC edit: that should not be overridden by the controller
         avrSWAP(55) = 0.0e0          ! Pitch override: 0=yes
         avrSWAP(56) = 0.0e0          ! Torque override: 0=yes
