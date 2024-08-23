@@ -107,7 +107,7 @@ constant 77    0.0            ; Frequency of notch filter [Hz] applied on the ro
 constant 78    0.0            ; Damping of notch filter [-] applied on the rotor speed before computing torque above rated (constant power), (Default 0.01 used if zero) 
 ;     Down regulation control strategy 
 constant  79   3              ; Down regulation control strateg. (0 = None, 1 = constant rpm, 2 = max rpm,  3 = rpm on (P,rpm) curve in normal conditions, 4 = minimum Ct, 5 = custom operating point) 
-constant  80   100.0          ; Derate percentage (eg. 70 means 70% of nominal power) - VC: initial condition in OpenFAST (replaced by GenPwr_Dem in ServoDyn input file else)
+constant  80   100.0          ; Derate percentage (eg. 70 means 70% of nominal power) !VC: if not linking to supercontroller, also set GenPwr_Dem in ServoDyn input file
 ;     Rotor effective wind speed estimator
 constant  81   0.0            ; Rotor inertia (use 0 to deactivate estimator)
 ;     Floating

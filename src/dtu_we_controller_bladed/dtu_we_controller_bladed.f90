@@ -133,7 +133,7 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
     
     if(callno==0) then
         Deratevar%dr0 = Deratevar%dr ! Obtained from input file, derived from available power (if updated)
-    else
+    elseif (Deratevar%strat>0) then
         Deratevar%dr = max(min(avrSWAP(13)/PeRated,1.0),0.0)
     endif
 

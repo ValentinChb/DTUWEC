@@ -100,7 +100,7 @@
         constant        78 0.0;		 	Notch filter damping ratio (-)																											
 ; Derating parameters
         constant        79 3;		 	constant 	79 0; 	De-rating strategy (0: normal operation, 1: constant rotor speed, 2: maximum rotor speed, 3: power tracking (time-varying), staying on (power,speed) curve in normal operation (VC edit), 4: minimum Ct
-        constant        80 80.0;		Initial de-rating factor (%, 100: full power)
+        constant        80 80.0;		Initial de-rating factor (%, 100: full power) !VC: if not linking to supercontroller, also set GenPwr_Dem in ServoDyn input file
 ; Rotor effective wind speed estimator
      	constant  		81 43702538; 	Rotor inertia (use 0 to deactivate estimator) 
 ; Floating turbine control
