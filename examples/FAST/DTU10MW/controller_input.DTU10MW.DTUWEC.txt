@@ -96,26 +96,28 @@
 ;     Gear ratio
         constant	76 50;	Gear ratio used for the calculation of the LSS rotational speeds and the HSS generator torque reference [-] (Default 1 if zero)
 ;     Rotor speed notch filter for constant power operation above rated
-		constant  	77 3.55; Frequency of notch filter [Hz] applied on the rotor speed before computing torque above rated (constant power), if zero no notch filter used
-		constant 	78 0.0; Damping of notch filter [-] applied on the rotor speed before computing torque above rated (constant power), (Default 0.01 used if zero)
+        constant  	77 3.55; Frequency of notch filter [Hz] applied on the rotor speed before computing torque above rated (constant power), if zero no notch filter used
+        constant 	78 0.0; Damping of notch filter [-] applied on the rotor speed before computing torque above rated (constant power), (Default 0.01 used if zero)
 ;     De-rating strategies
-		constant 	79 0; 	De-rating strategy (0: normal operation, 1: constant rotor speed, 2: maximum rotor speed, 3: quasi-constant (power command-dependent) rotor speed (VC edit), 4: minimum Ct, 5: partial-load operation adjusting fixed pitch and tracking factor K (generalization of minimum Ct, VC edit)
-		constant  	80 100; 	Derate percentage (eg. 70 means 70% of nominal power
+        constant 	79 0; 	De-rating strategy (0: normal operation, 1: constant rotor speed, 2: maximum rotor speed, 3: power tracking (time-varying), staying on (power,speed) curve in normal operation (VC edit), 4: minimum Ct
+        constant  	80 100; 	Initial derate percentage (eg. 70 means 70% of nominal power)
 ;     Rotor effective wind speed estimator
-     	constant  		81 1.55e8; 	Rotor inertia (use 0 to deactivate estimator) 
-; 	  Floating additional control loop
-		constant 	82 11.4;    Rated wind speed (Only used when constant 79 = 3 OR constant 95 = 0)
-		constant 	83 0.0;		Gain for the loop mapping from tower velocity to blade pitch [rad/(m/s)]
-		constant  	84 0.0; 	Gain for the loop mapping from tower velocity to GenTorque [Nm/(m/s)]
-		constant  	85 10.0; 	Time to switch on the floating control loop [s]
-		constant    86 0.0; 	Frequency of LP filter [Hz] (Default 0 if filter not used)
-		constant    87 0.7; 	Damping ratio of LP filter  [-]
-		constant    88 0.0; 	Frequency of BP filter [Hz] (Default 0 if filter not used)
-		constant    89 0.02; 	Damping ratio of BP filter  [-] (Default 0.02)
-		constant    90 0.0; 	Time constant of BP filter [s] (Default 0)
-		constant    91 0.0; 	Coefficient of linear term in gain scheduling for tower-pitch loop, KK1 [1/(m/s)]; K=Kgain * (1 + KK1 *abs(WSPfilt - WSPrated) + KK2 * abs(WSPfilt - WSPrated)**2)
-		constant    92 0.0; 	Coefficient of quadratic term in gain scheduling for tower-pitch loop, KK2 [1/(m/s)^2];
-		constant    93 0.0; 	Coefficient of linear term in gain scheduling for tower-genTorq loop, KK1 [1/(m/s)];
-		constant    94 0.0; 	Coefficient of quadratic term in gain scheduling for tower-genTorq loop, KK2 [1/(m/s)^2];
-		constant    95 1.0;     Choice of gain-scheduling variable (0: WSPfilt, 1:Pitch angle (Default))
+        constant  	81 1.55e8; 	Rotor inertia (use 0 to deactivate estimator) 
+;     Floating additional control loop
+        constant 	82 11.4;        Rated wind speed (Only used when constant 79 = 3 OR constant 95 = 0)
+        constant 	83 0.0;		Gain for the loop mapping from tower velocity to blade pitch [rad/(m/s)]
+        constant  	84 0.0; 	Gain for the loop mapping from tower velocity to GenTorque [Nm/(m/s)]
+        constant  	85 10.0; 	Time to switch on the floating control loop [s]
+        constant        86 0.0; 	Frequency of LP filter [Hz] (Default 0 if filter not used)
+        constant        87 0.7; 	Damping ratio of LP filter  [-]
+        constant        88 0.0; 	Frequency of BP filter [Hz] (Default 0 if filter not used)
+        constant        89 0.02; 	Damping ratio of BP filter  [-] (Default 0.02)
+        constant        90 0.0; 	Time constant of BP filter [s] (Default 0)
+        constant        91 0.0; 	Coefficient of linear term in gain scheduling for tower-pitch loop, KK1 [1/(m/s)]; K=Kgain * (1 + KK1 *abs(WSPfilt - WSPrated) + KK2 * abs(WSPfilt - WSPrated)**2)
+        constant        92 0.0; 	Coefficient of quadratic term in gain scheduling for tower-pitch loop, KK2 [1/(m/s)^2];
+        constant        93 0.0; 	Coefficient of linear term in gain scheduling for tower-genTorq loop, KK1 [1/(m/s)];
+        constant        94 0.0; 	Coefficient of quadratic term in gain scheduling for tower-genTorq loop, KK2 [1/(m/s)^2];
+        constant        95 1.0;         Choice of gain-scheduling variable (0: WSPfilt, 1:Pitch angle (Default))
+;     Other
+        constant        96 0.94;     Powertrain efficiency (VC edit)
 end ;

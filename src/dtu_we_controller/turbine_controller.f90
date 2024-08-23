@@ -324,8 +324,8 @@ subroutine normal_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
          GenSpeedDerate = max(GenSpeedDerate,GenSpeedRefMin) ! VC edit: apply lower bound here already to get correct GenSpeedRefMax and GenTorqueRated
          GenSpeedRefMax = min(GenSpeedRefMax_normal,GenSpeedDerate) ! VC edit: do this for all cases in a single statement after select block
       endif
-      GenTorqueRated = (Deratevar%dr*PeRated)/GenSpeedRefMax ! VC edit: update at every call. do this for all cases in a single statement after select block. 
-      
+      ! VC edit: update GenTorqueRated at every call. Do this for all cases in a single statement after select block
+      GenTorqueRated = (Deratevar%dr*PeRated)/GenSpeedRefMax ! This the derated generator torque. Choosing constant power mode in full load will enable power tracking in torquecontroller. 
       
       if (Deratevar%strat.ge.4 .and. .not. firstStep) then ! VC edit: Split IF block.
       
@@ -933,10 +933,10 @@ subroutine torquecontroller(GenSpeed, GenSpeedFilt, dGenSpeed_dtFilt, PitchMean,
    endif
    outmin = (1.0_mk - switch)*GenTorqueMin_partial + switch*GenTorqueMin_full
    outmax = (1.0_mk - switch)*GenTorqueMax_partial + switch*GenTorqueMax_full
-
+ 
    ! Check derating limits
-   ! TODO: check to see if it is needed when using min ct strategy
-   if (deratevar%strat > 0 .and. deratevar%strat < 4) then ! VC edit: changed logical operator
+   ! TODO: check to see if it is needed when using min ct strategy ! VC: this should at least not be used for strategy 3 (following (Power,Speed) operating point in normal operation), it would harm power tracking and the limits are already in GenTorqueMin/Max_partial/full
+   if (deratevar%strat > 0 .and. deratevar%strat < 3) then ! VC edit: changed logical operator
      outmin = min(outmin, GenTorqueRated)
      outmax = min(outmax, GenTorqueRated)
    endif

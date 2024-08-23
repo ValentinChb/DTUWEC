@@ -302,7 +302,7 @@ subroutine init_regulation(array1, array2) bind(c, name='init_regulation')
    ExcluZone%notch%zeta2     = 0.01_mk
    ! -"Rystevagt" monitor for Safety System
    SafetySystemVar%RysteVagtLevel = MoniVar%RysteVagtLevel*1.1_mk
-   ! Gear Ratio and powertrain efficiency (VC edit)
+   ! Gear Ratio and powertrain efficiency (VC)
    GearRatio = 1.0_mk
    GenEff = 1.0_mk
    ! Deactivate the filter on rotor speed for generator torque computation above rated
