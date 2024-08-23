@@ -14,3 +14,5 @@ The main modifications are:
 - Set cmake variable CMAKE_LINK2SC to FALSE to deactivate link to wrapper/supercontroller for direct use in OpenFAST
 - The utils submodule is not included in this repository. It is recommended to clone the two repositories separately instead of using git clone --recurse-submodules or similar. Make sure a valid version is defined by using the git tag command appropriately. Then, update The cmake config file CMakeLists.txt in utils/cmake by copying and renaming the file CMakeList_utils.txt from this repository (it implements the necessary adaptations in fortran compiler and linker flags).
 
+# Use
+Example input files for reference wind turbines are provided. Look for "VC edit" to see changes from original.
