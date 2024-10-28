@@ -328,7 +328,8 @@ subroutine normal_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
       GenSpeedRef_full = min(GenSpeedRefMax, GenSpeedRef_full)
       ! VC edit: update GenTorqueRated at every call. Do this for all cases in a single statement after select block
       GenTorqueRated = (Deratevar%dr*PeRated)/GenSpeedDerate ! This the derated generator torque. Choosing constant power mode in full load will enable power tracking in torquecontroller. 
-      
+      dump_array(32) = GenSpeedDerate      ! Save rated generator speed when derating
+
       if (Deratevar%strat.ge.4 .and. .not. firstStep) then ! VC edit: Split IF block.
       
          ! Minimum pitch angle may vary with the de-rating percentage
@@ -336,7 +337,6 @@ subroutine normal_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
          ! Dump output to array
          dump_array(30) = Kopt                ! Save generator constant when derating
          dump_array(31) = lambdaDerate       ! Save tip-speed-ratio at minimum Ct ! VC edit: generalize minCt
-         dump_array(32) = GenSpeedDerate      ! Save rated generator speed when derating
          dump_array(33) = PitchMinDerate     ! Save required pitch angle when operating at minimum Ct strategy ! VC edit: generalize minCt
          dump_array(34) = minCt               ! Save the thrust coefficient when derating
          dump_array(35) = Cpderate           ! Save the power coefficient when derating  ! VC edit: generalize minCt
