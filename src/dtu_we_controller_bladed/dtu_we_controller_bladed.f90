@@ -15,10 +15,11 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
     !GCC$ ATTRIBUTES DLLEXPORT :: DTUWEC_DISCON
     !DEC$ END IF
 
-    ! New fields in avrSWAP (currently unused by ServoDyn):
+    ! New fields in avrSWAP (currently unused by ServoDyn - see Retrieve_avrSWAP in BladedInterface.f90):
     ! 85: turbine number
     ! 86: length of control directory path
     ! 87: estimated wind speed
+    ! 88: derated reference rotor speed
     
     
     ! Passed in Variables from simulation codes (OpenFAST or Bladed):
@@ -183,6 +184,8 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
         avrSWAP(79) = 0.0e0          ! Request for loads: 0=none
         avrSWAP(80) = 0.0e0          ! Variable slip current status
         avrSWAP(81) = 0.0e0          ! Variable slip current demand
+
+        avrSWAP(88) = array2(36)     ! VC edit: Reference generator speed
 
     endif 
     

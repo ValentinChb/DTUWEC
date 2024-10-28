@@ -324,8 +324,10 @@ subroutine normal_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
          GenSpeedDerate = max(GenSpeedDerate,GenSpeedRefMin) ! VC edit: apply lower bound here already to get correct GenSpeedRefMax and GenTorqueRated
          GenSpeedRefMax = min(GenSpeedRefMax_normal,GenSpeedDerate) ! VC edit: do this for all cases in a single statement after select block
       endif
+      GenSpeedDerate = GenSpeedRefMax
+      GenSpeedRef_full = min(GenSpeedRefMax, GenSpeedRef_full)
       ! VC edit: update GenTorqueRated at every call. Do this for all cases in a single statement after select block
-      GenTorqueRated = (Deratevar%dr*PeRated)/GenSpeedRefMax ! This the derated generator torque. Choosing constant power mode in full load will enable power tracking in torquecontroller. 
+      GenTorqueRated = (Deratevar%dr*PeRated)/GenSpeedDerate ! This the derated generator torque. Choosing constant power mode in full load will enable power tracking in torquecontroller. 
       
       if (Deratevar%strat.ge.4 .and. .not. firstStep) then ! VC edit: Split IF block.
       
@@ -355,7 +357,7 @@ subroutine normal_operation(GenSpeed, PitchVect, wsp, Pe, TTfa_acc, GenTorqueRef
 
       endif     
 
-      GenSpeedRef_full = max(min(GenSpeedRef_full, GenSpeedRefMax), GenSpeedRefMin)
+     
 
       firstStep = .false. 
 
