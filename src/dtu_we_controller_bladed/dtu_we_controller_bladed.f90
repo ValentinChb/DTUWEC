@@ -61,19 +61,13 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
 
     iStatus = nint(avrSWAP(1))
 
-    ! Convert c character arrays to Fortran CHARACTER strings:
-
-    cOutName = transfer(avcOUTNAME(1:len(cOutName)),cOutName)
-    i = index(cOutName, C_NULL_CHAR) - 1      ! Find the c NULL character at the end of cOutName, if it has then remove it
-    if (i>0) cOutName = cOutName(1:i)
-    
-    cInFile = transfer(avcINFILE(1:len(cInFile)),cInFile)
-    i = index(cInFile, C_NULL_CHAR) - 1       ! Find the c NULL character at the end of cInFile, if it has then remove it
-    if (i>0) cInFile = cInFile(1:i)
-
     Vobs = avrSWAP(87)
     
     if (callno == 0 .and. iStatus == 0) then
+        ! Convert c character arrays to Fortran CHARACTER strings:
+        cInFile = transfer(avcINFILE(1:len(cInFile)),cInFile)
+        i = index(cInFile, C_NULL_CHAR) - 1       ! Find the c NULL character at the end of cInFile, if it has then remove it
+        if (i>0) cInFile = cInFile(1:i)
 
         ! VC edit : Get control input directory and turbine number and broadcast to global variables
 
@@ -130,6 +124,12 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
 
     endif
 
+    ! VC edit: Export logging channel name and unit at first and last call (according to Bladed UM)
+    if (iStatus<=0) then 
+        cOutName = "EstWndSpd:L/T;RefGenSpd:A/T"
+        avcOUTNAME = transfer(cOutName(len(cOutName)-1)//C_NULL_CHAR)
+    endif
+
     !------------------------------ VC edit ---------------------------------------
     
     if(callno==0) then
@@ -179,7 +179,13 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
         ! avrSWAP(48) = 0.0e0          ! Demanded nacelle yaw rate ! VC edit: that should not be overridden by the controller
         avrSWAP(55) = 0.0e0          ! Pitch override: 0=yes
         avrSWAP(56) = 0.0e0          ! Torque override: 0=yes
-        avrSWAP(65) = 0.0e0          ! Number of variables returned for logging
+
+        ! VC edit: set estimated wind speed and reference generator speed as outputs for logging
+        ! avrSWAP(65) = 0.0e0          ! Number of variables returned for logging 
+        avrSWAP(62) = 2
+        avrSWAP(65) = 2
+        avrSWAP(63) = 87
+
         avrSWAP(72) = 0.0e0          ! Generator start-up resistance
         avrSWAP(79) = 0.0e0          ! Request for loads: 0=none
         avrSWAP(80) = 0.0e0          ! Variable slip current status
