@@ -122,12 +122,17 @@ subroutine DTUWEC_DISCON (avrSWAP, aviFAIL, avcINFILE, avcOUTNAME, avcMSG, contr
         initpitch = avrSWAP(4)
         avrSWAP(42:45) = initpitch 
 
+        ! VC edit: set estimated wind speed and reference generator speed as outputs for logging
+        avrSWAP(62) = 2
+        avrSWAP(65) = 2
+        avrSWAP(63) = 87
+
     endif
 
     ! VC edit: Export logging channel name and unit at first and last call (according to Bladed UM)
     if (iStatus<=0) then 
         cOutName = "EstWndSpd:L/T;RefGenSpd:A/T"
-        avcOUTNAME = transfer(cOutName(len(cOutName)-1)//C_NULL_CHAR)
+        avcOUTNAME = transfer(cOutName(1:len(cOutName)-1)//C_NULL_CHAR, avcOUTNAME)
     endif
 
     !------------------------------ VC edit ---------------------------------------
